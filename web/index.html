@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Planner</title>
+<style>
+  :root {
+    --bg: #f5f5f5; --card: #fff; --border: #e0e0e0;
+    --accent: #2563eb; --accent-light: #dbeafe;
+    --text: #1e293b; --muted: #64748b;
+    --done: #94a3b8; --delegated: #f59e0b;
+    --danger: #ef4444; --success: #22c55e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5; }
+
+  /* Top bar */
+  header { background: var(--accent); color: #fff; padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10; }
+  header h1 { font-size: 18px; font-weight: 600; }
+  .header-actions { display: flex; gap: 8px; }
+  .header-actions button { background: rgba(255,255,255,0.2); color: #fff;
+    border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; border-radius: 6px;
+    cursor: pointer; font-size: 13px; }
+  .header-actions button:hover { background: rgba(255,255,255,0.3); }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 0; overflow-x: auto; background: var(--card);
+    border-bottom: 1px solid var(--border); padding: 0 12px; }
+  .tab { padding: 10px 16px; cursor: pointer; font-size: 14px; font-weight: 500;
+    color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap;
+    min-height: 44px; display: flex; align-items: center; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:hover { color: var(--text); }
+  .tab .count { background: var(--accent-light); color: var(--accent);
+    font-size: 11px; border-radius: 10px; padding: 1px 7px; margin-left: 6px; }
+
+  /* Main */
+  main { max-width: 800px; margin: 0 auto; padding: 16px; }
+
+  /* Area card */
+  .area { margin-bottom: 24px; }
+  .area-title { font-size: 16px; font-weight: 600; color: var(--accent);
+    margin-bottom: 8px; padding: 4px 0; }
+
+  /* Section */
+  .section { background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+  .section-header { padding: 10px 14px; font-size: 13px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border); display: flex;
+    justify-content: space-between; align-items: center; }
+  .section-header .add-btn { background: none; border: none; color: var(--accent);
+    cursor: pointer; font-size: 18px; font-weight: 700; line-height: 1;
+    width: 28px; height: 28px; border-radius: 4px; }
+  .section-header .add-btn:hover { background: var(--accent-light); }
+
+  /* Task row */
+  .task { display: flex; align-items: center; padding: 8px 14px; gap: 10px;
+    border-bottom: 1px solid var(--border); min-height: 44px; }
+  .task:last-child { border-bottom: none; }
+  .task input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer;
+    accent-color: var(--accent); flex-shrink: 0; }
+  .task-text { flex: 1; font-size: 14px; }
+  .task.done .task-text { text-decoration: line-through; color: var(--done); }
+  .task-meta { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    font-weight: 500; }
+  .badge-delegated { background: #fef3c7; color: #92400e; }
+  .delegate-btn { background: none; border: 1px solid var(--border);
+    color: var(--muted); cursor: pointer; font-size: 11px; padding: 2px 8px;
+    border-radius: 10px; }
+  .delegate-btn:hover { border-color: var(--delegated); color: var(--delegated); }
+
+  /* Add task form (inline) */
+  .add-form { display: flex; gap: 8px; padding: 8px 14px;
+    border-top: 1px solid var(--border); }
+  .add-form input { flex: 1; padding: 6px 10px; border: 1px solid var(--border);
+    border-radius: 6px; font-size: 14px; }
+  .add-form button { background: var(--accent); color: #fff; border: none;
+    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .add-form .cancel-btn { background: none; color: var(--muted); border: 1px solid var(--border); }
+  .hidden { display: none !important; }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: #fff; padding: 10px 20px; border-radius: 8px;
+    font-size: 14px; z-index: 100; opacity: 0; transition: opacity 0.3s; }
+  .toast.show { opacity: 1; }
+
+  /* Empty state */
+  .empty { color: var(--muted); font-size: 13px; padding: 12px 14px;
+    font-style: italic; }
+
+  /* Delegated view */
+  .delegated-section { margin-bottom: 8px; }
+  .delegated-owner { font-size: 14px; font-weight: 600; color: var(--delegated);
+    padding: 8px 0 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Work Planner</h1>
+  <div class="header-actions">
+    <button onclick="showDelegated()">Delegated</button>
+    <button onclick="archiveTasks()">Archive</button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs"></nav>
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+
+<script>
+const API = '';
+let allData = null;
+let activeTab = 'all';
+
+// ---- Data fetching ----
+
+async function fetchTasks() {
+  const res = await fetch(`${API}/api/tasks`);
+  allData = await res.json();
+  renderTabs();
+  renderMain();
+}
+
+// ---- Tabs ----
+
+function renderTabs() {
+  const tabs = document.getElementById('tabs');
+  const counts = {};
+  let totalOpen = 0;
+  for (const area of allData.areas) {
+    let c = 0;
+    for (const s of area.sections) c += s.tasks.filter(t => !t.done).length;
+    counts[area.key] = c;
+    totalOpen += c;
+  }
+
+  let html = `<div class="tab ${activeTab === 'all' ? 'active' : ''}" onclick="switchTab('all')">
+    All<span class="count">${totalOpen}</span></div>`;
+  for (const area of allData.areas) {
+    const label = area.title.replace('Planyfi — ', '');
+    html += `<div class="tab ${activeTab === area.key ? 'active' : ''}" onclick="switchTab('${area.key}')">
+      ${label}${counts[area.key] ? `<span class="count">${counts[area.key]}</span>` : ''}</div>`;
+  }
+  tabs.innerHTML = html;
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  renderTabs();
+  renderMain();
+}
+
+// ---- Main rendering ----
+
+function renderMain() {
+  const main = document.getElementById('main');
+  const areas = activeTab === 'all' ? allData.areas : allData.areas.filter(a => a.key === activeTab);
+  let html = '';
+
+  for (const area of areas) {
+    html += `<div class="area">`;
+    if (activeTab === 'all') html += `<div class="area-title">${area.title}</div>`;
+
+    for (const section of area.sections) {
+      html += `<div class="section">
+        <div class="section-header">
+          <span>${section.name}</span>
+          <button class="add-btn" onclick="toggleAddForm('${area.key}','${esc(section.name)}')" title="Add task">+</button>
+        </div>`;
+
+      if (section.tasks.length === 0) {
+        html += `<div class="empty">No tasks</div>`;
+      }
+      for (const task of section.tasks) {
+        html += renderTask(area.key, task);
+      }
+
+      html += `<div class="add-form hidden" id="add-${area.key}-${esc(section.name)}">
+        <input type="text" placeholder="New task..." onkeydown="if(event.key==='Enter')submitAdd('${area.key}','${esc(section.name)}',this)">
+        <button onclick="submitAdd('${area.key}','${esc(section.name)}',this.previousElementSibling)">Add</button>
+        <button class="cancel-btn" onclick="toggleAddForm('${area.key}','${esc(section.name)}')">Cancel</button>
+      </div>`;
+
+      html += `</div>`;
+    }
+    html += `</div>`;
+  }
+
+  main.innerHTML = html;
+}
+
+function renderTask(areaKey, task) {
+  let meta = '';
+  if (task.delegated_to) {
+    meta += `<span class="badge badge-delegated">${task.delegated_to}</span>`;
+  } else if (!task.done) {
+    meta += `<button class="delegate-btn" onclick="delegateTask('${areaKey}',${task.line})">Delegate</button>`;
+  }
+
+  return `<div class="task ${task.done ? 'done' : ''}">
+    <input type="checkbox" ${task.done ? 'checked' : ''} onchange="toggleTask('${areaKey}',${task.line})">
+    <span class="task-text">${escHtml(task.text)}</span>
+    <div class="task-meta">${meta}</div>
+  </div>`;
+}
+
+// ---- Actions ----
+
+async function toggleTask(area, line) {
+  await fetch(`${API}/api/tasks/${area}/${line}`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action: 'toggle'})
+  });
+  await fetchTasks();
+}
+
+async function delegateTask(area, line) {
+  const name = prompt('Delegate to (name):');
+  if (!name) return;
+  const res = await fetch(`${API}/api/tasks/${area}/${line}`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action: 'delegate', name: name.trim()})
+  });
+  if (res.ok) {
+    toast('Task delegated');
+    await fetchTasks();
+  } else {
+    const err = await res.json();
+    toast(err.error || 'Error', true);
+  }
+}
+
+function toggleAddForm(area, section) {
+  const id = `add-${area}-${section}`;
+  const el = document.getElementById(id);
+  el.classList.toggle('hidden');
+  if (!el.classList.contains('hidden')) {
+    el.querySelector('input').focus();
+  }
+}
+
+async function submitAdd(area, section, input) {
+  const text = input.value.trim();
+  if (!text) return;
+  const res = await fetch(`${API}/api/tasks/${area}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({section: section, text: text})
+  });
+  if (res.ok) {
+    input.value = '';
+    toast('Task added');
+    await fetchTasks();
+  } else {
+    const err = await res.json();
+    toast(err.error || 'Error', true);
+  }
+}
+
+async function archiveTasks() {
+  const res = await fetch(`${API}/api/archive`, {method: 'POST'});
+  const data = await res.json();
+  if (data.archived === 0) {
+    toast('No completed tasks to archive');
+  } else {
+    toast(`Archived ${data.archived} task${data.archived > 1 ? 's' : ''}`);
+    await fetchTasks();
+  }
+}
+
+async function showDelegated() {
+  const res = await fetch(`${API}/api/delegated`);
+  const data = await res.json();
+  const main = document.getElementById('main');
+
+  if (data.delegated.length === 0) {
+    main.innerHTML = '<div class="area"><div class="area-title">Delegated Tasks</div><div class="empty">No delegated tasks</div></div>';
+    activeTab = '';
+    renderTabs();
+    return;
+  }
+
+  // Group by delegated_to
+  const grouped = {};
+  for (const t of data.delegated) {
+    const owner = t.delegated_to;
+    if (!grouped[owner]) grouped[owner] = [];
+    grouped[owner].push(t);
+  }
+
+  let html = '<div class="area"><div class="area-title">Delegated Tasks</div>';
+  for (const [owner, tasks] of Object.entries(grouped)) {
+    html += `<div class="delegated-section"><div class="delegated-owner">${escHtml(owner)}</div>
+      <div class="section">`;
+    for (const t of tasks) {
+      html += `<div class="task">
+        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask('${t.area_key}',${t.line})">
+        <span class="task-text">${escHtml(t.text)}</span>
+        <div class="task-meta"><span class="badge badge-delegated">${escHtml(t.area)}</span></div>
+      </div>`;
+    }
+    html += '</div></div>';
+  }
+  html += '</div>';
+
+  main.innerHTML = html;
+  activeTab = '';
+  renderTabs();
+}
+
+// ---- Utilities ----
+
+function esc(s) { return s.replace(/['"]/g, ''); }
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ---- Init ----
+fetchTasks();
+</script>
+</body>
+</html>
