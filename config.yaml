@@ -1,0 +1,29 @@
+# Work Planner Configuration
+
+areas:
+  personal:
+    file: personal.md
+    sections: [Health, Finance, Home, Other]
+  sunbelt:
+    file: sunbelt.md
+    sections: [Reporting, Budgeting, Ad-hoc Requests, Meetings, Delegated]
+  app:
+    file: planyfi-app.md
+    sections: [Engineering, Product, Bugs / Issues]
+  marketing:
+    file: planyfi-marketing.md
+    sections: [Campaigns, Content, Analytics]
+
+# Morning summary settings
+summary:
+  # AI provider: claude, openai, or fallback (plain text)
+  provider: claude
+  # Add to your shell profile to run on terminal open:
+  #   alias gm="~/Work-Planner/morning-summary.sh"
+  # Or add to crontab for automatic runs:
+  #   0 7 * * 1-5 ~/Work-Planner/morning-summary.sh > /tmp/morning-summary.txt
+
+# Sync: just use git
+# Suggested aliases for .bashrc / .zshrc:
+#   alias tp="cd ~/Work-Planner && git pull origin main"
+#   alias ts="cd ~/Work-Planner && git add -A && git commit -m 'sync tasks' && git push"
