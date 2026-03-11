@@ -11,6 +11,7 @@
     --text: #1e293b; --muted: #64748b;
     --done: #94a3b8; --delegated: #f59e0b;
     --danger: #ef4444; --success: #22c55e;
+    --p1: #ef4444; --p2: #f59e0b; --p3: #3b82f6;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -39,7 +40,7 @@
     font-size: 11px; border-radius: 10px; padding: 1px 7px; margin-left: 6px; }
 
   /* Main */
-  main { max-width: 800px; margin: 0 auto; padding: 16px; }
+  main { max-width: 960px; margin: 0 auto; padding: 16px; }
 
   /* Area card */
   .area { margin-bottom: 24px; }
@@ -52,7 +53,15 @@
   .section-header { padding: 10px 14px; font-size: 13px; font-weight: 600;
     color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
     border-bottom: 1px solid var(--border); display: flex;
-    justify-content: space-between; align-items: center; }
+    justify-content: space-between; align-items: center; cursor: pointer;
+    user-select: none; }
+  .section.collapsed .section-header { border-bottom: none; }
+  .section.collapsed .section-body { display: none; }
+  .section-header .chevron { font-size: 12px; margin-right: 6px; transition: transform 0.15s;
+    display: inline-block; color: var(--muted); }
+  .section.collapsed .chevron { transform: rotate(-90deg); }
+  .section-header .section-right { display: flex; align-items: center; gap: 4px; }
+  .section-header .task-count { font-size: 11px; color: var(--muted); font-weight: 400; }
   .section-header .add-btn { background: none; border: none; color: var(--accent);
     cursor: pointer; font-size: 18px; font-weight: 700; line-height: 1;
     width: 28px; height: 28px; border-radius: 4px; }
@@ -60,20 +69,75 @@
 
   /* Task row */
   .task { display: flex; align-items: center; padding: 8px 14px; gap: 10px;
-    border-bottom: 1px solid var(--border); min-height: 44px; }
+    border-bottom: 1px solid var(--border); min-height: 44px; cursor: pointer; }
   .task:last-child { border-bottom: none; }
+  .task:hover { background: #f8fafc; }
   .task input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer;
     accent-color: var(--accent); flex-shrink: 0; }
   .task-text { flex: 1; font-size: 14px; }
+  .task.done { opacity: 0.55; }
   .task.done .task-text { text-decoration: line-through; color: var(--done); }
-  .task-meta { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-  .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px;
-    font-weight: 500; }
+  .task-meta { display: flex; gap: 4px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
+  .badge { font-size: 10px; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
   .badge-delegated { background: #fef3c7; color: #92400e; }
-  .delegate-btn { background: none; border: 1px solid var(--border);
-    color: var(--muted); cursor: pointer; font-size: 11px; padding: 2px 8px;
-    border-radius: 10px; }
-  .delegate-btn:hover { border-color: var(--delegated); color: var(--delegated); }
+  .badge-p1 { background: #fef2f2; color: var(--p1); }
+  .badge-p2 { background: #fffbeb; color: #b45309; }
+  .badge-p3 { background: #eff6ff; color: var(--p3); }
+  .badge-due { font-size: 10px; padding: 1px 7px; border-radius: 10px; font-weight: 500; }
+  .badge-overdue { background: #fef2f2; color: var(--danger); }
+  .badge-today { background: #fffbeb; color: #b45309; }
+  .badge-future { background: #f1f5f9; color: var(--muted); }
+  .badge-tag { font-size: 10px; padding: 1px 7px; border-radius: 10px; font-weight: 500;
+    color: #fff; }
+  .subtask-count { font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+  /* Task grid header + row */
+  .task-grid-header {
+    display: grid;
+    grid-template-columns: 28px 1fr 110px 70px 100px auto;
+    align-items: center;
+    padding: 6px 14px;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 8px 8px 0 0;
+    margin-bottom: -1px;
+  }
+  .task-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 110px 70px 100px auto;
+    align-items: center;
+    padding: 6px 14px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    min-height: 40px;
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-row:hover { background: #f8fafc; }
+  .task-row.done { opacity: 0.55; }
+  .task-row.done .task-title { text-decoration: line-through; color: var(--done); }
+  .task-row input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer;
+    accent-color: var(--accent); flex-shrink: 0; }
+  .task-title { font-size: 14px; cursor: pointer; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap; }
+  .task-title:hover { color: var(--accent); }
+  .task-badges { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+
+  /* Inline editable controls */
+  .inline-date { padding: 2px 4px; border: 1px solid transparent; border-radius: 4px;
+    font-size: 12px; font-family: inherit; background: transparent; width: 100%; }
+  .inline-date:hover, .inline-date:focus { border-color: var(--border); background: var(--card); }
+  .inline-date:focus { outline: none; border-color: var(--accent); }
+  .inline-priority, .inline-recurrence { padding: 2px 4px; border: 1px solid transparent;
+    border-radius: 4px; font-size: 12px; background: transparent; cursor: pointer;
+    width: 100%; appearance: none; -webkit-appearance: none; }
+  .inline-priority:hover, .inline-recurrence:hover { border-color: var(--border); background: var(--card); }
+  .inline-priority:focus, .inline-recurrence:focus { outline: none; border-color: var(--accent); }
 
   /* Add task form (inline) */
   .add-form { display: flex; gap: 8px; padding: 8px 14px;
@@ -99,6 +163,183 @@
   .delegated-section { margin-bottom: 8px; }
   .delegated-owner { font-size: 14px; font-weight: 600; color: var(--delegated);
     padding: 8px 0 4px; }
+
+  /* Modal overlay */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 50; display: flex; align-items: center; justify-content: center; }
+  .modal { background: var(--card); border-radius: 12px; width: 95%; max-width: 720px;
+    max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; }
+  .modal-header h2 { font-size: 16px; font-weight: 600; }
+  .modal-close { background: none; border: none; font-size: 22px; cursor: pointer;
+    color: var(--muted); width: 32px; height: 32px; border-radius: 6px; }
+  .modal-close:hover { background: var(--bg); }
+  .modal-body { padding: 16px 20px; overflow-y: auto; flex: 1; }
+  .modal-footer { padding: 12px 20px; border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* Buttons */
+  .btn-primary { background: var(--accent); color: #fff; border: none;
+    padding: 8px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border);
+    padding: 8px 18px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+  .btn-secondary:hover { border-color: var(--muted); }
+  .btn-danger { background: var(--danger); color: #fff; border: none;
+    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .btn-danger:hover { opacity: 0.9; }
+
+  /* Task Detail Modal */
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .detail-field { display: flex; flex-direction: column; gap: 4px; }
+  .detail-field.full { grid-column: 1 / -1; }
+  .detail-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.5px; }
+  .detail-input { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 14px; font-family: inherit; }
+  .detail-input:focus { outline: none; border-color: var(--accent); }
+  .detail-textarea { padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 13px; font-family: 'SFMono-Regular', Consolas, monospace; min-height: 80px;
+    resize: vertical; }
+  .detail-textarea:focus { outline: none; border-color: var(--accent); }
+  select.detail-input { cursor: pointer; }
+
+  /* Subtasks in detail */
+  .subtask-list { margin-top: 4px; }
+  .subtask-item { display: flex; align-items: center; gap: 8px; padding: 4px 0;
+    border-bottom: 1px solid #f1f5f9; }
+  .subtask-item:last-child { border-bottom: none; }
+  .subtask-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
+  .subtask-item .subtask-text { flex: 1; font-size: 13px; }
+  .subtask-item.done .subtask-text { text-decoration: line-through; color: var(--done); }
+  .subtask-item .subtask-delete { background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 14px; opacity: 0.5; }
+  .subtask-item .subtask-delete:hover { opacity: 1; color: var(--danger); }
+  .subtask-add { display: flex; gap: 6px; margin-top: 6px; }
+  .subtask-add input { flex: 1; padding: 4px 8px; border: 1px solid var(--border);
+    border-radius: 4px; font-size: 13px; }
+  .subtask-add button { padding: 4px 10px; font-size: 12px; }
+
+  /* Tags in detail */
+  .tag-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .tag-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
+    border-radius: 10px; font-size: 11px; font-weight: 500; color: #fff; }
+  .tag-pill .tag-remove { background: none; border: none; color: rgba(255,255,255,0.7);
+    cursor: pointer; font-size: 13px; line-height: 1; padding: 0; }
+  .tag-pill .tag-remove:hover { color: #fff; }
+  .tag-add-row { display: flex; gap: 6px; margin-top: 6px; }
+  .tag-add-row select, .tag-add-row input { padding: 4px 8px; border: 1px solid var(--border);
+    border-radius: 4px; font-size: 12px; }
+  .tag-add-row button { padding: 4px 10px; font-size: 12px; }
+
+  /* Recurrence */
+  .recurrence-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .dow-checkboxes { display: flex; gap: 4px; margin-top: 4px; }
+  .dow-checkboxes label { font-size: 11px; display: flex; align-items: center; gap: 2px;
+    padding: 2px 6px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; }
+  .dow-checkboxes label.active { background: var(--accent-light); border-color: var(--accent); }
+  .dow-checkboxes input { display: none; }
+
+  /* Timestamps */
+  .detail-timestamps { font-size: 11px; color: var(--muted); margin-top: 12px;
+    padding-top: 8px; border-top: 1px solid var(--border); }
+
+  /* Drawer (task detail) */
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+    z-index: 50;
+  }
+  .drawer {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 480px; max-width: 100%;
+    background: var(--card);
+    box-shadow: -4px 0 20px rgba(0,0,0,0.15);
+    display: flex; flex-direction: column;
+    z-index: 51;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-header { padding: 16px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; }
+  .drawer-header h2 { font-size: 16px; font-weight: 600; }
+  .drawer-body { padding: 16px 20px; overflow-y: auto; flex: 1; }
+  .drawer-footer { padding: 12px 20px; border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* Inbox */
+  .inbox-textarea { width: 100%; min-height: 120px; padding: 10px; border: 1px solid var(--border);
+    border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical; }
+  .inbox-textarea:focus { outline: none; border-color: var(--accent); }
+  .inbox-actions { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+  .inbox-actions .file-label { font-size: 13px; color: var(--muted); cursor: pointer;
+    border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; }
+  .inbox-actions .file-label:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Inbox preview table */
+  .inbox-preview { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+  .inbox-preview th { text-align: left; padding: 8px 6px; color: var(--muted);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border); }
+  .inbox-preview td { padding: 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .inbox-preview tr:last-child td { border-bottom: none; }
+  .inbox-preview input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
+  .inbox-preview .task-input { width: 100%; border: 1px solid transparent; padding: 4px 6px;
+    border-radius: 4px; font-size: 13px; font-family: inherit; }
+  .inbox-preview .task-input:focus { outline: none; border-color: var(--accent); }
+  .inbox-preview select { padding: 4px 6px; border: 1px solid var(--border);
+    border-radius: 4px; font-size: 12px; background: var(--card); }
+  .conf-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+  .conf-high { background: var(--success); }
+  .conf-medium { background: var(--delegated); }
+  .conf-low { background: var(--danger); }
+
+  /* Spinner */
+  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite;
+    vertical-align: middle; margin-right: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .inbox-status { text-align: center; padding: 24px; color: var(--muted); font-size: 14px; }
+
+  /* Summary */
+  .summary-content { font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
+  .summary-content h2 { font-size: 15px; font-weight: 600; color: var(--accent);
+    margin: 16px 0 4px; }
+  .summary-content ul { margin: 0 0 8px 16px; }
+  .summary-content li { margin-bottom: 2px; }
+
+  /* Upcoming view */
+  .upcoming-group { margin-bottom: 16px; }
+  .upcoming-group-title { font-size: 13px; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 0 4px;
+    border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+  .upcoming-task-area { font-size: 10px; color: var(--muted); margin-left: 4px; }
+
+  /* Calendar view */
+  .cal-nav { display: flex; align-items: center; justify-content: center; gap: 16px;
+    padding: 12px 0; }
+  .cal-nav button { background: none; border: 1px solid var(--border); border-radius: 6px;
+    padding: 4px 12px; cursor: pointer; font-size: 14px; }
+  .cal-nav button:hover { background: var(--accent-light); }
+  .cal-month { font-size: 16px; font-weight: 600; min-width: 180px; text-align: center; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; }
+  .cal-header { background: var(--bg); padding: 6px; text-align: center;
+    font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
+  .cal-day { background: var(--card); min-height: 70px; padding: 4px 6px;
+    cursor: pointer; position: relative; }
+  .cal-day:hover { background: #f8fafc; }
+  .cal-day.other-month { opacity: 0.4; }
+  .cal-day.today { background: var(--accent-light); }
+  .cal-day-num { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+  .cal-dot-row { display: flex; gap: 2px; flex-wrap: wrap; }
+  .cal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .cal-dot.overdue { background: var(--danger); }
+  .cal-count { font-size: 10px; color: var(--muted); }
+  .cal-day-tasks { margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -106,8 +347,10 @@
 <header>
   <h1>Work Planner</h1>
   <div class="header-actions">
+    <button onclick="openSummary()">Summary</button>
+    <button onclick="openInbox()">Inbox</button>
     <button onclick="showDelegated()">Delegated</button>
-    <button onclick="archiveTasks()">Archive</button>
+    <button onclick="clearCompleted()">Clear completed</button>
   </div>
 </header>
 
@@ -119,12 +362,19 @@
 const API = '';
 let allData = null;
 let activeTab = 'all';
+const collapsedSections = new Set();
+let allTags = [];
 
 // ---- Data fetching ----
 
 async function fetchTasks() {
-  const res = await fetch(`${API}/api/tasks`);
-  allData = await res.json();
+  const [tasksRes, tagsRes] = await Promise.all([
+    fetch(`${API}/api/tasks`),
+    fetch(`${API}/api/tags`),
+  ]);
+  allData = await tasksRes.json();
+  const tagsData = await tagsRes.json();
+  allTags = tagsData.tags || [];
   renderTabs();
   renderMain();
 }
@@ -149,13 +399,18 @@ function renderTabs() {
     html += `<div class="tab ${activeTab === area.key ? 'active' : ''}" onclick="switchTab('${area.key}')">
       ${label}${counts[area.key] ? `<span class="count">${counts[area.key]}</span>` : ''}</div>`;
   }
+  // Virtual tabs
+  html += `<div class="tab ${activeTab === 'upcoming' ? 'active' : ''}" onclick="switchTab('upcoming')">Upcoming</div>`;
+  html += `<div class="tab ${activeTab === 'calendar' ? 'active' : ''}" onclick="switchTab('calendar')">Calendar</div>`;
   tabs.innerHTML = html;
 }
 
 function switchTab(tab) {
   activeTab = tab;
   renderTabs();
-  renderMain();
+  if (tab === 'upcoming') renderUpcoming();
+  else if (tab === 'calendar') renderCalendar();
+  else renderMain();
 }
 
 // ---- Main rendering ----
@@ -165,17 +420,29 @@ function renderMain() {
   const areas = activeTab === 'all' ? allData.areas : allData.areas.filter(a => a.key === activeTab);
   let html = '';
 
+  // Grid column header
+  html += `<div class="task-grid-header">
+    <span></span><span>Task</span><span>Due</span><span>Priority</span><span>Recurrence</span><span></span>
+  </div>`;
+
   for (const area of areas) {
     html += `<div class="area">`;
     if (activeTab === 'all') html += `<div class="area-title">${area.title}</div>`;
 
     for (const section of area.sections) {
-      html += `<div class="section">
-        <div class="section-header">
-          <span>${section.name}</span>
-          <button class="add-btn" onclick="toggleAddForm('${area.key}','${esc(section.name)}')" title="Add task">+</button>
+      const sid = `${area.key}-${esc(section.name)}`;
+      const collapsed = collapsedSections.has(sid);
+      const openCount = section.tasks.filter(t => !t.done).length;
+      html += `<div class="section ${collapsed ? 'collapsed' : ''}" id="sec-${sid}">
+        <div class="section-header" onclick="toggleSection('${sid}')">
+          <span><span class="chevron">&#9660;</span>${section.name}</span>
+          <div class="section-right">
+            <span class="task-count">${openCount}</span>
+            <button class="add-btn" onclick="event.stopPropagation();toggleAddForm('${area.key}','${esc(section.name)}')" title="Add task">+</button>
+          </div>
         </div>`;
 
+      html += `<div class="section-body">`;
       if (section.tasks.length === 0) {
         html += `<div class="empty">No tasks</div>`;
       }
@@ -188,8 +455,7 @@ function renderMain() {
         <button onclick="submitAdd('${area.key}','${esc(section.name)}',this.previousElementSibling)">Add</button>
         <button class="cancel-btn" onclick="toggleAddForm('${area.key}','${esc(section.name)}')">Cancel</button>
       </div>`;
-
-      html += `</div>`;
+      html += `</div></div>`;
     }
     html += `</div>`;
   }
@@ -198,24 +464,73 @@ function renderMain() {
 }
 
 function renderTask(areaKey, task) {
-  let meta = '';
-  if (task.delegated_to) {
-    meta += `<span class="badge badge-delegated">${task.delegated_to}</span>`;
-  } else if (!task.done) {
-    meta += `<button class="delegate-btn" onclick="delegateTask('${areaKey}',${task.line})">Delegate</button>`;
+  let badges = '';
+
+  // Tags
+  if (task.tags && task.tags.length) {
+    for (const tag of task.tags) {
+      badges += `<span class="badge-tag" style="background:${tag.color}">${escHtml(tag.name)}</span>`;
+    }
   }
 
-  return `<div class="task ${task.done ? 'done' : ''}">
-    <input type="checkbox" ${task.done ? 'checked' : ''} onchange="toggleTask('${areaKey}',${task.line})">
-    <span class="task-text">${escHtml(task.text)}</span>
-    <div class="task-meta">${meta}</div>
+  // Subtask progress
+  if (task.subtasks && task.subtasks.length) {
+    const done = task.subtasks.filter(s => s.done).length;
+    badges += `<span class="subtask-count">${done}/${task.subtasks.length}</span>`;
+  }
+
+  // Delegated badge
+  if (task.delegated_to) {
+    badges += `<span class="badge badge-delegated">${escHtml(task.delegated_to)}</span>`;
+  }
+
+  // Priority select options
+  const priOpts = [0,1,2,3].map(p =>
+    `<option value="${p}" ${(task.priority||0)===p ? 'selected' : ''}>${p===0?'\u2014':'P'+p}</option>`
+  ).join('');
+
+  // Recurrence select options
+  const recPattern = task.recurrence ? task.recurrence.pattern : '';
+  const recOpts = ['','daily','weekly','biweekly','monthly','quarterly','yearly'].map(p =>
+    `<option value="${p}" ${recPattern===p?'selected':''}>${p ? p.charAt(0).toUpperCase()+p.slice(1) : '\u2014'}</option>`
+  ).join('');
+
+  return `<div class="task-row ${task.done ? 'done' : ''}" data-id="${task.id}">
+    <input type="checkbox" ${task.done ? 'checked' : ''} onclick="event.stopPropagation();toggleTask(${task.id})">
+    <span class="task-title" onclick="openDetail(${task.id})">${escHtml(task.title)}</span>
+    <input type="date" class="inline-date" value="${task.due_date||''}" onchange="inlineUpdate(${task.id},'due_date',this.value)" onclick="event.stopPropagation()">
+    <select class="inline-priority" onchange="inlineUpdate(${task.id},'priority',this.value)" onclick="event.stopPropagation()">${priOpts}</select>
+    <select class="inline-recurrence" onchange="inlineRecurrence(${task.id},this.value)" onclick="event.stopPropagation()">${recOpts}</select>
+    <div class="task-badges">${badges}</div>
   </div>`;
+}
+
+// ---- Due date helpers ----
+
+function dueDateClass(dateStr, done) {
+  if (done) return 'badge-future';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dateStr + 'T00:00:00');
+  if (d < today) return 'badge-overdue';
+  if (d.getTime() === today.getTime()) return 'badge-today';
+  return 'badge-future';
+}
+
+function formatDueDate(dateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dateStr + 'T00:00:00');
+  const diff = Math.round((d - today) / 86400000);
+  if (diff < 0) return `${-diff}d overdue`;
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  if (diff <= 7) return d.toLocaleDateString('en', {weekday: 'short'});
+  return d.toLocaleDateString('en', {month: 'short', day: 'numeric'});
 }
 
 // ---- Actions ----
 
-async function toggleTask(area, line) {
-  await fetch(`${API}/api/tasks/${area}/${line}`, {
+async function toggleTask(taskId) {
+  await fetch(`${API}/api/tasks/${taskId}`, {
     method: 'PATCH',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({action: 'toggle'})
@@ -223,20 +538,25 @@ async function toggleTask(area, line) {
   await fetchTasks();
 }
 
-async function delegateTask(area, line) {
-  const name = prompt('Delegate to (name):');
-  if (!name) return;
-  const res = await fetch(`${API}/api/tasks/${area}/${line}`, {
-    method: 'PATCH',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action: 'delegate', name: name.trim()})
-  });
-  if (res.ok) {
-    toast('Task delegated');
-    await fetchTasks();
+async function clearCompleted() {
+  const res = await fetch(`${API}/api/archive`, {method: 'POST'});
+  const data = await res.json();
+  if (data.archived === 0) {
+    toast('No completed tasks to clear');
   } else {
-    const err = await res.json();
-    toast(err.error || 'Error', true);
+    toast(`Cleared ${data.archived} completed task${data.archived > 1 ? 's' : ''}`);
+    await fetchTasks();
+  }
+}
+
+function toggleSection(sid) {
+  const el = document.getElementById('sec-' + sid);
+  if (collapsedSections.has(sid)) {
+    collapsedSections.delete(sid);
+    el.classList.remove('collapsed');
+  } else {
+    collapsedSections.add(sid);
+    el.classList.add('collapsed');
   }
 }
 
@@ -263,20 +583,352 @@ async function submitAdd(area, section, input) {
     await fetchTasks();
   } else {
     const err = await res.json();
-    toast(err.error || 'Error', true);
+    toast(err.error || 'Error');
   }
 }
 
-async function archiveTasks() {
-  const res = await fetch(`${API}/api/archive`, {method: 'POST'});
-  const data = await res.json();
-  if (data.archived === 0) {
-    toast('No completed tasks to archive');
+// ---- Inline editing ----
+
+async function inlineUpdate(taskId, field, value) {
+  const body = {};
+  if (field === 'priority') {
+    body[field] = parseInt(value) || null;
   } else {
-    toast(`Archived ${data.archived} task${data.archived > 1 ? 's' : ''}`);
-    await fetchTasks();
+    body[field] = value || null;
+  }
+  await fetch(`${API}/api/tasks/${taskId}`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body)
+  });
+  toast('Updated');
+  await fetchTasks();
+}
+
+async function inlineRecurrence(taskId, pattern) {
+  if (pattern) {
+    await fetch(`${API}/api/tasks/${taskId}/recurrence`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({pattern})
+    });
+  } else {
+    await fetch(`${API}/api/tasks/${taskId}/recurrence`, {method: 'DELETE'});
+  }
+  toast('Recurrence updated');
+  await fetchTasks();
+}
+
+// ---- Task Detail Drawer ----
+
+let detailTask = null;
+
+async function openDetail(taskId) {
+  const res = await fetch(`${API}/api/tasks/${taskId}`);
+  if (!res.ok) { toast('Task not found'); return; }
+  detailTask = await res.json();
+  renderDetail();
+}
+
+function renderDetail() {
+  const t = detailTask;
+  if (!t) return;
+
+  const existing = document.getElementById('detail-modal');
+  if (existing) existing.remove();
+
+  const wrapper = document.createElement('div');
+  wrapper.id = 'detail-modal';
+
+  const overlay = document.createElement('div');
+  overlay.className = 'drawer-overlay';
+  overlay.onclick = () => closeDetail();
+
+  // Priority options
+  const priOpts = [0,1,2,3].map(p =>
+    `<option value="${p}" ${(t.priority||0)===p ? 'selected' : ''}>${p===0?'None':'P'+p}</option>`
+  ).join('');
+
+  // Recurrence
+  const rec = t.recurrence;
+  const recPattern = rec ? rec.pattern : '';
+  const recPatternOpts = ['','daily','weekly','biweekly','monthly','quarterly','yearly'].map(p =>
+    `<option value="${p}" ${recPattern===p?'selected':''}>${p||'None'}</option>`
+  ).join('');
+  const recDow = rec ? (rec.days_of_week || '') : '';
+
+  // Subtasks HTML
+  let subtasksHtml = '<div class="subtask-list">';
+  for (const s of (t.subtasks || [])) {
+    subtasksHtml += `<div class="subtask-item ${s.done ? 'done' : ''}">
+      <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleSubtask(${s.id})">
+      <span class="subtask-text">${escHtml(s.title)}</span>
+      <button class="subtask-delete" onclick="deleteSubtask(${s.id})">&times;</button>
+    </div>`;
+  }
+  subtasksHtml += '</div>';
+  subtasksHtml += `<div class="subtask-add">
+    <input type="text" id="new-subtask" placeholder="Add subtask..." onkeydown="if(event.key==='Enter')addSubtask()">
+    <button class="btn-secondary" onclick="addSubtask()" style="padding:4px 10px;font-size:12px">Add</button>
+  </div>`;
+
+  // Tags HTML
+  let tagsHtml = '<div class="tag-pills">';
+  for (const tag of (t.tags || [])) {
+    tagsHtml += `<span class="tag-pill" style="background:${tag.color}">
+      ${escHtml(tag.name)}
+      <button class="tag-remove" onclick="removeTagFromTask(${t.id},${tag.id})">&times;</button>
+    </span>`;
+  }
+  tagsHtml += '</div>';
+  // Tag add row
+  const assignedIds = new Set((t.tags||[]).map(tg => tg.id));
+  const availTags = allTags.filter(tg => !assignedIds.has(tg.id));
+  if (availTags.length) {
+    const tagOpts = availTags.map(tg => `<option value="${tg.id}">${escHtml(tg.name)}</option>`).join('');
+    tagsHtml += `<div class="tag-add-row">
+      <select id="tag-select">${tagOpts}</select>
+      <button class="btn-secondary" onclick="addTagToTask()" style="padding:4px 10px;font-size:12px">Add</button>
+    </div>`;
+  }
+  tagsHtml += `<div class="tag-add-row" style="margin-top:4px">
+    <input type="text" id="new-tag-name" placeholder="New tag name" style="width:100px">
+    <input type="color" id="new-tag-color" value="#6b7280" style="width:36px;height:28px;padding:0;border:1px solid var(--border);border-radius:4px">
+    <button class="btn-secondary" onclick="createAndAddTag()" style="padding:4px 10px;font-size:12px">Create</button>
+  </div>`;
+
+  const drawer = document.createElement('div');
+  drawer.className = 'drawer';
+  drawer.innerHTML = `
+      <div class="drawer-header">
+        <h2>Task Detail</h2>
+        <button class="modal-close" onclick="closeDetail()">&times;</button>
+      </div>
+      <div class="drawer-body">
+        <div class="detail-field full" style="margin-bottom:12px">
+          <input type="text" class="detail-input" id="detail-title" value="${escAttr(t.title)}" style="font-size:16px;font-weight:600">
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-field">
+            <span class="detail-label">Due Date</span>
+            <input type="date" class="detail-input" id="detail-due" value="${t.due_date||''}">
+          </div>
+          <div class="detail-field">
+            <span class="detail-label">Priority</span>
+            <select class="detail-input" id="detail-priority">${priOpts}</select>
+          </div>
+          <div class="detail-field">
+            <span class="detail-label">Delegated To</span>
+            <input type="text" class="detail-input" id="detail-delegated" value="${escAttr(t.delegated_to||'')}" placeholder="Name...">
+          </div>
+          <div class="detail-field">
+            <span class="detail-label">Status</span>
+            <select class="detail-input" id="detail-done">
+              <option value="0" ${!t.done?'selected':''}>Open</option>
+              <option value="1" ${t.done?'selected':''}>Done</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="detail-field full" style="margin-bottom:12px">
+          <span class="detail-label">Recurrence</span>
+          <div class="recurrence-row">
+            <select class="detail-input" id="detail-rec-pattern" onchange="recurrenceChanged()" style="width:auto">${recPatternOpts}</select>
+            <div id="dow-container" class="${recPattern==='weekly'?'':'hidden'}">
+              <div class="dow-checkboxes">
+                ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i) =>
+                  `<label class="${recDow.includes(String(i))?'active':''}">
+                    <input type="checkbox" value="${i}" ${recDow.includes(String(i))?'checked':''} onchange="this.parentElement.classList.toggle('active')">
+                    ${d}
+                  </label>`
+                ).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-field full" style="margin-bottom:12px">
+          <span class="detail-label">Tags</span>
+          ${tagsHtml}
+        </div>
+
+        <div class="detail-field full" style="margin-bottom:12px">
+          <span class="detail-label">Subtasks</span>
+          ${subtasksHtml}
+        </div>
+
+        <div class="detail-field full">
+          <span class="detail-label">Description (Markdown)</span>
+          <textarea class="detail-textarea" id="detail-desc">${escHtml(t.description||'')}</textarea>
+        </div>
+
+        <div class="detail-timestamps">
+          Created: ${t.created_at ? new Date(t.created_at).toLocaleString() : 'N/A'}
+          ${t.completed_at ? ' | Completed: ' + new Date(t.completed_at).toLocaleString() : ''}
+        </div>
+      </div>
+      <div class="drawer-footer">
+        <button class="btn-danger" onclick="deleteTaskFromDetail(${t.id})">Delete</button>
+        <div style="flex:1"></div>
+        <button class="btn-secondary" onclick="closeDetail()">Cancel</button>
+        <button class="btn-primary" onclick="saveDetail()">Save</button>
+      </div>`;
+
+  wrapper.appendChild(overlay);
+  wrapper.appendChild(drawer);
+  document.body.appendChild(wrapper);
+  requestAnimationFrame(() => requestAnimationFrame(() => drawer.classList.add('open')));
+}
+
+function recurrenceChanged() {
+  const pattern = document.getElementById('detail-rec-pattern').value;
+  const dowContainer = document.getElementById('dow-container');
+  if (pattern === 'weekly') dowContainer.classList.remove('hidden');
+  else dowContainer.classList.add('hidden');
+}
+
+async function saveDetail() {
+  const t = detailTask;
+  const title = document.getElementById('detail-title').value.trim();
+  const due = document.getElementById('detail-due').value || null;
+  const priority = parseInt(document.getElementById('detail-priority').value) || null;
+  const delegated = document.getElementById('detail-delegated').value.trim() || null;
+  const done = parseInt(document.getElementById('detail-done').value);
+  const desc = document.getElementById('detail-desc').value;
+
+  // Save task fields
+  await fetch(`${API}/api/tasks/${t.id}`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({title, due_date: due, priority, delegated_to: delegated, done, description: desc})
+  });
+
+  // Save recurrence
+  const pattern = document.getElementById('detail-rec-pattern').value;
+  if (pattern) {
+    let daysOfWeek = null;
+    if (pattern === 'weekly') {
+      const checks = document.querySelectorAll('#dow-container input:checked');
+      if (checks.length) daysOfWeek = Array.from(checks).map(c => c.value).join(',');
+    }
+    await fetch(`${API}/api/tasks/${t.id}/recurrence`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({pattern, days_of_week: daysOfWeek})
+    });
+  } else if (t.recurrence) {
+    await fetch(`${API}/api/tasks/${t.id}/recurrence`, {method: 'DELETE'});
+  }
+
+  closeDetail();
+  toast('Task updated');
+  await fetchTasks();
+}
+
+async function deleteTaskFromDetail(taskId) {
+  if (!confirm('Delete this task?')) return;
+  await fetch(`${API}/api/tasks/${taskId}`, {method: 'DELETE'});
+  closeDetail();
+  toast('Task deleted');
+  await fetchTasks();
+}
+
+function closeDetail() {
+  const el = document.getElementById('detail-modal');
+  if (!el) { detailTask = null; return; }
+  const drawer = el.querySelector('.drawer');
+  if (drawer) {
+    drawer.classList.remove('open');
+    setTimeout(() => el.remove(), 250);
+  } else {
+    el.remove();
+  }
+  detailTask = null;
+}
+
+// ---- Subtask actions ----
+
+async function addSubtask() {
+  const input = document.getElementById('new-subtask');
+  const title = input.value.trim();
+  if (!title || !detailTask) return;
+  await fetch(`${API}/api/tasks/${detailTask.id}/subtasks`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({title})
+  });
+  input.value = '';
+  await refreshDetail();
+}
+
+async function toggleSubtask(subId) {
+  await fetch(`${API}/api/subtasks/${subId}`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action: 'toggle'})
+  });
+  await refreshDetail();
+}
+
+async function deleteSubtask(subId) {
+  await fetch(`${API}/api/subtasks/${subId}`, {method: 'DELETE'});
+  await refreshDetail();
+}
+
+async function refreshDetail() {
+  if (!detailTask) return;
+  const res = await fetch(`${API}/api/tasks/${detailTask.id}`);
+  if (res.ok) {
+    detailTask = await res.json();
+    renderDetail();
   }
 }
+
+// ---- Tag actions ----
+
+async function addTagToTask() {
+  const sel = document.getElementById('tag-select');
+  if (!sel || !detailTask) return;
+  const tagId = parseInt(sel.value);
+  await fetch(`${API}/api/tasks/${detailTask.id}/tags`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({tag_id: tagId})
+  });
+  await refreshDetail();
+  await fetchTasks();
+}
+
+async function removeTagFromTask(taskId, tagId) {
+  await fetch(`${API}/api/tasks/${taskId}/tags/${tagId}`, {method: 'DELETE'});
+  await refreshDetail();
+  await fetchTasks();
+}
+
+async function createAndAddTag() {
+  const name = document.getElementById('new-tag-name').value.trim();
+  const color = document.getElementById('new-tag-color').value;
+  if (!name || !detailTask) return;
+  const res = await fetch(`${API}/api/tags`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({name, color})
+  });
+  if (!res.ok) { toast('Tag already exists'); return; }
+  const data = await res.json();
+  // Add to task
+  await fetch(`${API}/api/tasks/${detailTask.id}/tags`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({tag_id: data.id})
+  });
+  allTags.push({id: data.id, name, color});
+  await refreshDetail();
+  await fetchTasks();
+}
+
+// ---- Delegated view ----
 
 async function showDelegated() {
   const res = await fetch(`${API}/api/delegated`);
@@ -290,7 +942,6 @@ async function showDelegated() {
     return;
   }
 
-  // Group by delegated_to
   const grouped = {};
   for (const t of data.delegated) {
     const owner = t.delegated_to;
@@ -303,8 +954,8 @@ async function showDelegated() {
     html += `<div class="delegated-section"><div class="delegated-owner">${escHtml(owner)}</div>
       <div class="section">`;
     for (const t of tasks) {
-      html += `<div class="task">
-        <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask('${t.area_key}',${t.line})">
+      html += `<div class="task" onclick="openDetail(${t.id})">
+        <input type="checkbox" ${t.done ? 'checked' : ''} onclick="event.stopPropagation();toggleTask(${t.id})">
         <span class="task-text">${escHtml(t.text)}</span>
         <div class="task-meta"><span class="badge badge-delegated">${escHtml(t.area)}</span></div>
       </div>`;
@@ -318,6 +969,196 @@ async function showDelegated() {
   renderTabs();
 }
 
+// ---- Upcoming view ----
+
+async function renderUpcoming() {
+  const main = document.getElementById('main');
+  main.innerHTML = '<div class="inbox-status"><span class="spinner"></span>Loading...</div>';
+
+  const [overdueRes, todayRes, upcomingRes, nodateRes] = await Promise.all([
+    fetch(`${API}/api/tasks/due/overdue`),
+    fetch(`${API}/api/tasks/due/today`),
+    fetch(`${API}/api/tasks/due/upcoming?days=14`),
+    fetch(`${API}/api/tasks/due/no-date`),
+  ]);
+  const overdue = (await overdueRes.json()).tasks;
+  const todayTasks = (await todayRes.json()).tasks;
+  const upcoming = (await upcomingRes.json()).tasks;
+  const noDate = (await nodateRes.json()).tasks;
+
+  // Group upcoming by relative day
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate()+1);
+  const endOfWeek = new Date(today); endOfWeek.setDate(endOfWeek.getDate()+(7-today.getDay()));
+  const endOfNextWeek = new Date(endOfWeek); endOfNextWeek.setDate(endOfNextWeek.getDate()+7);
+
+  const groups = {
+    'Overdue': overdue,
+    'Today': todayTasks,
+    'Tomorrow': [],
+    'This Week': [],
+    'Next Week': [],
+    'Later': [],
+  };
+
+  for (const t of upcoming) {
+    const d = new Date(t.due_date + 'T00:00:00');
+    if (d.getTime() === today.getTime()) continue; // already in Today
+    if (d.getTime() === tomorrow.getTime()) groups['Tomorrow'].push(t);
+    else if (d <= endOfWeek) groups['This Week'].push(t);
+    else if (d <= endOfNextWeek) groups['Next Week'].push(t);
+    else groups['Later'].push(t);
+  }
+
+  let html = '<div class="area"><div class="area-title">Upcoming</div>';
+  for (const [label, tasks] of Object.entries(groups)) {
+    if (!tasks.length) continue;
+    html += `<div class="upcoming-group">
+      <div class="upcoming-group-title">${label} (${tasks.length})</div>
+      <div class="section">`;
+    for (const t of tasks) {
+      html += `<div class="task ${t.done?'done':''}" onclick="openDetail(${t.id})">
+        <input type="checkbox" ${t.done?'checked':''} onclick="event.stopPropagation();toggleTask(${t.id})">
+        <span class="task-text">${escHtml(t.title)}
+          <span class="upcoming-task-area">${escHtml(t.area_title)} / ${escHtml(t.section_name)}</span>
+        </span>
+        <div class="task-meta">
+          ${t.priority ? `<span class="badge badge-p${t.priority}">P${t.priority}</span>` : ''}
+          ${t.due_date ? `<span class="badge-due ${dueDateClass(t.due_date,t.done)}">${formatDueDate(t.due_date)}</span>` : ''}
+        </div>
+      </div>`;
+    }
+    html += '</div></div>';
+  }
+
+  if (noDate.length) {
+    html += `<div class="upcoming-group">
+      <div class="upcoming-group-title">No Due Date (${noDate.length})</div>
+      <div class="section">`;
+    for (const t of noDate) {
+      html += `<div class="task" onclick="openDetail(${t.id})">
+        <input type="checkbox" onclick="event.stopPropagation();toggleTask(${t.id})">
+        <span class="task-text">${escHtml(t.title)}
+          <span class="upcoming-task-area">${escHtml(t.area_title)} / ${escHtml(t.section_name)}</span>
+        </span>
+      </div>`;
+    }
+    html += '</div></div>';
+  }
+
+  html += '</div>';
+  main.innerHTML = html;
+}
+
+// ---- Calendar view ----
+
+let calYear, calMonth;
+{
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+}
+
+async function renderCalendar() {
+  const main = document.getElementById('main');
+  const start = new Date(calYear, calMonth, 1);
+  const end = new Date(calYear, calMonth + 1, 0);
+  const startStr = start.toISOString().slice(0,10);
+  const endStr = end.toISOString().slice(0,10);
+
+  const res = await fetch(`${API}/api/tasks/due/calendar?start=${startStr}&end=${endStr}`);
+  const data = await res.json();
+  const tasks = data.tasks || [];
+
+  // Group by date
+  const byDate = {};
+  for (const t of tasks) {
+    if (!byDate[t.due_date]) byDate[t.due_date] = [];
+    byDate[t.due_date].push(t);
+  }
+
+  const monthName = start.toLocaleDateString('en', {month: 'long', year: 'numeric'});
+  let html = `<div class="cal-nav">
+    <button onclick="calPrev()">&larr;</button>
+    <span class="cal-month">${monthName}</span>
+    <button onclick="calNext()">&rarr;</button>
+  </div>`;
+
+  html += '<div class="cal-grid">';
+  // Headers
+  for (const d of ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']) {
+    html += `<div class="cal-header">${d}</div>`;
+  }
+
+  // Fill grid
+  const firstDow = start.getDay();
+  const daysInMonth = end.getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Previous month padding
+  for (let i = 0; i < firstDow; i++) {
+    html += '<div class="cal-day other-month"></div>';
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = new Date(dateStr+'T00:00:00').getTime() === today.getTime();
+    const dayTasks = byDate[dateStr] || [];
+
+    html += `<div class="cal-day ${isToday?'today':''}" onclick="calDayClick('${dateStr}')">
+      <div class="cal-day-num">${d}</div>`;
+    if (dayTasks.length) {
+      html += '<div class="cal-dot-row">';
+      const show = Math.min(dayTasks.length, 4);
+      for (let i = 0; i < show; i++) {
+        const overdue = !dayTasks[i].done && new Date(dateStr+'T00:00:00') < today;
+        html += `<div class="cal-dot ${overdue?'overdue':''}"></div>`;
+      }
+      if (dayTasks.length > 4) html += `<span class="cal-count">+${dayTasks.length-4}</span>`;
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
+  // Next month padding
+  const totalCells = firstDow + daysInMonth;
+  const remaining = (7 - (totalCells % 7)) % 7;
+  for (let i = 0; i < remaining; i++) {
+    html += '<div class="cal-day other-month"></div>';
+  }
+
+  html += '</div>';
+  html += '<div id="cal-day-tasks"></div>';
+  main.innerHTML = html;
+}
+
+function calPrev() { calMonth--; if (calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
+function calNext() { calMonth++; if (calMonth>11){calMonth=0;calYear++;} renderCalendar(); }
+
+async function calDayClick(dateStr) {
+  const res = await fetch(`${API}/api/tasks/due/calendar?start=${dateStr}&end=${dateStr}`);
+  const data = await res.json();
+  const tasks = data.tasks || [];
+  const container = document.getElementById('cal-day-tasks');
+
+  if (!tasks.length) {
+    container.innerHTML = `<div class="empty" style="margin-top:12px">No tasks on ${dateStr}</div>`;
+    return;
+  }
+
+  let html = `<div class="cal-day-tasks"><div class="section" style="margin-top:12px">`;
+  for (const t of tasks) {
+    html += `<div class="task ${t.done?'done':''}" onclick="openDetail(${t.id})">
+      <input type="checkbox" ${t.done?'checked':''} onclick="event.stopPropagation();toggleTask(${t.id})">
+      <span class="task-text">${escHtml(t.title)}
+        <span class="upcoming-task-area">${escHtml(t.area_title)} / ${escHtml(t.section_name)}</span>
+      </span>
+    </div>`;
+  }
+  html += '</div></div>';
+  container.innerHTML = html;
+}
+
 // ---- Utilities ----
 
 function esc(s) { return s.replace(/['"]/g, ''); }
@@ -326,12 +1167,279 @@ function escHtml(s) {
   d.textContent = s;
   return d.innerHTML;
 }
+function escAttr(s) {
+  return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 
 function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ---- Inbox ----
+
+let inboxConfig = null;
+let inboxParsed = [];
+
+async function loadInboxConfig() {
+  if (inboxConfig) return inboxConfig;
+  const res = await fetch(`${API}/api/config`);
+  inboxConfig = await res.json();
+  return inboxConfig;
+}
+
+function openInbox() {
+  const existing = document.getElementById('inbox-modal');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'inbox-modal';
+  overlay.onclick = (e) => { if (e.target === overlay) closeInbox(); };
+
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Inbox</h2>
+        <button class="modal-close" onclick="closeInbox()">&times;</button>
+      </div>
+      <div class="modal-body" id="inbox-body">
+        <textarea class="inbox-textarea" id="inbox-text" placeholder="Paste raw notes, ideas, or tasks here..."></textarea>
+        <div class="inbox-actions">
+          <label class="file-label">
+            Upload file
+            <input type="file" accept=".md,.txt,.markdown" style="display:none" onchange="inboxFileUpload(this)">
+          </label>
+          <div style="flex:1"></div>
+          <button class="btn-primary" id="inbox-process-btn" onclick="processInbox()">Process</button>
+        </div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+  document.getElementById('inbox-text').focus();
+}
+
+function closeInbox() {
+  const el = document.getElementById('inbox-modal');
+  if (el) el.remove();
+  inboxParsed = [];
+}
+
+function inboxFileUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => { document.getElementById('inbox-text').value = reader.result; };
+  reader.readAsText(file);
+}
+
+async function processInbox() {
+  const text = document.getElementById('inbox-text').value.trim();
+  if (!text) { toast('Enter some text first'); return; }
+
+  const body = document.getElementById('inbox-body');
+  body.innerHTML = '<div class="inbox-status"><span class="spinner"></span>Processing with Claude... (10-30s)</div>';
+
+  try {
+    const res = await fetch(`${API}/api/inbox/parse`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({content: text})
+    });
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) {
+      throw new Error('Server returned non-JSON response (status ' + res.status + '). Restart the server.');
+    }
+    const data = await res.json();
+
+    if (!res.ok) {
+      body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">Error: ${escHtml(data.error || 'Unknown error')}</div>
+        <div style="text-align:center;margin-top:12px">
+          <button class="btn-secondary" onclick="closeInbox();openInbox()">Try again</button>
+        </div>`;
+      return;
+    }
+
+    inboxParsed = data.tasks || [];
+    await loadInboxConfig();
+    renderInboxPreview(inboxParsed, data.unparsed || []);
+  } catch (err) {
+    body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">Network error: ${escHtml(err.message)}</div>
+      <div style="text-align:center;margin-top:12px">
+        <button class="btn-secondary" onclick="closeInbox();openInbox()">Try again</button>
+      </div>`;
+  }
+}
+
+function renderInboxPreview(tasks, unparsed) {
+  const body = document.getElementById('inbox-body');
+  if (!tasks.length) {
+    body.innerHTML = '<div class="inbox-status">No actionable tasks found in the text.</div>';
+    return;
+  }
+
+  const areaOptions = Object.entries(inboxConfig).map(([k, v]) =>
+    `<option value="${k}">${escHtml(v.title)}</option>`
+  ).join('');
+
+  let rows = '';
+  for (let i = 0; i < tasks.length; i++) {
+    const t = tasks[i];
+    const confClass = 'conf-' + (t.confidence || 'medium');
+    const sectionOpts = buildSectionOptions(t.area_key, t.section);
+    rows += `<tr>
+      <td><input type="checkbox" checked data-idx="${i}"></td>
+      <td><input type="text" class="task-input" value="${escAttr(t.text)}" data-idx="${i}" data-field="text"></td>
+      <td><select data-idx="${i}" data-field="area_key" onchange="inboxAreaChanged(this)">${areaOptions}</select></td>
+      <td><select data-idx="${i}" data-field="section">${sectionOpts}</select></td>
+      <td><span class="conf-dot ${confClass}" title="${t.confidence || 'medium'}"></span></td>
+    </tr>`;
+  }
+
+  let html = `
+    <table class="inbox-preview">
+      <thead><tr><th></th><th>Task</th><th>Area</th><th>Section</th><th>Conf</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+
+  if (unparsed && unparsed.length) {
+    html += '<div style="margin-top:12px;font-size:12px;color:var(--muted)"><b>Could not parse:</b><ul>';
+    for (const u of unparsed) html += `<li>${escHtml(u)}</li>`;
+    html += '</ul></div>';
+  }
+
+  body.innerHTML = html;
+
+  for (let i = 0; i < tasks.length; i++) {
+    const areaSelect = body.querySelector(`select[data-idx="${i}"][data-field="area_key"]`);
+    if (areaSelect) areaSelect.value = tasks[i].area_key;
+  }
+
+  const modal = document.getElementById('inbox-modal').querySelector('.modal');
+  let footer = modal.querySelector('.modal-footer');
+  if (!footer) {
+    footer = document.createElement('div');
+    footer.className = 'modal-footer';
+    modal.appendChild(footer);
+  }
+  footer.innerHTML = `
+    <button class="btn-secondary" onclick="closeInbox();openInbox()">Back</button>
+    <button class="btn-primary" onclick="confirmInbox()">Add All</button>`;
+}
+
+function buildSectionOptions(areaKey, selectedSection) {
+  if (!inboxConfig[areaKey]) return '';
+  return inboxConfig[areaKey].sections.map(s =>
+    `<option value="${s}" ${s === selectedSection ? 'selected' : ''}>${escHtml(s)}</option>`
+  ).join('');
+}
+
+function inboxAreaChanged(select) {
+  const idx = select.dataset.idx;
+  const newArea = select.value;
+  const sectionSelect = document.querySelector(`select[data-idx="${idx}"][data-field="section"]`);
+  if (sectionSelect && inboxConfig[newArea]) {
+    sectionSelect.innerHTML = buildSectionOptions(newArea, inboxConfig[newArea].sections[0]);
+  }
+}
+
+async function confirmInbox() {
+  const body = document.getElementById('inbox-body');
+  const rows = body.querySelectorAll('table tbody tr');
+  const tasks = [];
+
+  rows.forEach((row) => {
+    const cb = row.querySelector('input[type="checkbox"]');
+    if (!cb.checked) return;
+    const text = row.querySelector('input[data-field="text"]').value.trim();
+    const area_key = row.querySelector('select[data-field="area_key"]').value;
+    const section = row.querySelector('select[data-field="section"]').value;
+    if (text) tasks.push({text, area_key, section});
+  });
+
+  if (!tasks.length) { toast('No tasks selected'); return; }
+
+  const btn = document.querySelector('.modal-footer .btn-primary');
+  btn.disabled = true;
+  btn.textContent = 'Adding...';
+
+  try {
+    const res = await fetch(`${API}/api/inbox/confirm`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({tasks})
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      closeInbox();
+      toast(`Added ${data.added} task${data.added !== 1 ? 's' : ''}`);
+      await fetchTasks();
+    } else {
+      toast(data.error || 'Error adding tasks');
+      btn.disabled = false;
+      btn.textContent = 'Add All';
+    }
+  } catch (err) {
+    toast('Network error');
+    btn.disabled = false;
+    btn.textContent = 'Add All';
+  }
+}
+
+// ---- Summary ----
+
+function openSummary() {
+  const existing = document.getElementById('summary-modal');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.id = 'summary-modal';
+  overlay.onclick = (e) => { if (e.target === overlay) closeSummary(); };
+
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Morning Summary</h2>
+        <button class="modal-close" onclick="closeSummary()">&times;</button>
+      </div>
+      <div class="modal-body" id="summary-body">
+        <div class="inbox-status"><span class="spinner"></span>Generating summary with Claude... (10-30s)</div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+  fetchSummary();
+}
+
+function closeSummary() {
+  const el = document.getElementById('summary-modal');
+  if (el) el.remove();
+}
+
+async function fetchSummary() {
+  const body = document.getElementById('summary-body');
+  try {
+    const res = await fetch(`${API}/api/summary`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">${escHtml(data.error || 'Unknown error')}</div>`;
+      return;
+    }
+
+    let html = escHtml(data.summary)
+      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^---$/gm, '<hr>');
+    body.innerHTML = `<div class="summary-content">${html}</div>`;
+  } catch (err) {
+    body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">Network error: ${escHtml(err.message)}</div>`;
+  }
 }
 
 // ---- Init ----

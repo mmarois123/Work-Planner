@@ -2,19 +2,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-TASKS_DIR="$SCRIPT_DIR/tasks"
 
-# Gather all task files into a single context
-gather_tasks() {
-  local all=""
-  for f in "$TASKS_DIR"/*.md; do
-    all+="$(cat "$f")"
-    all+=$'\n\n'
-  done
-  echo "$all"
-}
-
-TASKS=$(gather_tasks)
+# Gather all tasks from SQLite via db.py
+TASKS=$(python3 "$SCRIPT_DIR/web/db.py" --summary-text)
 TODAY=$(date +"%A, %B %-d, %Y")
 
 PROMPT="You are a personal executive assistant. Today is $TODAY.
@@ -42,23 +32,40 @@ if command -v claude &>/dev/null; then
 elif command -v openai &>/dev/null; then
   echo "$PROMPT" | openai api chat.completions.create -m gpt-4o -
 else
-  # Fallback: simple non-AI summary
+  # Fallback: simple non-AI summary from DB
   echo ""
   echo "Good morning — $TODAY"
   echo "==========================================="
   echo ""
   echo "OPEN TASKS:"
   echo ""
-  for f in "$TASKS_DIR"/*.md; do
-    basename "$f" .md | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1'
-    grep -n '\- \[ \]' "$f" 2>/dev/null | sed 's/^/  /' || echo "  (none)"
-    echo ""
-  done
+  echo "$TASKS"
+  echo ""
 
-  delegated=$(grep -n '@delegated' "$TASKS_DIR"/*.md 2>/dev/null | grep -v '<!--' || true)
+  # Show delegated tasks
+  delegated=$(python3 -c "
+import sys, os
+sys.path.insert(0, os.path.join('$SCRIPT_DIR', 'web'))
+from db import get_db, init_db
+init_db()
+conn = get_db()
+rows = conn.execute('''
+    SELECT a.title AS area_title, t.id, t.title, t.delegated_to
+    FROM tasks t
+    JOIN sections s ON s.id = t.section_id
+    JOIN areas a ON a.id = s.area_id
+    WHERE t.delegated_to IS NOT NULL AND t.delegated_to != ''
+          AND t.archived = 0 AND t.done = 0
+    ORDER BY a.position, t.position
+''').fetchall()
+for r in rows:
+    print(f'  #{r[\"id\"]} [{r[\"area_title\"]}] {r[\"title\"]} -> {r[\"delegated_to\"]}')
+conn.close()
+" 2>/dev/null || true)
+
   if [[ -n "$delegated" ]]; then
     echo "DELEGATED:"
-    echo "$delegated" | sed 's/^/  /'
+    echo "$delegated"
     echo ""
   fi
 

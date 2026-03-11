@@ -1,18 +1,18 @@
 # Work Planner Configuration
 
 areas:
-  personal:
-    file: personal.md
-    sections: [Health, Finance, Home, Other]
   sunbelt:
     file: sunbelt.md
-    sections: [Reporting, Budgeting, Ad-hoc Requests, Meetings, Delegated]
+    sections: [BoD, Whitley, 13 Week Cash Flow, Safety, Reporting, WIP, Sales, Analysis]
   app:
     file: planyfi-app.md
     sections: [Engineering, Product, Bugs / Issues]
   marketing:
     file: planyfi-marketing.md
     sections: [Campaigns, Content, Analytics]
+  personal:
+    file: personal.md
+    sections: [Health, Finance, Home, Other]
 
 # Morning summary settings
 summary:
