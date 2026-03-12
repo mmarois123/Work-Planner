@@ -15,29 +15,22 @@ try:
 except ImportError:
     pass
 
-import shutil
-import subprocess
-from datetime import datetime
-
 from flask import Flask, jsonify, request, send_from_directory
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from db import (
     get_db, init_db,
-    get_all_areas, get_all_tasks, get_task, get_section_id,
-    create_task, update_task, toggle_task, delete_task, archive_completed,
-    create_subtask, toggle_subtask, update_subtask, delete_subtask,
-    get_all_tags, create_tag, update_tag, delete_tag,
-    add_tag_to_task, remove_tag_from_task,
+    get_all_areas, get_all_tasks, get_task,
+    toggle_task, delete_task, archive_completed,
+    toggle_subtask, delete_subtask,
+    get_all_tags,
     get_tasks_due_today, get_tasks_overdue, get_tasks_upcoming,
     get_tasks_calendar, get_tasks_no_due_date,
-    set_recurrence, remove_recurrence, complete_recurring_task,
-    get_tasks_for_summary, bulk_create_tasks,
+    complete_recurring_task,
     sync_tasks,
     get_tasks_completed_between, get_tasks_stale, get_delegation_summary,
     get_task_counts_by_section, get_velocity_metrics, get_unprioritized_tasks,
 )
-from inbox import check_claude_available, process_inbox
 
 # Paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -241,19 +234,6 @@ def api_tasks_all():
     return jsonify({"areas": areas})
 
 
-@app.route("/api/tasks/bulk", methods=["POST"])
-def api_bulk_tasks():
-    """Bulk create tasks (for AI inbox)."""
-    data = request.get_json()
-    tasks = (data or {}).get("tasks", [])
-    if not tasks:
-        return jsonify({"error": "tasks array is required"}), 400
-    conn = get_db()
-    count = bulk_create_tasks(conn, tasks)
-    conn.close()
-    return jsonify({"ok": True, "added": count}), 201
-
-
 @app.route("/api/tasks/due/today")
 def api_tasks_due_today():
     conn = get_db()
@@ -299,32 +279,6 @@ def api_tasks_no_due_date():
     return jsonify({"tasks": tasks})
 
 
-@app.route("/api/tasks/<area_key>", methods=["POST"])
-def api_add_task(area_key):
-    """Add a task to a section within an area."""
-    data = request.get_json()
-    section_name = (data or {}).get("section", "").strip()
-    text = (data or {}).get("text", "").strip()
-    if not section_name or not text:
-        return jsonify({"error": "section and text are required"}), 400
-
-    conn = get_db()
-    section_id = get_section_id(conn, area_key, section_name)
-    if not section_id:
-        conn.close()
-        return jsonify({"error": f"Section '{section_name}' not found in '{area_key}'"}), 404
-
-    task_id = create_task(
-        conn, section_id, text,
-        description=data.get("description", ""),
-        priority=data.get("priority"),
-        due_date=data.get("due_date"),
-        delegated_to=data.get("delegated_to"),
-    )
-    conn.close()
-    return jsonify({"ok": True, "id": task_id, "text": text}), 201
-
-
 @app.route("/api/tasks/<int:task_id>", methods=["GET"])
 def api_get_task(task_id):
     """Get full task detail with subtasks, tags, recurrence."""
@@ -338,85 +292,27 @@ def api_get_task(task_id):
 
 @app.route("/api/tasks/<int:task_id>", methods=["PATCH"])
 def api_patch_task(task_id):
-    """Update any field(s) on a task."""
+    """Toggle a task's done status (read-only web app — no field edits)."""
     data = request.get_json() or {}
-
-    # Legacy support: action-based mutations
     action = data.get("action")
+    if action != "toggle":
+        return jsonify({"error": "Only toggle action is allowed"}), 400
+
     conn = get_db()
-
-    if action == "toggle":
-        task = get_task(conn, task_id)
-        if not task:
-            conn.close()
-            return jsonify({"error": "Task not found"}), 404
-        # Check for recurrence
-        if task.get("recurrence") and not task["done"]:
-            new_id = complete_recurring_task(conn, task_id)
-            conn.close()
-            return jsonify({"ok": True, "new_task_id": new_id, "recurring": True})
-        new_done = toggle_task(conn, task_id)
+    task = get_task(conn, task_id)
+    if not task:
         conn.close()
-        if new_done is None:
-            return jsonify({"error": "Task not found"}), 404
-        return jsonify({"ok": True, "done": bool(new_done)})
-
-    elif action == "delegate":
-        name = data.get("name", "").strip()
-        if not name:
-            conn.close()
-            return jsonify({"error": "name is required for delegation"}), 400
-        update_task(conn, task_id, delegated_to=name)
+        return jsonify({"error": "Task not found"}), 404
+    # Check for recurrence
+    if task.get("recurrence") and not task["done"]:
+        new_id = complete_recurring_task(conn, task_id)
         conn.close()
-        return jsonify({"ok": True})
-
-    elif action == "undelegate":
-        update_task(conn, task_id, delegated_to=None)
-        conn.close()
-        return jsonify({"ok": True})
-
-    elif action == "rename":
-        text = data.get("text", "").strip()
-        if not text:
-            conn.close()
-            return jsonify({"error": "text is required"}), 400
-        update_task(conn, task_id, title=text)
-        conn.close()
-        return jsonify({"ok": True})
-
-    elif action == "delete":
-        delete_task(conn, task_id)
-        conn.close()
-        return jsonify({"ok": True})
-
-    elif action:
-        conn.close()
-        return jsonify({"error": f"Unknown action: {action}"}), 400
-
-    # Field-based update (no action key)
-    fields = {}
-    for key in ("title", "description", "done", "priority", "due_date",
-                "delegated_to", "position", "section_id"):
-        if key in data:
-            fields[key] = data[key]
-
-    if not fields:
-        conn.close()
-        return jsonify({"error": "No fields to update"}), 400
-
-    # Handle done transition with recurrence
-    if "done" in fields and fields["done"]:
-        task = get_task(conn, task_id)
-        if task and task.get("recurrence"):
-            new_id = complete_recurring_task(conn, task_id)
-            conn.close()
-            return jsonify({"ok": True, "new_task_id": new_id, "recurring": True})
-
-    ok = update_task(conn, task_id, **fields)
+        return jsonify({"ok": True, "new_task_id": new_id, "recurring": True})
+    new_done = toggle_task(conn, task_id)
     conn.close()
-    if not ok:
-        return jsonify({"error": "Task not found or no valid fields"}), 404
-    return jsonify({"ok": True})
+    if new_done is None:
+        return jsonify({"error": "Task not found"}), 404
+    return jsonify({"ok": True, "done": bool(new_done)})
 
 
 @app.route("/api/tasks/<int:task_id>", methods=["DELETE"])
@@ -431,43 +327,20 @@ def api_delete_task(task_id):
 # Routes — Subtasks
 # ---------------------------------------------------------------------------
 
-@app.route("/api/tasks/<int:task_id>/subtasks", methods=["POST"])
-def api_add_subtask(task_id):
-    data = request.get_json() or {}
-    title = data.get("title", "").strip()
-    if not title:
-        return jsonify({"error": "title is required"}), 400
-    conn = get_db()
-    sub_id = create_subtask(conn, task_id, title)
-    conn.close()
-    return jsonify({"ok": True, "id": sub_id}), 201
-
-
 @app.route("/api/subtasks/<int:subtask_id>", methods=["PATCH"])
 def api_patch_subtask(subtask_id):
+    """Toggle a subtask's done status (read-only web app — no field edits)."""
     data = request.get_json() or {}
-
     action = data.get("action")
+    if action != "toggle":
+        return jsonify({"error": "Only toggle action is allowed"}), 400
+
     conn = get_db()
-
-    if action == "toggle":
-        new_done = toggle_subtask(conn, subtask_id)
-        conn.close()
-        if new_done is None:
-            return jsonify({"error": "Subtask not found"}), 404
-        return jsonify({"ok": True, "done": bool(new_done)})
-
-    fields = {}
-    for key in ("title", "done", "position"):
-        if key in data:
-            fields[key] = data[key]
-    if not fields:
-        conn.close()
-        return jsonify({"error": "No fields to update"}), 400
-
-    ok = update_subtask(conn, subtask_id, **fields)
+    new_done = toggle_subtask(conn, subtask_id)
     conn.close()
-    return jsonify({"ok": ok})
+    if new_done is None:
+        return jsonify({"error": "Subtask not found"}), 404
+    return jsonify({"ok": True, "done": bool(new_done)})
 
 
 @app.route("/api/subtasks/<int:subtask_id>", methods=["DELETE"])
@@ -490,94 +363,6 @@ def api_tags():
     return jsonify({"tags": tags})
 
 
-@app.route("/api/tags", methods=["POST"])
-def api_create_tag():
-    data = request.get_json() or {}
-    name = data.get("name", "").strip()
-    if not name:
-        return jsonify({"error": "name is required"}), 400
-    color = data.get("color", "#6b7280")
-    conn = get_db()
-    try:
-        tag_id = create_tag(conn, name, color)
-    except Exception:
-        conn.close()
-        return jsonify({"error": "Tag name already exists"}), 409
-    conn.close()
-    return jsonify({"ok": True, "id": tag_id}), 201
-
-
-@app.route("/api/tags/<int:tag_id>", methods=["PATCH"])
-def api_patch_tag(tag_id):
-    data = request.get_json() or {}
-    fields = {}
-    if "name" in data:
-        fields["name"] = data["name"]
-    if "color" in data:
-        fields["color"] = data["color"]
-    conn = get_db()
-    ok = update_tag(conn, tag_id, **fields)
-    conn.close()
-    return jsonify({"ok": ok})
-
-
-@app.route("/api/tags/<int:tag_id>", methods=["DELETE"])
-def api_delete_tag(tag_id):
-    conn = get_db()
-    delete_tag(conn, tag_id)
-    conn.close()
-    return jsonify({"ok": True})
-
-
-@app.route("/api/tasks/<int:task_id>/tags", methods=["POST"])
-def api_add_tag_to_task(task_id):
-    data = request.get_json() or {}
-    tag_id = data.get("tag_id")
-    if not tag_id:
-        return jsonify({"error": "tag_id is required"}), 400
-    conn = get_db()
-    add_tag_to_task(conn, task_id, tag_id)
-    conn.close()
-    return jsonify({"ok": True}), 201
-
-
-@app.route("/api/tasks/<int:task_id>/tags/<int:tag_id>", methods=["DELETE"])
-def api_remove_tag_from_task(task_id, tag_id):
-    conn = get_db()
-    remove_tag_from_task(conn, task_id, tag_id)
-    conn.close()
-    return jsonify({"ok": True})
-
-
-# ---------------------------------------------------------------------------
-# Routes — Recurrence
-# ---------------------------------------------------------------------------
-
-@app.route("/api/tasks/<int:task_id>/recurrence", methods=["POST"])
-def api_set_recurrence(task_id):
-    data = request.get_json() or {}
-    pattern = data.get("pattern", "").strip()
-    if not pattern:
-        return jsonify({"error": "pattern is required"}), 400
-    conn = get_db()
-    set_recurrence(
-        conn, task_id, pattern,
-        interval=data.get("interval", 1),
-        days_of_week=data.get("days_of_week"),
-        next_due=data.get("next_due"),
-    )
-    conn.close()
-    return jsonify({"ok": True}), 201
-
-
-@app.route("/api/tasks/<int:task_id>/recurrence", methods=["DELETE"])
-def api_remove_recurrence(task_id):
-    conn = get_db()
-    remove_recurrence(conn, task_id)
-    conn.close()
-    return jsonify({"ok": True})
-
-
 # ---------------------------------------------------------------------------
 # Routes — Archive
 # ---------------------------------------------------------------------------
@@ -590,26 +375,6 @@ def api_archive():
     if count == 0:
         return jsonify({"ok": True, "archived": 0})
     return jsonify({"ok": True, "archived": count})
-
-
-# ---------------------------------------------------------------------------
-# Routes — Sync
-# ---------------------------------------------------------------------------
-
-@app.route("/api/sync", methods=["POST"])
-def api_sync():
-    """Bidirectional sync between markdown files and SQLite database."""
-    if IS_VERCEL:
-        return jsonify({"error": "Markdown sync not available in cloud mode"}), 503
-    conn = get_db()
-    try:
-        changes = sync_tasks(conn)
-    except Exception as e:
-        conn.close()
-        return jsonify({"error": str(e)}), 500
-    conn.close()
-    total = sum(changes.values())
-    return jsonify({"ok": True, "total_changes": total, "details": changes})
 
 
 # ---------------------------------------------------------------------------
@@ -708,121 +473,6 @@ def api_tasks_unprioritized():
     tasks = get_unprioritized_tasks(conn, area_key=area)
     conn.close()
     return jsonify({"tasks": tasks, "count": len(tasks)})
-
-
-# ---------------------------------------------------------------------------
-# Routes — Inbox
-# ---------------------------------------------------------------------------
-
-@app.route("/api/inbox/parse", methods=["POST"])
-def api_inbox_parse():
-    """Parse raw text into tasks using Claude CLI."""
-    if IS_VERCEL:
-        return jsonify({"error": "Not available in cloud mode"}), 503
-    if not check_claude_available():
-        return jsonify({"error": "claude CLI not found on server PATH"}), 503
-
-    data = request.get_json()
-    content = (data or {}).get("content", "").strip()
-    if not content:
-        return jsonify({"error": "content is required"}), 400
-
-    # Build areas dict from DB for inbox routing
-    conn = get_db()
-    areas = get_all_areas(conn)
-    conn.close()
-    areas_dict = {}
-    for area in areas:
-        areas_dict[area["key"]] = {
-            "sections": [s["name"] for s in area["sections"]],
-        }
-
-    try:
-        result = process_inbox(content, areas_dict, DISPLAY_NAMES)
-    except RuntimeError as e:
-        return jsonify({"error": str(e)}), 502
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 502
-
-    return jsonify({"ok": True, **result})
-
-
-@app.route("/api/inbox/confirm", methods=["POST"])
-def api_inbox_confirm():
-    """Write confirmed tasks to database."""
-    data = request.get_json()
-    tasks = (data or {}).get("tasks", [])
-    if not tasks:
-        return jsonify({"error": "tasks array is required"}), 400
-
-    conn = get_db()
-    # Validate area keys
-    valid_areas = {r["key"] for r in conn.execute("SELECT key FROM areas").fetchall()}
-    for t in tasks:
-        if not t.get("text") or not t.get("area_key") or not t.get("section"):
-            conn.close()
-            return jsonify({"error": "Each task must have text, area_key, and section"}), 400
-        if t["area_key"] not in valid_areas:
-            conn.close()
-            return jsonify({"error": f"Invalid area_key: {t['area_key']}"}), 400
-
-    added = bulk_create_tasks(conn, tasks)
-    conn.close()
-    return jsonify({"ok": True, "added": added})
-
-
-# ---------------------------------------------------------------------------
-# Routes — Morning Summary
-# ---------------------------------------------------------------------------
-
-@app.route("/api/summary")
-def api_summary():
-    """Generate an AI-powered morning summary using Claude CLI."""
-    if IS_VERCEL:
-        return jsonify({"error": "Not available in cloud mode"}), 503
-    if not shutil.which("claude"):
-        return jsonify({"error": "claude CLI not found on server PATH"}), 503
-
-    conn = get_db()
-    tasks_text = get_tasks_for_summary(conn)
-    conn.close()
-
-    today = datetime.now().strftime("%A, %B %#d, %Y") if os.name == "nt" else datetime.now().strftime("%A, %B %-d, %Y")
-
-    prompt = f"""You are a personal executive assistant. Today is {today}.
-
-Below are my current task files across 4 areas of my life: Personal, Sunbelt FP&A (professional), and Planyfi (startup — App and Marketing).
-
-Tasks marked - [ ] are open. Tasks marked - [x] are completed (pending archive). Tasks tagged @delegated(Name) have been handed off. Tasks with [due: DATE] have deadlines. Tasks with [P1/P2/P3] have priorities.
-
-Please give me a concise morning briefing:
-
-1. Start with a one-line greeting with today's date
-2. For each area, list open tasks grouped by sub-area. Mention how old tasks are if there's a date tag.
-3. Call out any delegated items separately with who owns them.
-4. Highlight any overdue or due-today tasks.
-5. End with 1-2 suggested priorities for the day based on what seems most urgent/important.
-
-Keep it scannable — use short lines and clear formatting. Use simple markdown for structure (## headers, bullet points, **bold** for emphasis).
-
-Here are my tasks:
-
-{tasks_text}"""
-
-    try:
-        env = os.environ.copy()
-        env.pop("CLAUDECODE", None)
-        result = subprocess.run(
-            ["claude", "--print", "-p", prompt],
-            capture_output=True, text=True, timeout=120, env=env,
-        )
-        if result.returncode != 0:
-            return jsonify({"error": result.stderr.strip() or "Claude CLI failed"}), 502
-        return jsonify({"ok": True, "summary": result.stdout.strip()})
-    except subprocess.TimeoutExpired:
-        return jsonify({"error": "Claude CLI timed out (120s)"}), 504
-    except FileNotFoundError:
-        return jsonify({"error": "claude CLI not found"}), 503
 
 
 # ---------------------------------------------------------------------------

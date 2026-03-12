@@ -65,6 +65,17 @@ class _TursoConnection:
         rs = self._client.execute(sql, args)
         return _TursoCursor(rs)
 
+    def batch(self, stmts):
+        """Execute multiple SQL statements in a single HTTP round-trip.
+
+        *stmts* is a list of (sql, params) tuples.  Returns a list of
+        _TursoCursor objects, one per statement.
+        """
+        from libsql_client import InStatement
+        batch = [InStatement(sql, list(params) if params else []) for sql, params in stmts]
+        results = self._client.batch(batch)
+        return [_TursoCursor(rs) for rs in results]
+
     def commit(self):
         pass  # libsql HTTP client auto-commits each statement
 
@@ -113,13 +124,16 @@ def push_to_turso():
     if not TURSO_URL or not TURSO_TOKEN:
         return
     import libsql_client
-    http_url = TURSO_URL.replace("libsql://", "https://")
     remote = _TursoConnection(TURSO_URL, TURSO_TOKEN)
     local = sqlite3.connect(DB_PATH)
     local.row_factory = sqlite3.Row
+
+    # Build all statements, then send in a single batch HTTP call
+    stmts = []
     # Clear remote tables in reverse order (FK deps)
     for table in reversed(TABLES_ORDERED):
-        remote.execute(f"DELETE FROM {table}")
+        stmts.append((f"DELETE FROM {table}", []))
+    # Insert all rows
     for table in TABLES_ORDERED:
         rows = local.execute(f"SELECT * FROM {table}").fetchall()
         if not rows:
@@ -128,8 +142,9 @@ def push_to_turso():
         placeholders = ",".join(["?"] * len(cols))
         col_names = ",".join(cols)
         for row in rows:
-            remote.execute(f"INSERT INTO {table} ({col_names}) VALUES ({placeholders})",
-                           [row[c] for c in cols])
+            stmts.append((f"INSERT INTO {table} ({col_names}) VALUES ({placeholders})",
+                          [row[c] for c in cols]))
+    remote.batch(stmts)
     local.close()
     remote.close()
     print(f"Pushed local SQLite -> Turso")
@@ -235,6 +250,13 @@ CREATE TABLE IF NOT EXISTS recurrence_rules (
     days_of_week    TEXT    DEFAULT NULL,
     next_due        TEXT    DEFAULT NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_subtasks_task_id ON subtasks(task_id);
+CREATE INDEX IF NOT EXISTS idx_task_tags_task_id ON task_tags(task_id);
+CREATE INDEX IF NOT EXISTS idx_task_tags_tag_id ON task_tags(tag_id);
+CREATE INDEX IF NOT EXISTS idx_recurrence_task_id ON recurrence_rules(task_id);
+CREATE INDEX IF NOT EXISTS idx_tasks_section_id ON tasks(section_id);
+CREATE INDEX IF NOT EXISTS idx_tasks_done_archived ON tasks(done, archived);
 """
 
 # ---------------------------------------------------------------------------
@@ -281,23 +303,60 @@ def _task_row_to_dict(row):
 
 def _enrich_tasks(conn, tasks):
     """Add subtasks, tags, and recurrence to a list of task dicts."""
+    if not tasks:
+        return tasks
+
+    task_ids = [t["id"] for t in tasks]
+    placeholders = ",".join("?" * len(task_ids))
+
+    # Use batch() on Turso to combine 3 queries into 1 HTTP round-trip
+    if hasattr(conn, "batch"):
+        cursors = conn.batch([
+            (f"SELECT * FROM subtasks WHERE task_id IN ({placeholders}) ORDER BY position", task_ids),
+            (f"""SELECT tt.task_id, t.id, t.name, t.color FROM tags t
+                 JOIN task_tags tt ON tt.tag_id = t.id
+                 WHERE tt.task_id IN ({placeholders})""", task_ids),
+            (f"SELECT * FROM recurrence_rules WHERE task_id IN ({placeholders})", task_ids),
+        ])
+        all_subtasks = cursors[0].fetchall()
+        all_tags = cursors[1].fetchall()
+        all_recurrences = cursors[2].fetchall()
+    else:
+        all_subtasks = conn.execute(
+            f"SELECT * FROM subtasks WHERE task_id IN ({placeholders}) ORDER BY position", task_ids
+        ).fetchall()
+        all_tags = conn.execute(
+            f"""SELECT tt.task_id, t.id, t.name, t.color FROM tags t
+                JOIN task_tags tt ON tt.tag_id = t.id
+                WHERE tt.task_id IN ({placeholders})""", task_ids
+        ).fetchall()
+        all_recurrences = conn.execute(
+            f"SELECT * FROM recurrence_rules WHERE task_id IN ({placeholders})", task_ids
+        ).fetchall()
+
+    # Group by task_id
+    subtasks_by_tid = {}
+    for s in all_subtasks:
+        sd = dict(s)
+        subtasks_by_tid.setdefault(sd["task_id"], []).append(sd)
+
+    tags_by_tid = {}
+    for t in all_tags:
+        td = dict(t)
+        tid = td.pop("task_id")
+        tags_by_tid.setdefault(tid, []).append(td)
+
+    rec_by_tid = {}
+    for r in all_recurrences:
+        rd = dict(r)
+        rec_by_tid[rd["task_id"]] = rd
+
     for task in tasks:
         tid = task["id"]
-        # Subtasks
-        task["subtasks"] = [dict(s) for s in conn.execute(
-            "SELECT * FROM subtasks WHERE task_id = ? ORDER BY position", (tid,)
-        ).fetchall()]
-        # Tags
-        task["tags"] = [dict(t) for t in conn.execute("""
-            SELECT t.id, t.name, t.color FROM tags t
-            JOIN task_tags tt ON tt.tag_id = t.id
-            WHERE tt.task_id = ?
-        """, (tid,)).fetchall()]
-        # Recurrence
-        rec = conn.execute(
-            "SELECT * FROM recurrence_rules WHERE task_id = ?", (tid,)
-        ).fetchone()
-        task["recurrence"] = dict(rec) if rec else None
+        task["subtasks"] = subtasks_by_tid.get(tid, [])
+        task["tags"] = tags_by_tid.get(tid, [])
+        task["recurrence"] = rec_by_tid.get(tid, None)
+
     return tasks
 
 

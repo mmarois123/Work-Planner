@@ -433,8 +433,6 @@
   <h1>Work Planner</h1>
   <div class="header-actions">
     <button onclick="refreshTasks()">Refresh</button>
-    <button onclick="openSummary()">Summary</button>
-    <button onclick="openInbox()">Inbox</button>
     <button onclick="showDelegated()">Delegated</button>
     <button onclick="clearCompleted()">Clear completed</button>
   </div>
@@ -482,20 +480,6 @@ function removeTaskFromState(taskId) {
   if (!found) return null;
   found.section.tasks.splice(found.taskIndex, 1);
   return { area: found.area, section: found.section, task: found.task, taskIndex: found.taskIndex };
-}
-
-function addTaskToState(areaKey, sectionName, task) {
-  if (!allData) return;
-  for (const area of allData.areas) {
-    if (area.key === areaKey) {
-      for (const section of area.sections) {
-        if (section.name === sectionName) {
-          section.tasks.unshift(task);
-          return;
-        }
-      }
-    }
-  }
 }
 
 function findSubtaskInState(subtaskId) {
@@ -568,7 +552,6 @@ async function fetchTasks() {
     const data = await res.json();
     allData = { areas: data.areas };
     allTags = data.tags || [];
-    if (data.config) inboxConfig = data.config;
     hideLogin();
     renderTabs();
     renderMain();
@@ -636,7 +619,6 @@ function renderMain() {
           <span><span class="chevron">&#9660;</span>${section.name}</span>
           <div class="section-right">
             <span class="task-count">${openCount}</span>
-            <button class="add-btn" onclick="event.stopPropagation();toggleAddForm('${area.key}','${esc(section.name)}')" title="Add task">+</button>
           </div>
         </div>`;
 
@@ -648,11 +630,6 @@ function renderMain() {
         html += renderTask(area.key, task);
       }
 
-      html += `<div class="add-form hidden" id="add-${area.key}-${esc(section.name)}">
-        <input type="text" placeholder="New task..." onkeydown="if(event.key==='Enter')submitAdd('${area.key}','${esc(section.name)}',this)">
-        <button onclick="submitAdd('${area.key}','${esc(section.name)}',this.previousElementSibling)">Add</button>
-        <button class="cancel-btn" onclick="toggleAddForm('${area.key}','${esc(section.name)}')">Cancel</button>
-      </div>`;
       html += `</div></div>`;
     }
     html += `</div>`;
@@ -687,23 +664,18 @@ function renderTask(areaKey, task) {
     badges += `<span class="badge badge-delegated">${escHtml(task.delegated_to)}</span>`;
   }
 
-  // Priority select options
-  const priOpts = [0,1,2,3].map(p =>
-    `<option value="${p}" ${(task.priority||0)===p ? 'selected' : ''}>${p===0?'\u2014':'P'+p}</option>`
-  ).join('');
-
-  // Recurrence select options
+  // Read-only priority badge
+  const priLabel = task.priority ? `P${task.priority}` : '';
+  // Read-only recurrence badge
   const recPattern = task.recurrence ? task.recurrence.pattern : '';
-  const recOpts = ['','daily','weekly','biweekly','monthly','quarterly','yearly'].map(p =>
-    `<option value="${p}" ${recPattern===p?'selected':''}>${p ? p.charAt(0).toUpperCase()+p.slice(1) : '\u2014'}</option>`
-  ).join('');
+  const recLabel = recPattern ? recPattern.charAt(0).toUpperCase() + recPattern.slice(1) : '';
 
   let html = `<div class="task-row ${task.done ? 'done' : ''}" data-id="${task.id}">
     <input type="checkbox" ${task.done ? 'checked' : ''} onclick="event.stopPropagation();toggleTask(${task.id})">
     <span class="task-title" onclick="openDetail(${task.id})">${escHtml(task.title)}</span>
-    <input type="date" class="inline-date" value="${task.due_date||''}" onchange="inlineUpdate(${task.id},'due_date',this.value)" onclick="event.stopPropagation()">
-    <select class="inline-priority" onchange="inlineUpdate(${task.id},'priority',this.value)" onclick="event.stopPropagation()">${priOpts}</select>
-    <select class="inline-recurrence" onchange="inlineRecurrence(${task.id},this.value)" onclick="event.stopPropagation()">${recOpts}</select>
+    <span class="inline-date">${task.due_date ? `<span class="badge-due ${dueDateClass(task.due_date,task.done)}">${formatDueDate(task.due_date)}</span>` : ''}</span>
+    <span class="inline-priority">${priLabel ? `<span class="badge badge-p${task.priority}">${priLabel}</span>` : ''}</span>
+    <span class="inline-recurrence">${recLabel ? `<span class="badge" style="background:#8b5cf6;color:#fff">${recLabel}</span>` : ''}</span>
     <div class="task-badges">${badges}</div>
     <button class="task-row-delete" onclick="event.stopPropagation();deleteTaskFromRow(${task.id})" title="Delete task">&times;</button>
   </div>`;
@@ -825,98 +797,6 @@ function toggleSection(sid) {
   }
 }
 
-function toggleAddForm(area, section) {
-  const id = `add-${area}-${section}`;
-  const el = document.getElementById(id);
-  el.classList.toggle('hidden');
-  if (!el.classList.contains('hidden')) {
-    el.querySelector('input').focus();
-  }
-}
-
-async function submitAdd(area, section, input) {
-  const text = input.value.trim();
-  if (!text) return;
-  const tempId = -Date.now();
-  const tempTask = { id: tempId, title: text, done: 0, priority: null, due_date: null, delegated_to: null, subtasks: [], tags: [], recurrence: null };
-  addTaskToState(area, section, tempTask);
-  input.value = '';
-  toast('Task added');
-  renderTabs();
-  renderMain();
-  try {
-    const res = await fetch(`${API}/api/tasks/${area}`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({section: section, text: text})
-    });
-    if (!res.ok) throw new Error('Server error');
-    const data = await res.json();
-    const found = findTaskInState(tempId);
-    if (found) found.task.id = data.id;
-    renderMain();
-  } catch (e) {
-    removeTaskFromState(tempId);
-    renderTabs();
-    renderMain();
-    toast('Failed to add task', true);
-  }
-}
-
-// ---- Inline editing ----
-
-async function inlineUpdate(taskId, field, value) {
-  const body = {};
-  if (field === 'priority') {
-    body[field] = parseInt(value) || null;
-  } else {
-    body[field] = value || null;
-  }
-  const stateField = field === 'due_date' ? 'due_date' : field;
-  const prev = updateTaskInState(taskId, { [stateField]: body[field] });
-  toast('Updated');
-  try {
-    const res = await fetch(`${API}/api/tasks/${taskId}`, {
-      method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) throw new Error('Server error');
-  } catch (e) {
-    if (prev) {
-      updateTaskInState(taskId, prev);
-      renderMain();
-    }
-    toast('Failed to update', true);
-  }
-}
-
-async function inlineRecurrence(taskId, pattern) {
-  const found = findTaskInState(taskId);
-  const prevRecurrence = found ? found.task.recurrence : null;
-  if (found) found.task.recurrence = pattern ? { pattern } : null;
-  toast('Recurrence updated');
-  try {
-    if (pattern) {
-      const res = await fetch(`${API}/api/tasks/${taskId}/recurrence`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({pattern})
-      });
-      if (!res.ok) throw new Error('Server error');
-    } else {
-      const res = await fetch(`${API}/api/tasks/${taskId}/recurrence`, {method: 'DELETE'});
-      if (!res.ok) throw new Error('Server error');
-    }
-  } catch (e) {
-    if (found) {
-      found.task.recurrence = prevRecurrence;
-      renderMain();
-    }
-    toast('Failed to update recurrence', true);
-  }
-}
-
 // ---- Task Detail Drawer ----
 
 let detailTask = null;
@@ -943,58 +823,26 @@ function renderDetail() {
   overlay.className = 'drawer-overlay';
   overlay.onclick = () => closeDetail();
 
-  // Priority options
-  const priOpts = [0,1,2,3].map(p =>
-    `<option value="${p}" ${(t.priority||0)===p ? 'selected' : ''}>${p===0?'None':'P'+p}</option>`
-  ).join('');
-
-  // Recurrence
-  const rec = t.recurrence;
-  const recPattern = rec ? rec.pattern : '';
-  const recPatternOpts = ['','daily','weekly','biweekly','monthly','quarterly','yearly'].map(p =>
-    `<option value="${p}" ${recPattern===p?'selected':''}>${p||'None'}</option>`
-  ).join('');
-  const recDow = rec ? (rec.days_of_week || '') : '';
-
-  // Subtasks HTML
+  // Read-only subtasks
   let subtasksHtml = '<div class="subtask-list">';
   for (const s of (t.subtasks || [])) {
     subtasksHtml += `<div class="subtask-item ${s.done ? 'done' : ''}">
       <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleSubtask(${s.id})">
       <span class="subtask-text">${escHtml(s.title)}</span>
-      <button class="subtask-delete" onclick="deleteSubtask(${s.id})">&times;</button>
     </div>`;
   }
   subtasksHtml += '</div>';
-  subtasksHtml += `<div class="subtask-add">
-    <input type="text" id="new-subtask" placeholder="Add subtask..." onkeydown="if(event.key==='Enter')addSubtask()">
-    <button class="btn-secondary" onclick="addSubtask()" style="padding:4px 10px;font-size:12px">Add</button>
-  </div>`;
 
-  // Tags HTML
+  // Read-only tags
   let tagsHtml = '<div class="tag-pills">';
   for (const tag of (t.tags || [])) {
-    tagsHtml += `<span class="tag-pill" style="background:${tag.color}">
-      ${escHtml(tag.name)}
-      <button class="tag-remove" onclick="removeTagFromTask(${t.id},${tag.id})">&times;</button>
-    </span>`;
+    tagsHtml += `<span class="tag-pill" style="background:${tag.color}">${escHtml(tag.name)}</span>`;
   }
   tagsHtml += '</div>';
-  // Tag add row
-  const assignedIds = new Set((t.tags||[]).map(tg => tg.id));
-  const availTags = allTags.filter(tg => !assignedIds.has(tg.id));
-  if (availTags.length) {
-    const tagOpts = availTags.map(tg => `<option value="${tg.id}">${escHtml(tg.name)}</option>`).join('');
-    tagsHtml += `<div class="tag-add-row">
-      <select id="tag-select">${tagOpts}</select>
-      <button class="btn-secondary" onclick="addTagToTask()" style="padding:4px 10px;font-size:12px">Add</button>
-    </div>`;
-  }
-  tagsHtml += `<div class="tag-add-row" style="margin-top:4px">
-    <input type="text" id="new-tag-name" placeholder="New tag name" style="width:100px">
-    <input type="color" id="new-tag-color" value="#6b7280" style="width:36px;height:28px;padding:0;border:1px solid var(--border);border-radius:4px">
-    <button class="btn-secondary" onclick="createAndAddTag()" style="padding:4px 10px;font-size:12px">Create</button>
-  </div>`;
+
+  // Recurrence label
+  const rec = t.recurrence;
+  const recLabel = rec ? rec.pattern.charAt(0).toUpperCase() + rec.pattern.slice(1) : 'None';
 
   const drawer = document.createElement('div');
   drawer.className = 'drawer';
@@ -1005,62 +853,47 @@ function renderDetail() {
       </div>
       <div class="drawer-body">
         <div class="detail-field full" style="margin-bottom:12px">
-          <input type="text" class="detail-input" id="detail-title" value="${escAttr(t.title)}" style="font-size:16px;font-weight:600">
+          <div style="font-size:16px;font-weight:600">${escHtml(t.title)}</div>
         </div>
 
         <div class="detail-grid">
           <div class="detail-field">
             <span class="detail-label">Due Date</span>
-            <input type="date" class="detail-input" id="detail-due" value="${t.due_date||''}">
+            <span class="detail-value">${t.due_date || 'None'}</span>
           </div>
           <div class="detail-field">
             <span class="detail-label">Priority</span>
-            <select class="detail-input" id="detail-priority">${priOpts}</select>
+            <span class="detail-value">${t.priority ? 'P'+t.priority : 'None'}</span>
           </div>
           <div class="detail-field">
             <span class="detail-label">Delegated To</span>
-            <input type="text" class="detail-input" id="detail-delegated" value="${escAttr(t.delegated_to||'')}" placeholder="Name...">
+            <span class="detail-value">${escHtml(t.delegated_to || 'None')}</span>
           </div>
           <div class="detail-field">
             <span class="detail-label">Status</span>
-            <select class="detail-input" id="detail-done">
-              <option value="0" ${!t.done?'selected':''}>Open</option>
-              <option value="1" ${t.done?'selected':''}>Done</option>
-            </select>
+            <span class="detail-value">${t.done ? 'Done' : 'Open'}</span>
           </div>
         </div>
 
         <div class="detail-field full" style="margin-bottom:12px">
           <span class="detail-label">Recurrence</span>
-          <div class="recurrence-row">
-            <select class="detail-input" id="detail-rec-pattern" onchange="recurrenceChanged()" style="width:auto">${recPatternOpts}</select>
-            <div id="dow-container" class="${recPattern==='weekly'?'':'hidden'}">
-              <div class="dow-checkboxes">
-                ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i) =>
-                  `<label class="${recDow.includes(String(i))?'active':''}">
-                    <input type="checkbox" value="${i}" ${recDow.includes(String(i))?'checked':''} onchange="this.parentElement.classList.toggle('active')">
-                    ${d}
-                  </label>`
-                ).join('')}
-              </div>
-            </div>
-          </div>
+          <span class="detail-value">${recLabel}</span>
         </div>
 
-        <div class="detail-field full" style="margin-bottom:12px">
+        ${(t.tags && t.tags.length) ? `<div class="detail-field full" style="margin-bottom:12px">
           <span class="detail-label">Tags</span>
           ${tagsHtml}
-        </div>
+        </div>` : ''}
 
-        <div class="detail-field full" style="margin-bottom:12px">
+        ${(t.subtasks && t.subtasks.length) ? `<div class="detail-field full" style="margin-bottom:12px">
           <span class="detail-label">Subtasks</span>
           ${subtasksHtml}
-        </div>
+        </div>` : ''}
 
-        <div class="detail-field full">
-          <span class="detail-label">Description (Markdown)</span>
-          <textarea class="detail-textarea" id="detail-desc">${escHtml(t.description||'')}</textarea>
-        </div>
+        ${t.description ? `<div class="detail-field full">
+          <span class="detail-label">Description</span>
+          <div class="detail-value" style="white-space:pre-wrap">${escHtml(t.description)}</div>
+        </div>` : ''}
 
         <div class="detail-timestamps">
           Created: ${t.created_at ? new Date(t.created_at).toLocaleString() : 'N/A'}
@@ -1070,75 +903,13 @@ function renderDetail() {
       <div class="drawer-footer">
         <button class="btn-danger" onclick="deleteTaskFromDetail(${t.id})">Delete</button>
         <div style="flex:1"></div>
-        <button class="btn-secondary" onclick="closeDetail()">Cancel</button>
-        <button class="btn-primary" onclick="saveDetail()">Save</button>
+        <button class="btn-secondary" onclick="closeDetail()">Close</button>
       </div>`;
 
   wrapper.appendChild(overlay);
   wrapper.appendChild(drawer);
   document.body.appendChild(wrapper);
   requestAnimationFrame(() => requestAnimationFrame(() => drawer.classList.add('open')));
-}
-
-function recurrenceChanged() {
-  const pattern = document.getElementById('detail-rec-pattern').value;
-  const dowContainer = document.getElementById('dow-container');
-  if (pattern === 'weekly') dowContainer.classList.remove('hidden');
-  else dowContainer.classList.add('hidden');
-}
-
-async function saveDetail() {
-  const t = detailTask;
-  const title = document.getElementById('detail-title').value.trim();
-  const due = document.getElementById('detail-due').value || null;
-  const priority = parseInt(document.getElementById('detail-priority').value) || null;
-  const delegated = document.getElementById('detail-delegated').value.trim() || null;
-  const done = parseInt(document.getElementById('detail-done').value);
-  const desc = document.getElementById('detail-desc').value;
-
-  const prev = updateTaskInState(t.id, { title, due_date: due, priority, delegated_to: delegated, done, description: desc });
-  const pattern = document.getElementById('detail-rec-pattern').value;
-
-  closeDetail();
-  toast('Task updated');
-  renderTabs();
-  renderMain();
-
-  try {
-    const promises = [];
-    promises.push(fetch(`${API}/api/tasks/${t.id}`, {
-      method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({title, due_date: due, priority, delegated_to: delegated, done, description: desc})
-    }));
-
-    if (pattern) {
-      let daysOfWeek = null;
-      if (pattern === 'weekly') {
-        const checks = document.querySelectorAll('#dow-container input:checked');
-        if (checks.length) daysOfWeek = Array.from(checks).map(c => c.value).join(',');
-      }
-      promises.push(fetch(`${API}/api/tasks/${t.id}/recurrence`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({pattern, days_of_week: daysOfWeek})
-      }));
-    } else if (t.recurrence) {
-      promises.push(fetch(`${API}/api/tasks/${t.id}/recurrence`, {method: 'DELETE'}));
-    }
-
-    const results = await Promise.all(promises);
-    for (const res of results) {
-      if (!res.ok) throw new Error('Server error');
-    }
-  } catch (e) {
-    if (prev) {
-      updateTaskInState(t.id, prev);
-      renderTabs();
-      renderMain();
-    }
-    toast('Failed to save task', true);
-  }
 }
 
 async function deleteTaskFromRow(taskId) {
@@ -1195,30 +966,12 @@ function closeDetail() {
 
 // ---- Subtask actions ----
 
-async function addSubtask() {
-  const input = document.getElementById('new-subtask');
-  const title = input.value.trim();
-  if (!title || !detailTask) return;
-  await fetch(`${API}/api/tasks/${detailTask.id}/subtasks`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({title})
-  });
-  input.value = '';
-  await refreshDetail();
-}
-
 async function toggleSubtask(subId) {
   await fetch(`${API}/api/subtasks/${subId}`, {
     method: 'PATCH',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({action: 'toggle'})
   });
-  await refreshDetail();
-}
-
-async function deleteSubtask(subId) {
-  await fetch(`${API}/api/subtasks/${subId}`, {method: 'DELETE'});
   await refreshDetail();
 }
 
@@ -1229,49 +982,6 @@ async function refreshDetail() {
     detailTask = await res.json();
     renderDetail();
   }
-}
-
-// ---- Tag actions ----
-
-async function addTagToTask() {
-  const sel = document.getElementById('tag-select');
-  if (!sel || !detailTask) return;
-  const tagId = parseInt(sel.value);
-  await fetch(`${API}/api/tasks/${detailTask.id}/tags`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({tag_id: tagId})
-  });
-  await refreshDetail();
-  await fetchTasks();
-}
-
-async function removeTagFromTask(taskId, tagId) {
-  await fetch(`${API}/api/tasks/${taskId}/tags/${tagId}`, {method: 'DELETE'});
-  await refreshDetail();
-  await fetchTasks();
-}
-
-async function createAndAddTag() {
-  const name = document.getElementById('new-tag-name').value.trim();
-  const color = document.getElementById('new-tag-color').value;
-  if (!name || !detailTask) return;
-  const res = await fetch(`${API}/api/tags`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({name, color})
-  });
-  if (!res.ok) { toast('Tag already exists'); return; }
-  const data = await res.json();
-  // Add to task
-  await fetch(`${API}/api/tasks/${detailTask.id}/tags`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({tag_id: data.id})
-  });
-  allTags.push({id: data.id, name, color});
-  await refreshDetail();
-  await fetchTasks();
 }
 
 // ---- Delegated view ----
@@ -1528,270 +1238,6 @@ function toast(msg, isError) {
   el.style.background = isError ? 'var(--danger)' : '#1e293b';
   el.classList.add('show');
   setTimeout(() => { el.classList.remove('show'); el.style.background = ''; }, 2500);
-}
-
-// ---- Inbox ----
-
-let inboxConfig = null;
-let inboxParsed = [];
-
-async function loadInboxConfig() {
-  if (inboxConfig) return inboxConfig;
-  const res = await fetch(`${API}/api/config`);
-  inboxConfig = await res.json();
-  return inboxConfig;
-}
-
-function openInbox() {
-  const existing = document.getElementById('inbox-modal');
-  if (existing) existing.remove();
-
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.id = 'inbox-modal';
-  overlay.onclick = (e) => { if (e.target === overlay) closeInbox(); };
-
-  overlay.innerHTML = `
-    <div class="modal">
-      <div class="modal-header">
-        <h2>Inbox</h2>
-        <button class="modal-close" onclick="closeInbox()">&times;</button>
-      </div>
-      <div class="modal-body" id="inbox-body">
-        <textarea class="inbox-textarea" id="inbox-text" placeholder="Paste raw notes, ideas, or tasks here..."></textarea>
-        <div class="inbox-actions">
-          <label class="file-label">
-            Upload file
-            <input type="file" accept=".md,.txt,.markdown" style="display:none" onchange="inboxFileUpload(this)">
-          </label>
-          <div style="flex:1"></div>
-          <button class="btn-primary" id="inbox-process-btn" onclick="processInbox()">Process</button>
-        </div>
-      </div>
-    </div>`;
-
-  document.body.appendChild(overlay);
-  document.getElementById('inbox-text').focus();
-}
-
-function closeInbox() {
-  const el = document.getElementById('inbox-modal');
-  if (el) el.remove();
-  inboxParsed = [];
-}
-
-function inboxFileUpload(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => { document.getElementById('inbox-text').value = reader.result; };
-  reader.readAsText(file);
-}
-
-async function processInbox() {
-  const text = document.getElementById('inbox-text').value.trim();
-  if (!text) { toast('Enter some text first'); return; }
-
-  const body = document.getElementById('inbox-body');
-  body.innerHTML = '<div class="inbox-status"><span class="spinner"></span>Processing with Claude... (10-30s)</div>';
-
-  try {
-    const res = await fetch(`${API}/api/inbox/parse`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({content: text})
-    });
-    const ct = res.headers.get('content-type') || '';
-    if (!ct.includes('application/json')) {
-      throw new Error('Server returned non-JSON response (status ' + res.status + '). Restart the server.');
-    }
-    const data = await res.json();
-
-    if (!res.ok) {
-      body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">Error: ${escHtml(data.error || 'Unknown error')}</div>
-        <div style="text-align:center;margin-top:12px">
-          <button class="btn-secondary" onclick="closeInbox();openInbox()">Try again</button>
-        </div>`;
-      return;
-    }
-
-    inboxParsed = data.tasks || [];
-    await loadInboxConfig();
-    renderInboxPreview(inboxParsed, data.unparsed || []);
-  } catch (err) {
-    body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">Network error: ${escHtml(err.message)}</div>
-      <div style="text-align:center;margin-top:12px">
-        <button class="btn-secondary" onclick="closeInbox();openInbox()">Try again</button>
-      </div>`;
-  }
-}
-
-function renderInboxPreview(tasks, unparsed) {
-  const body = document.getElementById('inbox-body');
-  if (!tasks.length) {
-    body.innerHTML = '<div class="inbox-status">No actionable tasks found in the text.</div>';
-    return;
-  }
-
-  const areaOptions = Object.entries(inboxConfig).map(([k, v]) =>
-    `<option value="${k}">${escHtml(v.title)}</option>`
-  ).join('');
-
-  let rows = '';
-  for (let i = 0; i < tasks.length; i++) {
-    const t = tasks[i];
-    const confClass = 'conf-' + (t.confidence || 'medium');
-    const sectionOpts = buildSectionOptions(t.area_key, t.section);
-    rows += `<tr>
-      <td><input type="checkbox" checked data-idx="${i}"></td>
-      <td><input type="text" class="task-input" value="${escAttr(t.text)}" data-idx="${i}" data-field="text"></td>
-      <td><select data-idx="${i}" data-field="area_key" onchange="inboxAreaChanged(this)">${areaOptions}</select></td>
-      <td><select data-idx="${i}" data-field="section">${sectionOpts}</select></td>
-      <td><span class="conf-dot ${confClass}" title="${t.confidence || 'medium'}"></span></td>
-    </tr>`;
-  }
-
-  let html = `
-    <table class="inbox-preview">
-      <thead><tr><th></th><th>Task</th><th>Area</th><th>Section</th><th>Conf</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
-
-  if (unparsed && unparsed.length) {
-    html += '<div style="margin-top:12px;font-size:12px;color:var(--muted)"><b>Could not parse:</b><ul>';
-    for (const u of unparsed) html += `<li>${escHtml(u)}</li>`;
-    html += '</ul></div>';
-  }
-
-  body.innerHTML = html;
-
-  for (let i = 0; i < tasks.length; i++) {
-    const areaSelect = body.querySelector(`select[data-idx="${i}"][data-field="area_key"]`);
-    if (areaSelect) areaSelect.value = tasks[i].area_key;
-  }
-
-  const modal = document.getElementById('inbox-modal').querySelector('.modal');
-  let footer = modal.querySelector('.modal-footer');
-  if (!footer) {
-    footer = document.createElement('div');
-    footer.className = 'modal-footer';
-    modal.appendChild(footer);
-  }
-  footer.innerHTML = `
-    <button class="btn-secondary" onclick="closeInbox();openInbox()">Back</button>
-    <button class="btn-primary" onclick="confirmInbox()">Add All</button>`;
-}
-
-function buildSectionOptions(areaKey, selectedSection) {
-  if (!inboxConfig[areaKey]) return '';
-  return inboxConfig[areaKey].sections.map(s =>
-    `<option value="${s}" ${s === selectedSection ? 'selected' : ''}>${escHtml(s)}</option>`
-  ).join('');
-}
-
-function inboxAreaChanged(select) {
-  const idx = select.dataset.idx;
-  const newArea = select.value;
-  const sectionSelect = document.querySelector(`select[data-idx="${idx}"][data-field="section"]`);
-  if (sectionSelect && inboxConfig[newArea]) {
-    sectionSelect.innerHTML = buildSectionOptions(newArea, inboxConfig[newArea].sections[0]);
-  }
-}
-
-async function confirmInbox() {
-  const body = document.getElementById('inbox-body');
-  const rows = body.querySelectorAll('table tbody tr');
-  const tasks = [];
-
-  rows.forEach((row) => {
-    const cb = row.querySelector('input[type="checkbox"]');
-    if (!cb.checked) return;
-    const text = row.querySelector('input[data-field="text"]').value.trim();
-    const area_key = row.querySelector('select[data-field="area_key"]').value;
-    const section = row.querySelector('select[data-field="section"]').value;
-    if (text) tasks.push({text, area_key, section});
-  });
-
-  if (!tasks.length) { toast('No tasks selected'); return; }
-
-  const btn = document.querySelector('.modal-footer .btn-primary');
-  btn.disabled = true;
-  btn.textContent = 'Adding...';
-
-  try {
-    const res = await fetch(`${API}/api/inbox/confirm`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({tasks})
-    });
-    const data = await res.json();
-
-    if (res.ok) {
-      closeInbox();
-      toast(`Added ${data.added} task${data.added !== 1 ? 's' : ''}`);
-      await fetchTasks();
-    } else {
-      toast(data.error || 'Error adding tasks');
-      btn.disabled = false;
-      btn.textContent = 'Add All';
-    }
-  } catch (err) {
-    toast('Network error');
-    btn.disabled = false;
-    btn.textContent = 'Add All';
-  }
-}
-
-// ---- Summary ----
-
-function openSummary() {
-  const existing = document.getElementById('summary-modal');
-  if (existing) existing.remove();
-
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.id = 'summary-modal';
-  overlay.onclick = (e) => { if (e.target === overlay) closeSummary(); };
-
-  overlay.innerHTML = `
-    <div class="modal">
-      <div class="modal-header">
-        <h2>Morning Summary</h2>
-        <button class="modal-close" onclick="closeSummary()">&times;</button>
-      </div>
-      <div class="modal-body" id="summary-body">
-        <div class="inbox-status"><span class="spinner"></span>Generating summary with Claude... (10-30s)</div>
-      </div>
-    </div>`;
-
-  document.body.appendChild(overlay);
-  fetchSummary();
-}
-
-function closeSummary() {
-  const el = document.getElementById('summary-modal');
-  if (el) el.remove();
-}
-
-async function fetchSummary() {
-  const body = document.getElementById('summary-body');
-  try {
-    const res = await fetch(`${API}/api/summary`);
-    const data = await res.json();
-
-    if (!res.ok) {
-      body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">${escHtml(data.error || 'Unknown error')}</div>`;
-      return;
-    }
-
-    let html = escHtml(data.summary)
-      .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^---$/gm, '<hr>');
-    body.innerHTML = `<div class="summary-content">${html}</div>`;
-  } catch (err) {
-    body.innerHTML = `<div class="inbox-status" style="color:var(--danger)">Network error: ${escHtml(err.message)}</div>`;
-  }
 }
 
 // ---- Init ----
