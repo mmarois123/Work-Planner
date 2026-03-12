@@ -75,6 +75,65 @@ class _TursoConnection:
 # Cached Turso client — reused across get_db() calls within the same process
 _turso_conn = None
 
+TABLES_ORDERED = ["areas", "sections", "tasks", "subtasks", "tags", "task_tags", "recurrence_rules"]
+
+def sync_from_turso():
+    """Pull all data from Turso cloud DB into local SQLite. One-time on startup."""
+    if not TURSO_URL or not TURSO_TOKEN:
+        return
+    import libsql_client
+    http_url = TURSO_URL.replace("libsql://", "https://")
+    remote = libsql_client.create_client_sync(url=http_url, auth_token=TURSO_TOKEN)
+    # Init local DB
+    local = sqlite3.connect(DB_PATH)
+    local.row_factory = sqlite3.Row
+    local.execute("PRAGMA journal_mode=WAL")
+    local.execute("PRAGMA foreign_keys=OFF")
+    local.executescript(SCHEMA_SQL)
+    # Clear and repopulate each table
+    for table in TABLES_ORDERED:
+        local.execute(f"DELETE FROM {table}")
+    for table in TABLES_ORDERED:
+        result = remote.execute(f"SELECT * FROM {table}")
+        if not result.rows:
+            continue
+        cols = list(result.columns)
+        placeholders = ",".join(["?"] * len(cols))
+        col_names = ",".join(cols)
+        local.executemany(f"INSERT INTO {table} ({col_names}) VALUES ({placeholders})",
+                          [tuple(r) for r in result.rows])
+    local.execute("PRAGMA foreign_keys=ON")
+    local.commit()
+    local.close()
+    remote.close()
+    print(f"Synced from Turso -> local SQLite")
+
+def push_to_turso():
+    """Push local SQLite data to Turso cloud DB. Called on demand."""
+    if not TURSO_URL or not TURSO_TOKEN:
+        return
+    import libsql_client
+    http_url = TURSO_URL.replace("libsql://", "https://")
+    remote = _TursoConnection(TURSO_URL, TURSO_TOKEN)
+    local = sqlite3.connect(DB_PATH)
+    local.row_factory = sqlite3.Row
+    # Clear remote tables in reverse order (FK deps)
+    for table in reversed(TABLES_ORDERED):
+        remote.execute(f"DELETE FROM {table}")
+    for table in TABLES_ORDERED:
+        rows = local.execute(f"SELECT * FROM {table}").fetchall()
+        if not rows:
+            continue
+        cols = list(rows[0].keys())
+        placeholders = ",".join(["?"] * len(cols))
+        col_names = ",".join(cols)
+        for row in rows:
+            remote.execute(f"INSERT INTO {table} ({col_names}) VALUES ({placeholders})",
+                           [row[c] for c in cols])
+    local.close()
+    remote.close()
+    print(f"Pushed local SQLite -> Turso")
+
 
 # ---------------------------------------------------------------------------
 # Connection management

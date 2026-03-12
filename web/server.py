@@ -7,9 +7,13 @@ All data stored in SQLite via db.py. Start with: python3 web/server.py
 import os
 import sys
 
-# Load .env before anything reads env vars (db.py checks TURSO_* at import)
-from dotenv import load_dotenv
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
+# Load .env for Turso creds (needed for sync_from_turso on local startup).
+# On Vercel, env vars are injected directly so dotenv is a no-op.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
+except ImportError:
+    pass
 
 import shutil
 import subprocess
@@ -51,14 +55,28 @@ DISPLAY_NAMES = {
 # Cloud / auth configuration
 WP_AUTH_PIN = os.environ.get("WP_AUTH_PIN")
 SKIP_INIT_DB = os.environ.get("SKIP_INIT_DB")
-IS_CLOUD = bool(os.environ.get("TURSO_DATABASE_URL"))
+IS_VERCEL = bool(os.environ.get("VERCEL"))
+HAS_TURSO = bool(os.environ.get("TURSO_DATABASE_URL"))
 
-# Init DB (skip on Vercel where schema already exists in Turso)
-if not SKIP_INIT_DB:
+if IS_VERCEL:
+    # On Vercel: use Turso directly, schema already exists
+    if not SKIP_INIT_DB:
+        init_db()
+else:
+    # Local: pull cloud data into local SQLite, then run on local SQLite
+    if HAS_TURSO:
+        try:
+            from db import sync_from_turso
+            sync_from_turso()
+        except Exception as e:
+            print(f"Turso sync failed (using local data): {e}")
+    # Force db.py to use local SQLite even though TURSO env vars exist
+    import db as _db
+    _db.USE_TURSO = False
+    _db._turso_conn = None
+    # Init local DB schema
     init_db()
-
-# Sync markdown <-> DB on startup (local only — no filesystem on Vercel)
-if not IS_CLOUD:
+    # Sync markdown <-> DB
     try:
         _conn = get_db()
         _sync_result = sync_tasks(_conn)
@@ -71,8 +89,44 @@ if not IS_CLOUD:
 
 
 # ---------------------------------------------------------------------------
-# Auth middleware
+# Background Turso sync (local -> cloud after writes)
 # ---------------------------------------------------------------------------
+
+_turso_push_pending = False
+_turso_push_timer = None
+
+def schedule_turso_push():
+    """Debounce: push to Turso 2s after the last write, in a background thread."""
+    global _turso_push_pending, _turso_push_timer
+    if IS_VERCEL or not HAS_TURSO:
+        return
+    import threading
+    if _turso_push_timer:
+        _turso_push_timer.cancel()
+    def _do_push():
+        global _turso_push_pending
+        try:
+            from db import push_to_turso
+            push_to_turso()
+        except Exception as e:
+            print(f"Background Turso push failed: {e}")
+        _turso_push_pending = False
+    _turso_push_pending = True
+    _turso_push_timer = threading.Timer(2.0, _do_push)
+    _turso_push_timer.daemon = True
+    _turso_push_timer.start()
+
+
+# ---------------------------------------------------------------------------
+# Auth middleware & sync hooks
+# ---------------------------------------------------------------------------
+
+@app.after_request
+def after_write(response):
+    """Push local changes to Turso after any mutating API request."""
+    if request.method in ('POST', 'PATCH', 'PUT', 'DELETE') and request.path.startswith('/api/'):
+        schedule_turso_push()
+    return response
 
 @app.before_request
 def check_auth():
@@ -119,7 +173,7 @@ def api_login():
 @app.route("/api/health")
 def api_health():
     """Health check (exempt from auth)."""
-    return jsonify({"ok": True, "mode": "cloud" if IS_CLOUD else "local"})
+    return jsonify({"ok": True, "mode": "cloud" if IS_VERCEL else "local"})
 
 # ---------------------------------------------------------------------------
 # Routes — static
@@ -538,7 +592,7 @@ def api_archive():
 @app.route("/api/sync", methods=["POST"])
 def api_sync():
     """Bidirectional sync between markdown files and SQLite database."""
-    if IS_CLOUD:
+    if IS_VERCEL:
         return jsonify({"error": "Markdown sync not available in cloud mode"}), 503
     conn = get_db()
     try:
@@ -656,7 +710,7 @@ def api_tasks_unprioritized():
 @app.route("/api/inbox/parse", methods=["POST"])
 def api_inbox_parse():
     """Parse raw text into tasks using Claude CLI."""
-    if IS_CLOUD:
+    if IS_VERCEL:
         return jsonify({"error": "Not available in cloud mode"}), 503
     if not check_claude_available():
         return jsonify({"error": "claude CLI not found on server PATH"}), 503
@@ -717,7 +771,7 @@ def api_inbox_confirm():
 @app.route("/api/summary")
 def api_summary():
     """Generate an AI-powered morning summary using Claude CLI."""
-    if IS_CLOUD:
+    if IS_VERCEL:
         return jsonify({"error": "Not available in cloud mode"}), 503
     if not shutil.which("claude"):
         return jsonify({"error": "claude CLI not found on server PATH"}), 503
