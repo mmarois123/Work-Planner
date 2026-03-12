@@ -451,6 +451,67 @@ let activeTab = 'all';
 const collapsedSections = new Set();
 const expandedSubtasks = new Set();
 let allTags = [];
+const togglingTasks = new Set();
+
+// ---- State helpers (optimistic UI) ----
+
+function findTaskInState(taskId) {
+  if (!allData) return null;
+  for (const area of allData.areas) {
+    for (const section of area.sections) {
+      const idx = section.tasks.findIndex(t => t.id === taskId);
+      if (idx !== -1) return { area, section, task: section.tasks[idx], taskIndex: idx };
+    }
+  }
+  return null;
+}
+
+function updateTaskInState(taskId, changes) {
+  const found = findTaskInState(taskId);
+  if (!found) return null;
+  const prev = {};
+  for (const key of Object.keys(changes)) {
+    prev[key] = found.task[key];
+    found.task[key] = changes[key];
+  }
+  return prev;
+}
+
+function removeTaskFromState(taskId) {
+  const found = findTaskInState(taskId);
+  if (!found) return null;
+  found.section.tasks.splice(found.taskIndex, 1);
+  return { area: found.area, section: found.section, task: found.task, taskIndex: found.taskIndex };
+}
+
+function addTaskToState(areaKey, sectionName, task) {
+  if (!allData) return;
+  for (const area of allData.areas) {
+    if (area.key === areaKey) {
+      for (const section of area.sections) {
+        if (section.name === sectionName) {
+          section.tasks.unshift(task);
+          return;
+        }
+      }
+    }
+  }
+}
+
+function findSubtaskInState(subtaskId) {
+  if (!allData) return null;
+  for (const area of allData.areas) {
+    for (const section of area.sections) {
+      for (const task of section.tasks) {
+        if (task.subtasks) {
+          const idx = task.subtasks.findIndex(s => s.id === subtaskId);
+          if (idx !== -1) return { task, subtask: task.subtasks[idx], subtaskIndex: idx };
+        }
+      }
+    }
+  }
+  return null;
+}
 
 // ---- Auth ----
 
@@ -673,12 +734,23 @@ function toggleInlineSubtasks(taskId) {
 }
 
 async function toggleInlineSubtaskDone(subtaskId, taskId) {
-  await fetch(`${API}/api/subtasks/${subtaskId}`, {
-    method: 'PATCH',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action: 'toggle'})
-  });
-  await fetchTasks();
+  const found = findSubtaskInState(subtaskId);
+  if (!found) return;
+  const prevDone = found.subtask.done;
+  found.subtask.done = prevDone ? 0 : 1;
+  renderMain();
+  try {
+    const res = await fetch(`${API}/api/subtasks/${subtaskId}`, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action: 'toggle'})
+    });
+    if (!res.ok) throw new Error('Server error');
+  } catch (e) {
+    found.subtask.done = prevDone;
+    renderMain();
+    toast('Failed to update subtask', true);
+  }
 }
 
 // ---- Due date helpers ----
@@ -706,12 +778,29 @@ function formatDueDate(dateStr) {
 // ---- Actions ----
 
 async function toggleTask(taskId) {
-  await fetch(`${API}/api/tasks/${taskId}`, {
-    method: 'PATCH',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({action: 'toggle'})
-  });
-  await fetchTasks();
+  if (togglingTasks.has(taskId)) return;
+  togglingTasks.add(taskId);
+  const prev = updateTaskInState(taskId, { done: findTaskInState(taskId)?.task.done ? 0 : 1 });
+  if (!prev) { togglingTasks.delete(taskId); return; }
+  renderTabs();
+  renderMain();
+  try {
+    const res = await fetch(`${API}/api/tasks/${taskId}`, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({action: 'toggle'})
+    });
+    if (!res.ok) throw new Error('Server error');
+    const data = await res.json();
+    if (data.recurring) await fetchTasks();
+  } catch (e) {
+    updateTaskInState(taskId, prev);
+    renderTabs();
+    renderMain();
+    toast('Failed to toggle task', true);
+  } finally {
+    togglingTasks.delete(taskId);
+  }
 }
 
 async function clearCompleted() {
@@ -748,18 +837,29 @@ function toggleAddForm(area, section) {
 async function submitAdd(area, section, input) {
   const text = input.value.trim();
   if (!text) return;
-  const res = await fetch(`${API}/api/tasks/${area}`, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({section: section, text: text})
-  });
-  if (res.ok) {
-    input.value = '';
-    toast('Task added');
-    await fetchTasks();
-  } else {
-    const err = await res.json();
-    toast(err.error || 'Error');
+  const tempId = -Date.now();
+  const tempTask = { id: tempId, title: text, done: 0, priority: null, due_date: null, delegated_to: null, subtasks: [], tags: [], recurrence: null };
+  addTaskToState(area, section, tempTask);
+  input.value = '';
+  toast('Task added');
+  renderTabs();
+  renderMain();
+  try {
+    const res = await fetch(`${API}/api/tasks/${area}`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({section: section, text: text})
+    });
+    if (!res.ok) throw new Error('Server error');
+    const data = await res.json();
+    const found = findTaskInState(tempId);
+    if (found) found.task.id = data.id;
+    renderMain();
+  } catch (e) {
+    removeTaskFromState(tempId);
+    renderTabs();
+    renderMain();
+    toast('Failed to add task', true);
   }
 }
 
@@ -772,27 +872,49 @@ async function inlineUpdate(taskId, field, value) {
   } else {
     body[field] = value || null;
   }
-  await fetch(`${API}/api/tasks/${taskId}`, {
-    method: 'PATCH',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(body)
-  });
+  const stateField = field === 'due_date' ? 'due_date' : field;
+  const prev = updateTaskInState(taskId, { [stateField]: body[field] });
   toast('Updated');
-  await fetchTasks();
+  try {
+    const res = await fetch(`${API}/api/tasks/${taskId}`, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error('Server error');
+  } catch (e) {
+    if (prev) {
+      updateTaskInState(taskId, prev);
+      renderMain();
+    }
+    toast('Failed to update', true);
+  }
 }
 
 async function inlineRecurrence(taskId, pattern) {
-  if (pattern) {
-    await fetch(`${API}/api/tasks/${taskId}/recurrence`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({pattern})
-    });
-  } else {
-    await fetch(`${API}/api/tasks/${taskId}/recurrence`, {method: 'DELETE'});
-  }
+  const found = findTaskInState(taskId);
+  const prevRecurrence = found ? found.task.recurrence : null;
+  if (found) found.task.recurrence = pattern ? { pattern } : null;
   toast('Recurrence updated');
-  await fetchTasks();
+  try {
+    if (pattern) {
+      const res = await fetch(`${API}/api/tasks/${taskId}/recurrence`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pattern})
+      });
+      if (!res.ok) throw new Error('Server error');
+    } else {
+      const res = await fetch(`${API}/api/tasks/${taskId}/recurrence`, {method: 'DELETE'});
+      if (!res.ok) throw new Error('Server error');
+    }
+  } catch (e) {
+    if (found) {
+      found.task.recurrence = prevRecurrence;
+      renderMain();
+    }
+    toast('Failed to update recurrence', true);
+  }
 }
 
 // ---- Task Detail Drawer ----
@@ -800,6 +922,7 @@ async function inlineRecurrence(taskId, pattern) {
 let detailTask = null;
 
 async function openDetail(taskId) {
+  if (taskId < 0) { toast('Task is still saving...'); return; }
   const res = await fetch(`${API}/api/tasks/${taskId}`);
   if (!res.ok) { toast('Task not found'); return; }
   detailTask = await res.json();
@@ -973,48 +1096,88 @@ async function saveDetail() {
   const done = parseInt(document.getElementById('detail-done').value);
   const desc = document.getElementById('detail-desc').value;
 
-  // Save task fields
-  await fetch(`${API}/api/tasks/${t.id}`, {
-    method: 'PATCH',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({title, due_date: due, priority, delegated_to: delegated, done, description: desc})
-  });
-
-  // Save recurrence
+  const prev = updateTaskInState(t.id, { title, due_date: due, priority, delegated_to: delegated, done, description: desc });
   const pattern = document.getElementById('detail-rec-pattern').value;
-  if (pattern) {
-    let daysOfWeek = null;
-    if (pattern === 'weekly') {
-      const checks = document.querySelectorAll('#dow-container input:checked');
-      if (checks.length) daysOfWeek = Array.from(checks).map(c => c.value).join(',');
-    }
-    await fetch(`${API}/api/tasks/${t.id}/recurrence`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({pattern, days_of_week: daysOfWeek})
-    });
-  } else if (t.recurrence) {
-    await fetch(`${API}/api/tasks/${t.id}/recurrence`, {method: 'DELETE'});
-  }
 
   closeDetail();
   toast('Task updated');
-  await fetchTasks();
+  renderTabs();
+  renderMain();
+
+  try {
+    const promises = [];
+    promises.push(fetch(`${API}/api/tasks/${t.id}`, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({title, due_date: due, priority, delegated_to: delegated, done, description: desc})
+    }));
+
+    if (pattern) {
+      let daysOfWeek = null;
+      if (pattern === 'weekly') {
+        const checks = document.querySelectorAll('#dow-container input:checked');
+        if (checks.length) daysOfWeek = Array.from(checks).map(c => c.value).join(',');
+      }
+      promises.push(fetch(`${API}/api/tasks/${t.id}/recurrence`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pattern, days_of_week: daysOfWeek})
+      }));
+    } else if (t.recurrence) {
+      promises.push(fetch(`${API}/api/tasks/${t.id}/recurrence`, {method: 'DELETE'}));
+    }
+
+    const results = await Promise.all(promises);
+    for (const res of results) {
+      if (!res.ok) throw new Error('Server error');
+    }
+  } catch (e) {
+    if (prev) {
+      updateTaskInState(t.id, prev);
+      renderTabs();
+      renderMain();
+    }
+    toast('Failed to save task', true);
+  }
 }
 
 async function deleteTaskFromRow(taskId) {
   if (!confirm('Delete this task?')) return;
-  await fetch(`${API}/api/tasks/${taskId}`, {method: 'DELETE'});
+  const removed = removeTaskFromState(taskId);
   toast('Task deleted');
-  await fetchTasks();
+  renderTabs();
+  renderMain();
+  try {
+    const res = await fetch(`${API}/api/tasks/${taskId}`, {method: 'DELETE'});
+    if (!res.ok) throw new Error('Server error');
+  } catch (e) {
+    if (removed) {
+      removed.section.tasks.splice(removed.taskIndex, 0, removed.task);
+      renderTabs();
+      renderMain();
+    }
+    toast('Failed to delete task', true);
+  }
 }
 
 async function deleteTaskFromDetail(taskId) {
   if (!confirm('Delete this task?')) return;
-  await fetch(`${API}/api/tasks/${taskId}`, {method: 'DELETE'});
+  const removed = removeTaskFromState(taskId);
   closeDetail();
   toast('Task deleted');
-  await fetchTasks();
+  renderTabs();
+  renderMain();
+  try {
+    const res = await fetch(`${API}/api/tasks/${taskId}`, {method: 'DELETE'});
+    if (!res.ok) throw new Error('Server error');
+  } catch (e) {
+    if (removed) {
+      removed.section.tasks.splice(removed.taskIndex, 0, removed.task);
+      renderTabs();
+      renderMain();
+    }
+    toast('Failed to delete task', true);
+  }
 }
 
 function closeDetail() {
@@ -1359,11 +1522,12 @@ async function refreshTasks() {
   toast('Refreshed');
 }
 
-function toast(msg) {
+function toast(msg, isError) {
   const el = document.getElementById('toast');
   el.textContent = msg;
+  el.style.background = isError ? 'var(--danger)' : '#1e293b';
   el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2500);
+  setTimeout(() => { el.classList.remove('show'); el.style.background = ''; }, 2500);
 }
 
 // ---- Inbox ----
