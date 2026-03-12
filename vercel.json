@@ -1,6 +1,4 @@
 {
-  "buildCommand": "mkdir -p public && cp web/index.html public/index.html",
-  "installCommand": "pip install -r requirements.txt",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index" }
   ]

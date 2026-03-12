@@ -20,5 +20,5 @@ Thumbs.db
 # Vercel
 .vercel/
 
-# Build output
-public/index.html
+# Vercel local
+.vercel/local/
