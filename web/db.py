@@ -69,7 +69,11 @@ class _TursoConnection:
         pass  # libsql HTTP client auto-commits each statement
 
     def close(self):
-        self._client.close()
+        pass  # Keep client alive for reuse across requests
+
+
+# Cached Turso client — reused across get_db() calls within the same process
+_turso_conn = None
 
 
 # ---------------------------------------------------------------------------
@@ -80,10 +84,14 @@ def get_db(path=None):
     """Return a database connection.
 
     If TURSO_DATABASE_URL and TURSO_AUTH_TOKEN env vars are set, connects
-    to Turso cloud SQLite over HTTP. Otherwise falls back to local SQLite.
+    to Turso cloud SQLite over HTTP. The Turso client is cached at module
+    level so subsequent calls reuse the same HTTP connection.
     """
+    global _turso_conn
     if USE_TURSO and path is None:
-        return _TursoConnection(TURSO_URL, TURSO_TOKEN)
+        if _turso_conn is None:
+            _turso_conn = _TursoConnection(TURSO_URL, TURSO_TOKEN)
+        return _turso_conn
 
     # Local SQLite fallback
     db_path = path or DB_PATH

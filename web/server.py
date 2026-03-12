@@ -126,6 +126,26 @@ def index():
 
 
 # ---------------------------------------------------------------------------
+# Routes — Combined init (single request for page load)
+# ---------------------------------------------------------------------------
+
+@app.route("/api/init")
+def api_init():
+    """Return tasks + tags + config in a single response to minimize cold-start latency."""
+    conn = get_db()
+    areas = get_all_tasks(conn)
+    tags = get_all_tags(conn)
+    config = {}
+    for area in get_all_areas(conn):
+        config[area["key"]] = {
+            "title": area["title"],
+            "sections": [s["name"] for s in area["sections"]],
+        }
+    conn.close()
+    return jsonify({"areas": areas, "tags": tags, "config": config})
+
+
+# ---------------------------------------------------------------------------
 # Routes — Config
 # ---------------------------------------------------------------------------
 

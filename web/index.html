@@ -441,7 +441,7 @@
 </header>
 
 <nav class="tabs" id="tabs"></nav>
-<main id="main"></main>
+<main id="main"><div class="inbox-status"><span class="spinner"></span>Loading tasks...</div></main>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -499,17 +499,15 @@ window.fetch = function(url, opts = {}) {
 
 async function fetchTasks() {
   try {
-    const [tasksRes, tagsRes] = await Promise.all([
-      fetch(`${API}/api/tasks`),
-      fetch(`${API}/api/tags`),
-    ]);
-    if (tasksRes.status === 401) {
+    const res = await fetch(`${API}/api/init`);
+    if (res.status === 401) {
       showLogin();
       return;
     }
-    allData = await tasksRes.json();
-    const tagsData = await tagsRes.json();
-    allTags = tagsData.tags || [];
+    const data = await res.json();
+    allData = { areas: data.areas };
+    allTags = data.tags || [];
+    if (data.config) inboxConfig = data.config;
     hideLogin();
     renderTabs();
     renderMain();
