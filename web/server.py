@@ -45,6 +45,13 @@ PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 
 app = Flask(__name__)
 
+from flask_cors import CORS
+CORS(app, origins=[
+    "https://mmarois123.github.io",
+    "http://localhost:5151",
+    "http://127.0.0.1:5151",
+], supports_credentials=True)
+
 DISPLAY_NAMES = {
     "sunbelt": "Sunbelt FP&A",
     "app": "Planyfi — App",
