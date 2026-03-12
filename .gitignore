@@ -1,8 +1,5 @@
-# Data (lives in Turso for cloud, local-only for dev)
+# Data (old DB, no longer used)
 data/
-
-# Markdown task files (local sync only)
-tasks/*.md
 
 # Environment
 .env
