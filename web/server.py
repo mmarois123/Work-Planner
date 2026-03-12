@@ -5,13 +5,18 @@ All data stored in SQLite via db.py. Start with: python3 web/server.py
 """
 
 import os
+import sys
+
+# Load .env before anything reads env vars (db.py checks TURSO_* at import)
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
+
 import shutil
 import subprocess
 from datetime import datetime
 
 from flask import Flask, jsonify, request, send_from_directory
 
-import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from db import (
     get_db, init_db,

@@ -2,3 +2,4 @@ flask
 pyyaml
 python-dateutil
 libsql-client
+python-dotenv
