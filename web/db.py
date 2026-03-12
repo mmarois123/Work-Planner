@@ -5,21 +5,87 @@ All database operations for areas, sections, tasks, subtasks, tags,
 and recurrence rules. Uses WAL mode for concurrency.
 """
 
+import json
 import os
+import re
 import sqlite3
 from datetime import date, datetime, timedelta
+
+import yaml
 
 # Paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 DB_PATH = os.path.join(PROJECT_ROOT, "data", "workplanner.db")
 
+# Turso (cloud SQLite) configuration
+TURSO_URL = os.environ.get("TURSO_DATABASE_URL")
+TURSO_TOKEN = os.environ.get("TURSO_AUTH_TOKEN")
+USE_TURSO = bool(TURSO_URL and TURSO_TOKEN)
+
+if USE_TURSO:
+    import libsql_client
+
+# ---------------------------------------------------------------------------
+# Turso wrapper — makes libsql_client look like sqlite3
+# ---------------------------------------------------------------------------
+
+class _TursoCursor:
+    """Wraps a libsql_client.ResultSet to behave like a sqlite3 Cursor."""
+
+    def __init__(self, result):
+        self._result = result
+        self._rows = [r.asdict() for r in result.rows] if result.rows else []
+        self.lastrowid = result.last_insert_rowid
+        self.rowcount = result.rows_affected
+
+    def fetchall(self):
+        return list(self._rows)
+
+    def fetchone(self):
+        return self._rows[0] if self._rows else None
+
+
+class _TursoConnection:
+    """Wraps libsql_client.ClientSync to behave like a sqlite3 Connection.
+
+    Rows are returned as plain dicts, so ``dict(row)`` and ``row["col"]``
+    both work — identical to how the rest of db.py uses sqlite3.Row.
+    """
+
+    def __init__(self, url, auth_token):
+        # Convert libsql:// to https:// for HTTP transport
+        http_url = url.replace("libsql://", "https://")
+        self._client = libsql_client.create_client_sync(
+            url=http_url, auth_token=auth_token,
+        )
+
+    def execute(self, sql, params=None):
+        args = list(params) if params else []
+        rs = self._client.execute(sql, args)
+        return _TursoCursor(rs)
+
+    def commit(self):
+        pass  # libsql HTTP client auto-commits each statement
+
+    def close(self):
+        self._client.close()
+
+
 # ---------------------------------------------------------------------------
 # Connection management
 # ---------------------------------------------------------------------------
 
 def get_db(path=None):
-    """Return a SQLite connection with WAL mode and foreign keys enabled."""
+    """Return a database connection.
+
+    If TURSO_DATABASE_URL and TURSO_AUTH_TOKEN env vars are set, connects
+    to Turso cloud SQLite over HTTP. Otherwise falls back to local SQLite.
+    """
+    if USE_TURSO and path is None:
+        return _TursoConnection(TURSO_URL, TURSO_TOKEN)
+
+    # Local SQLite fallback
     db_path = path or DB_PATH
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
     conn = sqlite3.connect(db_path)
@@ -32,7 +98,14 @@ def get_db(path=None):
 def init_db(path=None):
     """Create all tables if they don't exist."""
     conn = get_db(path)
-    conn.executescript(SCHEMA_SQL)
+    if USE_TURSO and path is None:
+        # HTTP client doesn't support executescript; run statements individually
+        for stmt in SCHEMA_SQL.split(';'):
+            stmt = stmt.strip()
+            if stmt:
+                conn.execute(stmt)
+    else:
+        conn.executescript(SCHEMA_SQL)
     conn.commit()
     conn.close()
 
@@ -644,6 +717,356 @@ def get_tasks_for_summary(conn):
 
 
 # ---------------------------------------------------------------------------
+# Analytics / Reporting
+# ---------------------------------------------------------------------------
+
+def get_tasks_completed_between(conn, start, end):
+    """Return tasks completed in a date range (by completed_at)."""
+    rows = conn.execute("""
+        SELECT t.*, s.name AS section_name, a.key AS area_key, a.title AS area_title
+        FROM tasks t
+        JOIN sections s ON s.id = t.section_id
+        JOIN areas a ON a.id = s.area_id
+        WHERE t.done = 1 AND t.completed_at >= ? AND t.completed_at < ?
+        ORDER BY t.completed_at DESC
+    """, (start, end)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_tasks_stale(conn, days=14):
+    """Return open, non-archived tasks with no priority and no due date,
+    older than `days` days."""
+    cutoff = (date.today() - timedelta(days=days)).isoformat()
+    rows = conn.execute("""
+        SELECT t.*, s.name AS section_name, a.key AS area_key, a.title AS area_title
+        FROM tasks t
+        JOIN sections s ON s.id = t.section_id
+        JOIN areas a ON a.id = s.area_id
+        WHERE t.done = 0 AND t.archived = 0
+          AND t.priority IS NULL AND t.due_date IS NULL
+          AND t.created_at < ?
+        ORDER BY t.created_at ASC
+    """, (cutoff,)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_delegation_summary(conn):
+    """Return delegated tasks grouped by person with counts."""
+    rows = conn.execute("""
+        SELECT t.delegated_to, COUNT(*) AS total,
+               SUM(CASE WHEN t.done = 0 THEN 1 ELSE 0 END) AS open,
+               SUM(CASE WHEN t.done = 1 THEN 1 ELSE 0 END) AS done
+        FROM tasks t
+        WHERE t.delegated_to IS NOT NULL AND t.archived = 0
+        GROUP BY t.delegated_to
+        ORDER BY open DESC
+    """).fetchall()
+    summary = []
+    for r in rows:
+        # Get individual open tasks for this person
+        tasks = conn.execute("""
+            SELECT t.id, t.title, t.due_date, t.priority, t.created_at,
+                   s.name AS section_name, a.key AS area_key, a.title AS area_title
+            FROM tasks t
+            JOIN sections s ON s.id = t.section_id
+            JOIN areas a ON a.id = s.area_id
+            WHERE t.delegated_to = ? AND t.done = 0 AND t.archived = 0
+            ORDER BY t.created_at ASC
+        """, (r["delegated_to"],)).fetchall()
+        summary.append({
+            "person": r["delegated_to"],
+            "total": r["total"],
+            "open": r["open"],
+            "done": r["done"],
+            "tasks": [dict(t) for t in tasks],
+        })
+    return summary
+
+
+def get_task_counts_by_section(conn, area_key=None):
+    """Return open/done/priority counts per section, optionally filtered by area."""
+    where = "WHERE t.archived = 0"
+    params = []
+    if area_key:
+        where += " AND a.key = ?"
+        params.append(area_key)
+
+    rows = conn.execute(f"""
+        SELECT a.key AS area_key, a.title AS area_title,
+               s.name AS section_name,
+               COUNT(*) AS total,
+               SUM(CASE WHEN t.done = 0 THEN 1 ELSE 0 END) AS open,
+               SUM(CASE WHEN t.done = 1 THEN 1 ELSE 0 END) AS done,
+               SUM(CASE WHEN t.priority IS NOT NULL AND t.done = 0 THEN 1 ELSE 0 END) AS prioritized,
+               SUM(CASE WHEN t.due_date IS NOT NULL AND t.done = 0 THEN 1 ELSE 0 END) AS has_due_date,
+               SUM(CASE WHEN t.due_date < date('now') AND t.done = 0 THEN 1 ELSE 0 END) AS overdue
+        FROM tasks t
+        JOIN sections s ON s.id = t.section_id
+        JOIN areas a ON a.id = s.area_id
+        {where}
+        GROUP BY a.key, s.name
+        ORDER BY a.position, s.position
+    """, params).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_velocity_metrics(conn, weeks=4):
+    """Return tasks completed per week for the last N weeks."""
+    results = []
+    today = date.today()
+    for i in range(weeks):
+        week_end = today - timedelta(days=today.weekday()) - timedelta(weeks=i)
+        week_start = week_end - timedelta(days=7)
+        row = conn.execute("""
+            SELECT COUNT(*) AS completed
+            FROM tasks
+            WHERE done = 1 AND completed_at >= ? AND completed_at < ?
+        """, (week_start.isoformat(), week_end.isoformat())).fetchone()
+        results.append({
+            "week_start": week_start.isoformat(),
+            "week_end": week_end.isoformat(),
+            "completed": row["completed"],
+        })
+    results.reverse()
+    return results
+
+
+def get_unprioritized_tasks(conn, area_key=None):
+    """Return open, non-archived tasks with no priority set."""
+    where = "WHERE t.done = 0 AND t.archived = 0 AND t.priority IS NULL"
+    params = []
+    if area_key:
+        where += " AND a.key = ?"
+        params.append(area_key)
+
+    rows = conn.execute(f"""
+        SELECT t.*, s.name AS section_name, a.key AS area_key, a.title AS area_title
+        FROM tasks t
+        JOIN sections s ON s.id = t.section_id
+        JOIN areas a ON a.id = s.area_id
+        {where}
+        ORDER BY a.position, s.position, t.position
+    """, params).fetchall()
+    return [dict(r) for r in rows]
+
+
+# ---------------------------------------------------------------------------
+# Markdown parsing (shared with migrate.py)
+# ---------------------------------------------------------------------------
+
+TASK_RE = re.compile(r"^- \[([ x])\] (.+)$")
+DELEGATED_RE = re.compile(r"@delegated\(([^)]+)\)")
+
+
+def parse_markdown_file(filepath):
+    """Parse a markdown task file into sections with tasks.
+
+    Returns list of {"name": str, "tasks": [{"text": str, "done": bool, "delegated_to": str|None}]}
+    """
+    if not os.path.exists(filepath):
+        return []
+
+    with open(filepath, encoding="utf-8") as f:
+        lines = f.readlines()
+
+    sections = []
+    current_section = None
+
+    for raw_line in lines:
+        line = raw_line.rstrip("\n")
+
+        # H2 section header
+        if line.startswith("## "):
+            current_section = {"name": line[3:].strip(), "tasks": []}
+            sections.append(current_section)
+            continue
+
+        # Task line
+        m = TASK_RE.match(line)
+        if m and current_section is not None:
+            done = m.group(1) == "x"
+            text = m.group(2).strip()
+            delegated_to = None
+            dm = DELEGATED_RE.search(text)
+            if dm:
+                delegated_to = dm.group(1)
+                text = DELEGATED_RE.sub("", text).strip()
+            current_section["tasks"].append({
+                "text": text,
+                "done": done,
+                "delegated_to": delegated_to,
+            })
+
+    return sections
+
+
+# ---------------------------------------------------------------------------
+# Bidirectional sync: Markdown <-> SQLite
+# ---------------------------------------------------------------------------
+
+def sync_tasks(conn):
+    """Bidirectional sync between markdown files and SQLite database.
+
+    Reconciliation rules (per area+section, matched by title):
+    - [x] in md but done=0 in DB -> mark done in DB
+    - [ ] in md but done=1 in DB -> DB wins (md will be rewritten)
+    - Task in md but not in DB -> create in DB
+    - Task in DB but not in md -> added during md rewrite
+
+    After reconciliation, rewrites each md file from DB state.
+
+    Returns dict with counts of changes made.
+    """
+    config_path = os.path.join(PROJECT_ROOT, "config.yaml")
+    tasks_dir = os.path.join(PROJECT_ROOT, "tasks")
+
+    with open(config_path, encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+
+    areas_config = config["areas"]
+    changes = {"md_to_db": 0, "db_to_md": 0, "created_in_db": 0, "created_in_md": 0}
+
+    for area_key, area_info in areas_config.items():
+        filepath = os.path.join(tasks_dir, area_info["file"])
+
+        # Get area from DB
+        area_row = conn.execute(
+            "SELECT id FROM areas WHERE key = ?", (area_key,)
+        ).fetchone()
+        if not area_row:
+            continue
+        area_id = area_row["id"]
+
+        # Parse markdown file
+        md_sections = parse_markdown_file(filepath)
+        md_map = {}
+        for s in md_sections:
+            md_map[s["name"].lower()] = s
+
+        # Get all DB sections for this area
+        db_sections = conn.execute(
+            "SELECT * FROM sections WHERE area_id = ? ORDER BY position",
+            (area_id,)
+        ).fetchall()
+
+        for db_section in db_sections:
+            section_name = db_section["name"]
+            section_id = db_section["id"]
+
+            # Get DB tasks for this section (non-archived)
+            db_tasks = conn.execute(
+                "SELECT * FROM tasks WHERE section_id = ? AND archived = 0 ORDER BY position",
+                (section_id,)
+            ).fetchall()
+
+            # Build DB task index by title
+            db_by_title = {}
+            for t in db_tasks:
+                db_by_title[t["title"]] = t
+
+            # Get md tasks for this section
+            md_section = md_map.get(section_name.lower(), {"tasks": []})
+            md_tasks = md_section.get("tasks", [])
+
+            # Build md task set by text
+            md_by_title = {}
+            for t in md_tasks:
+                md_by_title[t["text"]] = t
+
+            # Compare md tasks against DB
+            for md_task in md_tasks:
+                title = md_task["text"]
+                if title in db_by_title:
+                    db_task = db_by_title[title]
+                    md_done = md_task["done"]
+                    db_done = bool(db_task["done"])
+
+                    if md_done and not db_done:
+                        # MD says done, DB says not -> update DB
+                        conn.execute(
+                            "UPDATE tasks SET done = 1, completed_at = ? WHERE id = ?",
+                            (datetime.now().isoformat(), db_task["id"])
+                        )
+                        changes["md_to_db"] += 1
+                    elif not md_done and db_done:
+                        # DB says done, MD says not -> DB wins, reflected in rewrite
+                        changes["db_to_md"] += 1
+
+                    # Sync delegated_to from md if changed
+                    if md_task["delegated_to"] != db_task["delegated_to"]:
+                        conn.execute(
+                            "UPDATE tasks SET delegated_to = ? WHERE id = ?",
+                            (md_task["delegated_to"], db_task["id"])
+                        )
+                else:
+                    # Task in md but not in DB -> create in DB
+                    row = conn.execute(
+                        "SELECT COALESCE(MAX(position), -1) + 1 AS pos FROM tasks WHERE section_id = ?",
+                        (section_id,)
+                    ).fetchone()
+                    conn.execute("""
+                        INSERT INTO tasks (section_id, title, done, delegated_to, position, completed_at)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    """, (
+                        section_id,
+                        title,
+                        1 if md_task["done"] else 0,
+                        md_task["delegated_to"],
+                        row["pos"],
+                        datetime.now().isoformat() if md_task["done"] else None,
+                    ))
+                    changes["created_in_db"] += 1
+
+            # Count tasks in DB but not in md
+            for title in db_by_title:
+                if title not in md_by_title:
+                    changes["created_in_md"] += 1
+
+        conn.commit()
+
+        # Rewrite markdown file from DB state
+        _rewrite_markdown_file(conn, area_id, filepath)
+
+    return changes
+
+
+def _rewrite_markdown_file(conn, area_id, filepath):
+    """Rewrite a markdown file from current DB state."""
+    area_row = conn.execute(
+        "SELECT title FROM areas WHERE id = ?", (area_id,)
+    ).fetchone()
+    area_title = area_row["title"] if area_row else "Unknown"
+
+    db_sections = conn.execute(
+        "SELECT * FROM sections WHERE area_id = ? ORDER BY position",
+        (area_id,)
+    ).fetchall()
+
+    lines = [f"# {area_title}", ""]
+
+    for section in db_sections:
+        lines.append(f"## {section['name']}")
+
+        tasks = conn.execute(
+            "SELECT * FROM tasks WHERE section_id = ? AND archived = 0 "
+            "ORDER BY done ASC, position ASC, id ASC",
+            (section["id"],)
+        ).fetchall()
+
+        for task in tasks:
+            mark = "x" if task["done"] else " "
+            text = task["title"]
+            if task["delegated_to"]:
+                text += f" @delegated({task['delegated_to']})"
+            lines.append(f"- [{mark}] {text}")
+
+        lines.append("")
+
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+
+# ---------------------------------------------------------------------------
 # CLI entry point
 # ---------------------------------------------------------------------------
 
@@ -655,8 +1078,45 @@ if __name__ == "__main__":
         conn = get_db()
         print(get_tasks_for_summary(conn))
         conn.close()
+    elif len(sys.argv) > 1 and sys.argv[1] == "--summary-json":
+        init_db()
+        conn = get_db()
+        # Build a structured JSON summary with stats
+        total_open = conn.execute(
+            "SELECT COUNT(*) AS c FROM tasks WHERE done=0 AND archived=0"
+        ).fetchone()["c"]
+        total_done = conn.execute(
+            "SELECT COUNT(*) AS c FROM tasks WHERE done=1 AND archived=0"
+        ).fetchone()["c"]
+        total_prioritized = conn.execute(
+            "SELECT COUNT(*) AS c FROM tasks WHERE done=0 AND archived=0 AND priority IS NOT NULL"
+        ).fetchone()["c"]
+        total_with_due = conn.execute(
+            "SELECT COUNT(*) AS c FROM tasks WHERE done=0 AND archived=0 AND due_date IS NOT NULL"
+        ).fetchone()["c"]
+        total_delegated = conn.execute(
+            "SELECT COUNT(*) AS c FROM tasks WHERE delegated_to IS NOT NULL AND archived=0 AND done=0"
+        ).fetchone()["c"]
+        overdue = get_tasks_overdue(conn)
+        sections = get_task_counts_by_section(conn)
+        summary = {
+            "stats": {
+                "open": total_open,
+                "done_unarchived": total_done,
+                "prioritized": total_prioritized,
+                "with_due_date": total_with_due,
+                "delegated": total_delegated,
+                "overdue": len(overdue),
+            },
+            "sections": sections,
+            "overdue": [{"id": t["id"], "title": t["title"], "due_date": t["due_date"],
+                         "area_key": t["area_key"], "section_name": t["section_name"]}
+                        for t in overdue],
+        }
+        print(json.dumps(summary, indent=2))
+        conn.close()
     elif len(sys.argv) > 1 and sys.argv[1] == "--init":
         init_db()
         print(f"Database initialized at {DB_PATH}")
     else:
-        print("Usage: python web/db.py [--init | --summary-text]")
+        print("Usage: python web/db.py [--init | --summary-text | --summary-json]")

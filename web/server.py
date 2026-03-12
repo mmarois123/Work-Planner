@@ -24,6 +24,9 @@ from db import (
     get_tasks_calendar, get_tasks_no_due_date,
     set_recurrence, remove_recurrence, complete_recurring_task,
     get_tasks_for_summary, bulk_create_tasks,
+    sync_tasks,
+    get_tasks_completed_between, get_tasks_stale, get_delegation_summary,
+    get_task_counts_by_section, get_velocity_metrics, get_unprioritized_tasks,
 )
 from inbox import check_claude_available, process_inbox
 
@@ -40,8 +43,78 @@ DISPLAY_NAMES = {
     "personal": "Personal",
 }
 
-# Ensure DB is initialized on import
-init_db()
+# Cloud / auth configuration
+WP_AUTH_PIN = os.environ.get("WP_AUTH_PIN")
+SKIP_INIT_DB = os.environ.get("SKIP_INIT_DB")
+IS_CLOUD = bool(os.environ.get("TURSO_DATABASE_URL"))
+
+# Init DB (skip on Vercel where schema already exists in Turso)
+if not SKIP_INIT_DB:
+    init_db()
+
+# Sync markdown <-> DB on startup (local only — no filesystem on Vercel)
+if not IS_CLOUD:
+    try:
+        _conn = get_db()
+        _sync_result = sync_tasks(_conn)
+        _conn.close()
+        _total = sum(_sync_result.values())
+        if _total:
+            print(f"Startup sync: {_sync_result}")
+    except Exception as e:
+        print(f"Startup sync failed: {e}")
+
+
+# ---------------------------------------------------------------------------
+# Auth middleware
+# ---------------------------------------------------------------------------
+
+@app.before_request
+def check_auth():
+    """Require PIN auth for API routes when WP_AUTH_PIN is set."""
+    if not WP_AUTH_PIN:
+        return  # No PIN configured, skip auth
+
+    # Exempt paths
+    if request.path in ('/api/login', '/api/health'):
+        return
+
+    # Only protect API routes
+    if not request.path.startswith('/api/'):
+        return
+
+    # Check auth cookie
+    if request.cookies.get('wp_auth') == WP_AUTH_PIN:
+        return
+
+    # Check header (localStorage backup)
+    if request.headers.get('X-Auth-PIN') == WP_AUTH_PIN:
+        return
+
+    return jsonify({"error": "Unauthorized"}), 401
+
+
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    """Validate PIN and set auth cookie."""
+    data = request.get_json() or {}
+    pin = data.get("pin", "")
+    if not WP_AUTH_PIN or pin == WP_AUTH_PIN:
+        resp = jsonify({"ok": True})
+        resp.set_cookie(
+            'wp_auth', WP_AUTH_PIN or '',
+            max_age=30 * 24 * 3600,
+            httponly=True,
+            samesite='Lax',
+        )
+        return resp
+    return jsonify({"error": "Invalid PIN"}), 401
+
+
+@app.route("/api/health")
+def api_health():
+    """Health check (exempt from auth)."""
+    return jsonify({"ok": True, "mode": "cloud" if IS_CLOUD else "local"})
 
 # ---------------------------------------------------------------------------
 # Routes — static
@@ -434,6 +507,26 @@ def api_archive():
 
 
 # ---------------------------------------------------------------------------
+# Routes — Sync
+# ---------------------------------------------------------------------------
+
+@app.route("/api/sync", methods=["POST"])
+def api_sync():
+    """Bidirectional sync between markdown files and SQLite database."""
+    if IS_CLOUD:
+        return jsonify({"error": "Markdown sync not available in cloud mode"}), 503
+    conn = get_db()
+    try:
+        changes = sync_tasks(conn)
+    except Exception as e:
+        conn.close()
+        return jsonify({"error": str(e)}), 500
+    conn.close()
+    total = sum(changes.values())
+    return jsonify({"ok": True, "total_changes": total, "details": changes})
+
+
+# ---------------------------------------------------------------------------
 # Routes — Delegated
 # ---------------------------------------------------------------------------
 
@@ -466,12 +559,80 @@ def api_delegated():
 
 
 # ---------------------------------------------------------------------------
+# Routes — Analytics / Reporting
+# ---------------------------------------------------------------------------
+
+@app.route("/api/tasks/completed")
+def api_tasks_completed():
+    """Tasks completed in a date range."""
+    start = request.args.get("start")
+    end = request.args.get("end")
+    if not start or not end:
+        return jsonify({"error": "start and end query params required"}), 400
+    conn = get_db()
+    tasks = get_tasks_completed_between(conn, start, end)
+    conn.close()
+    return jsonify({"tasks": tasks, "count": len(tasks)})
+
+
+@app.route("/api/tasks/stale")
+def api_tasks_stale():
+    """Open tasks with no priority or due date, older than N days."""
+    days = request.args.get("days", 14, type=int)
+    conn = get_db()
+    tasks = get_tasks_stale(conn, days=days)
+    conn.close()
+    return jsonify({"tasks": tasks, "count": len(tasks)})
+
+
+@app.route("/api/delegated/summary")
+def api_delegation_summary():
+    """Delegated tasks grouped by person with counts."""
+    conn = get_db()
+    summary = get_delegation_summary(conn)
+    conn.close()
+    return jsonify({"summary": summary})
+
+
+@app.route("/api/stats/sections")
+def api_stats_sections():
+    """Open/done/priority counts per section."""
+    area = request.args.get("area")
+    conn = get_db()
+    sections = get_task_counts_by_section(conn, area_key=area)
+    conn.close()
+    return jsonify({"sections": sections})
+
+
+@app.route("/api/stats/velocity")
+def api_stats_velocity():
+    """Tasks completed per week for the last N weeks."""
+    weeks = request.args.get("weeks", 4, type=int)
+    conn = get_db()
+    metrics = get_velocity_metrics(conn, weeks=weeks)
+    conn.close()
+    return jsonify({"velocity": metrics})
+
+
+@app.route("/api/tasks/unprioritized")
+def api_tasks_unprioritized():
+    """Open tasks with no priority set."""
+    area = request.args.get("area")
+    conn = get_db()
+    tasks = get_unprioritized_tasks(conn, area_key=area)
+    conn.close()
+    return jsonify({"tasks": tasks, "count": len(tasks)})
+
+
+# ---------------------------------------------------------------------------
 # Routes — Inbox
 # ---------------------------------------------------------------------------
 
 @app.route("/api/inbox/parse", methods=["POST"])
 def api_inbox_parse():
     """Parse raw text into tasks using Claude CLI."""
+    if IS_CLOUD:
+        return jsonify({"error": "Not available in cloud mode"}), 503
     if not check_claude_available():
         return jsonify({"error": "claude CLI not found on server PATH"}), 503
 
@@ -531,6 +692,8 @@ def api_inbox_confirm():
 @app.route("/api/summary")
 def api_summary():
     """Generate an AI-powered morning summary using Claude CLI."""
+    if IS_CLOUD:
+        return jsonify({"error": "Not available in cloud mode"}), 503
     if not shutil.which("claude"):
         return jsonify({"error": "claude CLI not found on server PATH"}), 503
 

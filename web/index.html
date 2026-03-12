@@ -94,7 +94,7 @@
   /* Task grid header + row */
   .task-grid-header {
     display: grid;
-    grid-template-columns: 28px 1fr 110px 70px 100px auto;
+    grid-template-columns: 28px 1fr 110px 70px 100px auto 28px;
     align-items: center;
     padding: 6px 14px;
     gap: 8px;
@@ -110,7 +110,7 @@
   }
   .task-row {
     display: grid;
-    grid-template-columns: 28px 1fr 110px 70px 100px auto;
+    grid-template-columns: 28px 1fr 110px 70px 100px auto 28px;
     align-items: center;
     padding: 6px 14px;
     gap: 8px;
@@ -127,6 +127,10 @@
     text-overflow: ellipsis; white-space: nowrap; }
   .task-title:hover { color: var(--accent); }
   .task-badges { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+  .task-row-delete { background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 16px; padding: 0; line-height: 1; opacity: 0; transition: opacity 0.15s; }
+  .task-row:hover .task-row-delete { opacity: 0.6; }
+  .task-row-delete:hover { opacity: 1 !important; color: var(--danger); }
 
   /* Inline editable controls */
   .inline-date { padding: 2px 4px; border: 1px solid transparent; border-radius: 4px;
@@ -221,6 +225,19 @@
   .subtask-add input { flex: 1; padding: 4px 8px; border: 1px solid var(--border);
     border-radius: 4px; font-size: 13px; }
   .subtask-add button { padding: 4px 10px; font-size: 12px; }
+
+  /* Inline expandable subtasks */
+  .subtask-expand-btn { background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 10px; padding: 2px 4px; transition: transform 0.15s; display: inline-block; }
+  .subtask-expand-btn:hover { color: var(--text); }
+  .subtask-expand-btn.expanded { transform: rotate(90deg); }
+  .inline-subtasks { padding: 2px 0 6px 42px; border-bottom: 1px solid var(--border);
+    background: var(--bg); }
+  .inline-subtask-item { display: flex; align-items: center; gap: 6px; padding: 3px 8px;
+    font-size: 13px; color: var(--text); }
+  .inline-subtask-item.done { color: var(--done); }
+  .inline-subtask-item.done .inline-subtask-text { text-decoration: line-through; }
+  .inline-subtask-item input[type="checkbox"] { cursor: pointer; }
 
   /* Tags in detail */
   .tag-pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
@@ -340,13 +357,82 @@
   .cal-dot.overdue { background: var(--danger); }
   .cal-count { font-size: 10px; color: var(--muted); }
   .cal-day-tasks { margin-top: 12px; }
+
+  /* Login screen */
+  #login-screen {
+    position: fixed; inset: 0; background: var(--bg);
+    z-index: 200; display: flex; align-items: center; justify-content: center;
+  }
+  #login-screen.hidden { display: none; }
+  .login-box {
+    background: var(--card); padding: 32px; border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1); text-align: center;
+    width: 320px; max-width: 90%;
+  }
+  .login-box h2 { margin-bottom: 20px; font-size: 20px; color: var(--accent); }
+  .login-box input {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+    border-radius: 6px; font-size: 16px; text-align: center; margin-bottom: 12px;
+  }
+  .login-box input:focus { outline: none; border-color: var(--accent); }
+  .login-box button {
+    width: 100%; padding: 10px; background: var(--accent); color: #fff;
+    border: none; border-radius: 6px; font-size: 14px; cursor: pointer;
+  }
+  .login-box button:hover { opacity: 0.9; }
+  .login-error { color: var(--danger); font-size: 13px; margin-top: 8px; min-height: 20px; }
+
+  /* Mobile responsive */
+  @media (max-width: 640px) {
+    header { padding: 10px 12px; }
+    header h1 { font-size: 15px; }
+    .header-actions { gap: 4px; flex-wrap: wrap; }
+    .header-actions button { padding: 6px 8px; font-size: 11px; }
+
+    .tabs { padding: 0 4px; }
+    .tab { padding: 8px 10px; font-size: 13px; min-height: 44px; }
+
+    main { padding: 8px; }
+
+    /* Hide grid headers on mobile */
+    .task-grid-header { display: none; }
+
+    /* Collapse task row to fewer columns */
+    .task-row {
+      grid-template-columns: 28px 1fr auto 28px;
+      padding: 8px 10px;
+    }
+    .task-row .inline-date,
+    .task-row .inline-priority,
+    .task-row .inline-recurrence { display: none; }
+
+    /* Drawer full-width on mobile */
+    .drawer { width: 100%; }
+    .detail-grid { grid-template-columns: 1fr; }
+
+    /* Ensure touch targets are at least 44px */
+    .section-header { min-height: 44px; }
+    .task-row { min-height: 44px; }
+    .tab { min-height: 44px; }
+  }
 </style>
 </head>
 <body>
 
+<div id="login-screen" class="hidden">
+  <div class="login-box">
+    <h2>Work Planner</h2>
+    <input type="password" id="login-pin" placeholder="Enter PIN"
+      onkeydown="if(event.key==='Enter')submitLogin()">
+    <button onclick="submitLogin()">Login</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
 <header>
   <h1>Work Planner</h1>
   <div class="header-actions">
+    <button onclick="refreshTasks()">Refresh</button>
     <button onclick="openSummary()">Summary</button>
     <button onclick="openInbox()">Inbox</button>
     <button onclick="showDelegated()">Delegated</button>
@@ -363,20 +449,73 @@ const API = '';
 let allData = null;
 let activeTab = 'all';
 const collapsedSections = new Set();
+const expandedSubtasks = new Set();
 let allTags = [];
+
+// ---- Auth ----
+
+function showLogin() {
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('login-pin').focus();
+}
+
+function hideLogin() {
+  document.getElementById('login-screen').classList.add('hidden');
+}
+
+async function submitLogin() {
+  const pin = document.getElementById('login-pin').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+  try {
+    const res = await fetch(`${API}/api/login`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({pin})
+    });
+    if (res.ok) {
+      localStorage.setItem('wp_pin', pin);
+      hideLogin();
+      fetchTasks();
+    } else {
+      errEl.textContent = 'Invalid PIN';
+    }
+  } catch (e) {
+    errEl.textContent = 'Connection error';
+  }
+}
+
+// Add auth header backup (cookie is primary, this is fallback)
+const _origFetch = window.fetch;
+window.fetch = function(url, opts = {}) {
+  const pin = localStorage.getItem('wp_pin');
+  if (pin && typeof url === 'string' && url.includes('/api/')) {
+    opts.headers = Object.assign({'X-Auth-PIN': pin}, opts.headers || {});
+  }
+  return _origFetch.call(window, url, opts);
+};
 
 // ---- Data fetching ----
 
 async function fetchTasks() {
-  const [tasksRes, tagsRes] = await Promise.all([
-    fetch(`${API}/api/tasks`),
-    fetch(`${API}/api/tags`),
-  ]);
-  allData = await tasksRes.json();
-  const tagsData = await tagsRes.json();
-  allTags = tagsData.tags || [];
-  renderTabs();
-  renderMain();
+  try {
+    const [tasksRes, tagsRes] = await Promise.all([
+      fetch(`${API}/api/tasks`),
+      fetch(`${API}/api/tags`),
+    ]);
+    if (tasksRes.status === 401) {
+      showLogin();
+      return;
+    }
+    allData = await tasksRes.json();
+    const tagsData = await tagsRes.json();
+    allTags = tagsData.tags || [];
+    hideLogin();
+    renderTabs();
+    renderMain();
+  } catch (e) {
+    console.error('Failed to fetch tasks:', e);
+  }
 }
 
 // ---- Tabs ----
@@ -422,7 +561,7 @@ function renderMain() {
 
   // Grid column header
   html += `<div class="task-grid-header">
-    <span></span><span>Task</span><span>Due</span><span>Priority</span><span>Recurrence</span><span></span>
+    <span></span><span>Task</span><span>Due</span><span>Priority</span><span>Recurrence</span><span></span><span></span>
   </div>`;
 
   for (const area of areas) {
@@ -474,8 +613,13 @@ function renderTask(areaKey, task) {
   }
 
   // Subtask progress
-  if (task.subtasks && task.subtasks.length) {
+  const hasSubtasks = task.subtasks && task.subtasks.length;
+  if (hasSubtasks) {
     const done = task.subtasks.filter(s => s.done).length;
+    const isExpanded = expandedSubtasks.has(task.id);
+    badges += `<button class="subtask-expand-btn ${isExpanded ? 'expanded' : ''}"
+      onclick="event.stopPropagation();toggleInlineSubtasks(${task.id})"
+      title="Toggle subtasks">&#9654;</button>`;
     badges += `<span class="subtask-count">${done}/${task.subtasks.length}</span>`;
   }
 
@@ -495,14 +639,48 @@ function renderTask(areaKey, task) {
     `<option value="${p}" ${recPattern===p?'selected':''}>${p ? p.charAt(0).toUpperCase()+p.slice(1) : '\u2014'}</option>`
   ).join('');
 
-  return `<div class="task-row ${task.done ? 'done' : ''}" data-id="${task.id}">
+  let html = `<div class="task-row ${task.done ? 'done' : ''}" data-id="${task.id}">
     <input type="checkbox" ${task.done ? 'checked' : ''} onclick="event.stopPropagation();toggleTask(${task.id})">
     <span class="task-title" onclick="openDetail(${task.id})">${escHtml(task.title)}</span>
     <input type="date" class="inline-date" value="${task.due_date||''}" onchange="inlineUpdate(${task.id},'due_date',this.value)" onclick="event.stopPropagation()">
     <select class="inline-priority" onchange="inlineUpdate(${task.id},'priority',this.value)" onclick="event.stopPropagation()">${priOpts}</select>
     <select class="inline-recurrence" onchange="inlineRecurrence(${task.id},this.value)" onclick="event.stopPropagation()">${recOpts}</select>
     <div class="task-badges">${badges}</div>
+    <button class="task-row-delete" onclick="event.stopPropagation();deleteTaskFromRow(${task.id})" title="Delete task">&times;</button>
   </div>`;
+  if (hasSubtasks && expandedSubtasks.has(task.id)) {
+    html += renderInlineSubtasks(task);
+  }
+  return html;
+}
+
+// ---- Inline subtasks ----
+
+function renderInlineSubtasks(task) {
+  let items = '';
+  for (const st of task.subtasks) {
+    items += `<div class="inline-subtask-item ${st.done ? 'done' : ''}">
+      <input type="checkbox" ${st.done ? 'checked' : ''}
+        onclick="event.stopPropagation();toggleInlineSubtaskDone(${st.id},${task.id})">
+      <span class="inline-subtask-text">${escHtml(st.title)}</span>
+    </div>`;
+  }
+  return `<div class="inline-subtasks">${items}</div>`;
+}
+
+function toggleInlineSubtasks(taskId) {
+  if (expandedSubtasks.has(taskId)) expandedSubtasks.delete(taskId);
+  else expandedSubtasks.add(taskId);
+  renderMain();
+}
+
+async function toggleInlineSubtaskDone(subtaskId, taskId) {
+  await fetch(`${API}/api/subtasks/${subtaskId}`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action: 'toggle'})
+  });
+  await fetchTasks();
 }
 
 // ---- Due date helpers ----
@@ -823,6 +1001,13 @@ async function saveDetail() {
 
   closeDetail();
   toast('Task updated');
+  await fetchTasks();
+}
+
+async function deleteTaskFromRow(taskId) {
+  if (!confirm('Delete this task?')) return;
+  await fetch(`${API}/api/tasks/${taskId}`, {method: 'DELETE'});
+  toast('Task deleted');
   await fetchTasks();
 }
 
@@ -1169,6 +1354,11 @@ function escHtml(s) {
 }
 function escAttr(s) {
   return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function refreshTasks() {
+  await fetchTasks();
+  toast('Refreshed');
 }
 
 function toast(msg) {
