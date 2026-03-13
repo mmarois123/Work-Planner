@@ -80,7 +80,7 @@ Move `[x]` lines to `archive/YYYY-MM/{area}.md` (on demand or via end-of-day)
 - **Delegation:** Track via `@delegated(Name)` inline tag. Follow up on stale delegations.
 - **Config:** Areas and sections defined in `config.yaml`
 - **Incoming folder:** `Incoming/` has unprocessed task files (BACKLOG.md, Sunbelt Tasks.md)
-- **Git sync:** After any skill or action that modifies task files, archive files, or notes — auto-commit and push. Run: `git add -A && git commit -m "<short description of changes>" && git push`. Do this silently at the end of the workflow without asking for confirmation.
+- **Git sync:** After ANY change to task files, archive files, or notes — whether via a skill or a direct user request — auto-commit and push. Run: `git add -A && git commit -m "<short description>" && git push`. Do this silently at the end without asking for confirmation.
 
 ## Available Skills
 
