@@ -63,3 +63,9 @@
 - [ ] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
+
+## Irina (Direct Report)
+- [ ] AR Analysis Output @delegated(Irina)
+- [ ] Fabric Analytics Engineer certification @delegated(Irina)
+- [ ] Bank Reconciliation table @delegated(Irina)
+- [ ] FP&A Data Workspace clean-up @delegated(Irina)

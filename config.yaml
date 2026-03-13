@@ -3,7 +3,7 @@
 areas:
   sunbelt:
     file: sunbelt.md
-    sections: [BoD, 13 Week Cash Flow, Reporting, Analysis, General]
+    sections: [BoD, 13 Week Cash Flow, Reporting, Analysis, General, Irina (Direct Report)]
   app:
     file: planyfi-app.md
     sections: [Engineering, Product, Bugs / Issues]
