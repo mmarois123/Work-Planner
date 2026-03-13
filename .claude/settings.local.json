@@ -1,18 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(bash:*)",
-      "Bash(command:*)",
-      "Bash(cat:*)",
-      "WebSearch",
-      "Bash(python:*)",
-      "Bash(mv:*)",
-      "Bash(rm:*)",
-      "Bash(rmdir Work-Planner:*)",
-      "Bash(test:*)",
-      "Bash(git:*)",
+      "Bash",
       "Edit",
-      "Write"
+      "Write",
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch",
+      "Agent",
+      "Skill"
     ]
   }
 }

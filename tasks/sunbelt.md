@@ -37,7 +37,7 @@
 - [ ] Add quarter/year view to balance sheet
 - [ ] Sales Reporting
   - [ ] Meet with Gary re: BD Dashboard example from Ron/Scott
-  - [ ] Initial mock-up of Quote > Order flow
+  - [ ] Initial mock-up of Quote \> Order flow
 - Scheduled Production in Praxis
   - Is there a day each week where schedules need to be updated (like WIP)? Or can they remove/replace projects a day+ later?
   - Is there direction to have schedules filled through a certain timeframe (2-4 months)?
@@ -45,7 +45,7 @@
 ## Analysis
 - [ ] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
-  - $ / Factor analysis
+  - \$ / Factor analysis
 - [ ] Propose labor utilization % targets to Bob based on budget
 - [ ] Analyze labor and material cost for Feb vs Jan vs PY
   - Volume/Mix/Margin analysis month over month and vs PY (Material/Labor/OH and overall)
@@ -53,8 +53,8 @@
 ## General
 - [ ] Build safety metrics dashboard with Marci
   - LTIR, TRIR, DART (Days Away, Lost Time)
-  - # lost time incidents, Hours worked (from TCP)
-  - # incidents (OSHA log, Safety coordinator)
+  - \# lost time incidents, Hours worked (from TCP)
+  - \# incidents (OSHA log, Safety coordinator)
   - Internal log (type, job transfer), Compliance Map, Claims lag time
   - Schedule meeting re: Lost Time, Incidents, Workers Comp + Warranty w/ Robert
 - [ ] Document and standardize monthly WIP reconciliation process
@@ -63,14 +63,14 @@
   - Do we need to adjust Labor/OH %'s for WIP? (per Demi question)
 - [ ] Ron - Sales & Executive Dashboard
   - Quote Turnaround Days metric (by Plant, Salesperson, Difficulty)
-  - Quote $, Factor, Order $, Factor
+  - Quote \$, Factor, Order \$, Factor
   - Open Quotes breakdown: Plant, Difficulty, Fleet/Custom
   - Weekly/monthly high-level: Quotes/Orders/Invoices, Quote Turnaround, Total Backlog (Orders + Line Time), Revenue/GP/EBITDA, Safety
 - [ ] Define CRM & marketing KPI requirements with Gary
-  - CRM Pipeline: non-qualified to qualified dealers (Frank), type of building, plant, $ Quoted > $ Sold
-  - Marketing KPI: analytics from website, NPM, Google, LinkedIn; Pre-CRM leads > monthly
+  - CRM Pipeline: non-qualified to qualified dealers (Frank), type of building, plant, \$ Quoted \> \$ Sold
+  - Marketing KPI: analytics from website, NPM, Google, LinkedIn; Pre-CRM leads \> monthly
   - Activity-based KPIs
-  - Bring in updated CRM data > create mock-up based on conversation
+  - Bring in updated CRM data \> create mock-up based on conversation
   - Follow up with Gary/Toni on suggested KPIs and marketing-related data
 - [ ] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations
 - [ ] Add Britco, C&B, NWBS detailed account information
