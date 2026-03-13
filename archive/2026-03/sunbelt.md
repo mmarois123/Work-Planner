@@ -30,3 +30,10 @@
 - Build cost & margin variance analysis report
 - Analyze labor and material cost Feb vs Jan vs PY
 - Meet with Gary regarding BD Dashboard example from Ron/Scott
+
+## 2026-03-13 — Archived
+- [x] Monthly slide: % of materials purchased Corporate vs Local (trend chart)
+  - Figure out how to track over time
+  - Frank does a manual split based on his experience
+- [x] Sanity check 13WCF against budgeted or expected high-level cash flow
+  - Irina taking on more work (13WCF, Praxis refresh, etc.)

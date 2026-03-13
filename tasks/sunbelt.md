@@ -3,9 +3,6 @@
 ## BoD
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
 - [ ] Schedule Q2 metrics review with each department head
-- [ ] Monthly slide: % of materials purchased Corporate vs Local (trend chart)
-  - Figure out how to track over time
-  - Frank does a manual split based on his experience
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -15,8 +12,6 @@
 - [ ] Fix Payroll/Bonus section
 - [ ] Create Daily cash balances (book cash) plotted in a graph
 - [ ] Add Weekly Plant targets to cash flow
-- [ ] Sanity check 13WCF against budgeted or expected high-level cash flow
-  - Irina taking on more work (13WCF, Praxis refresh, etc.)
 
 ## Reporting
 - [ ] Create bar chart with variances visual from sample pbix (visual calcs)
