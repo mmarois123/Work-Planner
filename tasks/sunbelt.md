@@ -6,8 +6,8 @@
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
-- [ ] Update Property Taxes with updated list from Wendy Teams
-- [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
+  - [ ] Update Property Taxes with updated list from Wendy Teams
+  - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Update AR RF logic
 - [ ] Fix Payroll/Bonus section
 - [ ] Create Daily cash balances (book cash) plotted in a graph
@@ -15,20 +15,13 @@
 
 ## Reporting
 - [ ] Create bar chart with variances visual from sample pbix (visual calcs)
-- [ ] Bob — Reporting sync
-  - [ ] Ask Dan King about Material Cost % estimates
-  - Which direction to head with reporting, any issues bubbling up?
-  - Incorporate weekly labor metrics for backup to LJ
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
   - [ ] Add MR Steel Invoicing from Sage
   - [ ] Add dates to Current and Previous WIP in card visual
   - [ ] Use historical backlog in card for Line Time / Drawings
   - [ ] Create override functionality for detail table if date is selected aside from timeframe
-  - [ ] Create Scheduled Production page with factor for future looking
   - [ ] Add Factors in charts / option to add factors
-  - [ ] WIP Collection: Integrate with Demi
-  - [ ] WIP Collection: Create Monthly Approval or Review process (in Praxis?)
 - [ ] Add quarter/year view to balance sheet
 - [ ] Sales Reporting
   - [ ] Meet with Gary re: BD Dashboard example from Ron/Scott
@@ -56,6 +49,7 @@
   - WIP % by project, Price per project
   - Material, Labor, OH % — should these change frequently? Quarterly? Revisit in April
   - Do we need to adjust Labor/OH %'s for WIP? (per Demi question)
+  - [ ] WIP Collection: Integrate with Demi and create monthly approval/review process (Praxis?)
 - [ ] Ron - Sales & Executive Dashboard
   - Quote Turnaround Days metric (by Plant, Salesperson, Difficulty)
   - Quote \$, Factor, Order \$, Factor

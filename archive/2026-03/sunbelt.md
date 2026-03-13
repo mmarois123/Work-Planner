@@ -37,3 +37,8 @@
   - Frank does a manual split based on his experience
 - [x] Sanity check 13WCF against budgeted or expected high-level cash flow
   - Irina taking on more work (13WCF, Praxis refresh, etc.)
+- [x] Bob — Reporting sync
+  - [x] Ask Dan King about Material Cost % estimates
+  - Which direction to head with reporting, any issues bubbling up?
+  - Incorporate weekly labor metrics for backup to LJ
+- [x] Create Scheduled Production page with factor for future looking
