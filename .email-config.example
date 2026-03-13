@@ -1,0 +1,6 @@
+{
+  "email": "your-task-inbox@gmail.com",
+  "app_password": "xxxx xxxx xxxx xxxx",
+  "imap_server": "imap.gmail.com",
+  "imap_port": 993
+}

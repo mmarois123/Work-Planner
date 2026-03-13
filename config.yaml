@@ -1,0 +1,14 @@
+# Work Planner Configuration
+
+areas:
+  sunbelt:
+    file: sunbelt.md
+    sections: [BoD, 13 Week Cash Flow, Reporting, Analysis, General]
+  app:
+    file: planyfi-app.md
+    sections: [Engineering, Product, Bugs / Issues]
+  marketing:
+    file: planyfi-marketing.md
+    sections: [Campaigns, Content, Analytics]
+
+# Sync: just use git
