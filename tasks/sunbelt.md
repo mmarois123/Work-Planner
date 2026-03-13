@@ -23,9 +23,6 @@
   - [ ] Create override functionality for detail table if date is selected aside from timeframe
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
-- [ ] Sales Reporting
-  - [ ] Meet with Gary re: BD Dashboard example from Ron/Scott
-  - [ ] Initial mock-up of Quote \> Order flow
 - Scheduled Production in Praxis
   - Is there a day each week where schedules need to be updated (like WIP)? Or can they remove/replace projects a day+ later?
   - Is there direction to have schedules filled through a certain timeframe (2-4 months)?
@@ -55,13 +52,14 @@
   - Quote \$, Factor, Order \$, Factor
   - Open Quotes breakdown: Plant, Difficulty, Fleet/Custom
   - Weekly/monthly high-level: Quotes/Orders/Invoices, Quote Turnaround, Total Backlog (Orders + Line Time), Revenue/GP/EBITDA, Safety
-- [ ] Define CRM & marketing KPI requirements with Gary
-  - CRM Pipeline: non-qualified to qualified dealers (Frank), type of building, plant, \$ Quoted \> \$ Sold
-  - Marketing KPI: analytics from website, NPM, Google, LinkedIn; Pre-CRM leads \> monthly
+- [ ] CRM, Sales & Marketing Dashboard
+  - [ ] Meet with Gary re: BD Dashboard example from Ron/Scott
+  - [ ] Initial mock-up of Quote \> Order flow
+  - [ ] Integrate Toni's GA data into dashboard
+  - CRM Pipeline: dealers (Frank), building type, plant, \$ Quoted \> \$ Sold
+  - Marketing KPI: website analytics, NPM, Google, LinkedIn; Pre-CRM leads \> monthly
   - Activity-based KPIs
-  - Bring in updated CRM data \> create mock-up based on conversation
-  - Follow up with Gary/Toni on suggested KPIs and marketing-related data
+  - Bring in updated CRM data \> create mock-up
 - [ ] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
-- [ ] Integrate Toni's GA data into CRM dashboard

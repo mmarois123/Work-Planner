@@ -42,3 +42,7 @@
   - Which direction to head with reporting, any issues bubbling up?
   - Incorporate weekly labor metrics for backup to LJ
 - [x] Create Scheduled Production page with factor for future looking
+- [x] Follow up with Gary/Toni on suggested KPIs and marketing-related data
+- [x] Sales Reporting (consolidated into CRM, Sales & Marketing Dashboard)
+- [x] Define CRM & marketing KPI requirements with Gary (consolidated)
+- [x] Integrate Toni's GA data into CRM dashboard (consolidated)
