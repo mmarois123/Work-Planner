@@ -9,7 +9,10 @@
       "Bash(mv:*)",
       "Bash(rm:*)",
       "Bash(rmdir Work-Planner:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(git:*)",
+      "Edit",
+      "Write"
     ]
   }
 }
