@@ -14,6 +14,7 @@
 - [ ] Add Weekly Plant targets to cash flow
 
 ## Reporting
+- [ ] Company scorecards by month (due: 2026-03-16)
 - [ ] Create bar chart with variances visual from sample pbix (visual calcs)
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days

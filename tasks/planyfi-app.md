@@ -5,12 +5,11 @@
 - [ ] Provisioning layer — automate per-user Fly.io instance creation via API
 - [ ] Custom domain routing — map user.planyfi.app to each user's Fly instance
 - [ ] Data export — let users download their SQLite file
-- [ ] Remove Dexie.js / IndexedDB dependency (fully replaced by SQLite)
+- [x] Remove Dexie.js / IndexedDB dependency (fully replaced by SQLite)
 - [ ] Add server-side userId validation (currently client-only)
 - [ ] API error handling audit — consistent error shapes across all routes
 - [ ] Fly.io staging environment
 - [ ] Holding price refresh — auto-fetch on load, show staleness indicator
-- [ ] Account merge preview — show diff before confirming
 - [x] Test coverage — useMultiYearProjection hook
 
 ## Product
@@ -21,23 +20,12 @@
 - [ ] Rent vs. Buy — pull property data by address (Zillow/Redfin API or manual entry)
 - [ ] Rent vs. Buy — surface as linked tool inside Scenario Planner HOME_PURCHASE event and Plan
 - [ ] Hero section — net worth projection chart above the fold
-- [ ] Scenario cards — sparklines + key metrics (FIRE date, projected NW at 65)
-- [ ] Guided wizards — Home Purchase, Coast FIRE, Job Change, Baby, Sabbatical
+- [ ] Guided wizards — Home Purchase
 - [ ] Scenario comparison — side-by-side delta view of two scenarios
-- [ ] Milestone events — FINANCIAL_INDEPENDENCE, BABY_BORN with end conditions
-- [ ] Asset allocation donut — target vs. actual drift indicator
-- [ ] Path to FI widget — progress bar + projected date
-- [ ] Income tax summary card — estimated annual burden per plan
-- [ ] LLM-powered transaction categorization via Claude API
-- [ ] CSV import — support multiple bank formats
-- [ ] Recurring transaction detection — flag likely recurring items
 - [ ] Mobile-responsive layout pass
-- [ ] Shareable scenario links — read-only, time-limited
-- [ ] PDF/PNG export of projection charts
 - [ ] Quick-compare button — "What if I retire 5 years earlier?"
 - [ ] Monte Carlo simulation mode — return variance modeling
 - [ ] Interactive demo — hosted read-only instance with sample data
-- [ ] Public API for power users
 - [x] Net worth projection validation — audit all NW and accompanying values across future years; establish regression test process
 - [x] Interactive NW chart — click a data point to see account breakdown at that date
 - [x] Effective date timeline visualization
