@@ -66,7 +66,7 @@
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 
-[ ] Create survey for power bi users to solicit feedback, get ideas for future features
+- [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 
 ## Irina (Direct Report)
 - [ ] AR Analysis Output @delegated(Irina)
