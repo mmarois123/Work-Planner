@@ -1,13 +1,13 @@
 # Planyfi — App
 
 ## Engineering
-- [ ] Authentication — NextAuth.js, replace client-side userId context with real sessions
-- [ ] Provisioning layer — automate per-user Fly.io instance creation via API
-- [ ] Custom domain routing — map user.planyfi.app to each user's Fly instance
+- [x] Authentication — Clerk, replace client-side userId context with real sessions
+- [ ] Provisioning layer — automate per-user Railway instance creation via API
+- [ ] Custom domain routing — map user.planyfi.app to each user's Railway instance
 - [ ] Data export — let users download their SQLite file
-- [ ] Add server-side userId validation (currently client-only)
+- [x] Add server-side userId validation (via Clerk auth() in all API routes)
 - [ ] API error handling audit — consistent error shapes across all routes
-- [ ] Fly.io staging environment
+- [ ] Railway staging environment
 
 ## Product
 - [ ] Onboarding module — prompt for age, family size, location; auto-populate income/expense/savings benchmarks from US Census / BLS data (baked in at build time); user selects percentile (25th, median, 75th, 90th); alternative path to start from scratch with guided tutorial through accounts setup and current plan setup
