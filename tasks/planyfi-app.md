@@ -10,7 +10,7 @@
 - [ ] Railway staging environment
 
 ## Product
-- [ ] Onboarding module — prompt for age, family size, location; auto-populate income/expense/savings benchmarks from US Census / BLS data (baked in at build time); user selects percentile (25th, median, 75th, 90th); alternative path to start from scratch with guided tutorial through accounts setup and current plan setup
+- [x] Onboarding module — prompt for age, family size, location; auto-populate income/expense/savings benchmarks from US Census / BLS data (baked in at build time); user selects percentile (25th, median, 75th, 90th); alternative path to start from scratch with guided tutorial through accounts setup and current plan setup
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
 - [ ] Rent vs. Buy — pull property data by address (Zillow/Redfin API or manual entry)
