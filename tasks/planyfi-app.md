@@ -6,7 +6,7 @@
 - [ ] Custom domain routing — map user.planyfi.app to each user's Railway instance
 - [ ] Data export — let users download their SQLite file
 - [x] Add server-side userId validation (via Clerk auth() in all API routes)
-- [ ] API error handling audit — consistent error shapes across all routes
+- [x] API error handling audit — consistent error shapes across all routes
 - [ ] Railway staging environment
 
 ## Product
@@ -15,10 +15,9 @@
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
 - [ ] Rent vs. Buy — pull property data by address (Zillow/Redfin API or manual entry)
 - [ ] Rent vs. Buy — surface as linked tool inside Scenario Planner HOME_PURCHASE event and Plan
-- [ ] Hero section — net worth projection chart above the fold
 - [ ] Scenario comparison — side-by-side delta view of two scenarios
 - [ ] Mobile-responsive layout — full mobile compatibility pass across all pages and components; touch-friendly interactions throughout
-- [ ] Input field auto-select — all numeric and text inputs highlight on focus for faster editing; especially important in Plan and Accounts where users frequently overwrite values
+- [x] Input field auto-select — all numeric and text inputs highlight on focus for faster editing; especially important in Plan and Accounts where users frequently overwrite values
 - [ ] Quick-compare button — "What if I retire 5 years earlier?"
 - [ ] Monte Carlo simulation mode — return variance modeling
 - [ ] Interactive demo — hosted read-only instance with sample data
