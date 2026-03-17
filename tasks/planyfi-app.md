@@ -18,6 +18,8 @@
 - [ ] Scenario comparison — side-by-side delta view of two scenarios
 - [ ] Mobile-responsive layout — full mobile compatibility pass across all pages and components; touch-friendly interactions throughout
 - [x] Input field auto-select — all numeric and text inputs highlight on focus for faster editing; especially important in Plan and Accounts where users frequently overwrite values
+- [ ] Integrate US census data more deeply into app
+- [ ] Add view mode for filtering/browsing different demographics
 - [ ] Quick-compare button — "What if I retire 5 years earlier?"
 - [ ] Monte Carlo simulation mode — return variance modeling
 - [ ] Interactive demo — hosted read-only instance with sample data
