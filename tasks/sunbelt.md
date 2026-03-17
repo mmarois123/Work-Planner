@@ -15,7 +15,8 @@
 
 ## Reporting
 - [ ] Add monthly view to company scorecards
-- [ ] Set up every-other-hour GL/Sage data refresh in PBI/Fabric pipeline
+- [x] Set up every-other-hour GL/Sage data refresh in PBI/Fabric pipeline
+- [ ] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
   - [ ] Add MR Steel Invoicing from Sage
