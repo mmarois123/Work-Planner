@@ -8,7 +8,7 @@
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
   - [ ] Update Property Taxes with updated list from Wendy Teams
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
-- [ ] Update AR RF logic
+- [ ] Update AR RF logic (due: 2026-03-23)
 - [ ] Fix Payroll/Bonus section
 - [ ] Create Daily cash balances (book cash) plotted in a graph
 - [ ] Add Weekly Plant targets to cash flow
@@ -71,7 +71,7 @@
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 
 ## Irina (Direct Report)
-- [ ] AR Analysis Output @delegated(Irina)
+- [ ] AR Analysis Output (due: 2026-03-23) @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] Bank Reconciliation table @delegated(Irina)
 - [ ] FP&A Data Workspace clean-up @delegated(Irina)
