@@ -31,6 +31,7 @@
   - Is there direction to have schedules filled through a certain timeframe (2-4 months)?
 
 ## Analysis
+- [ ] Run full analysis of effect of factor on materials, labor, and gross profit
 - [ ] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
   - \$ / Factor analysis
