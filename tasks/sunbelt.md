@@ -14,7 +14,7 @@
 - [ ] Add Weekly Plant targets to cash flow
 
 ## Reporting
-- [ ] Company scorecards by month (due: 2026-03-16)
+- [x] Company scorecards by month (due: 2026-03-16)
 - [ ] Add monthly view to company scorecards
 - [ ] Set up every-other-hour GL/Sage data refresh in PBI/Fabric pipeline
 - [ ] Create bar chart with variances visual from sample pbix (visual calcs)
