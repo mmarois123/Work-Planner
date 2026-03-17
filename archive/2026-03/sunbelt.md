@@ -46,3 +46,8 @@
 - [x] Sales Reporting (consolidated into CRM, Sales & Marketing Dashboard)
 - [x] Define CRM & marketing KPI requirements with Gary (consolidated)
 - [x] Integrate Toni's GA data into CRM dashboard (consolidated)
+
+## 2026-03-17 — Completed
+- [x] Company scorecards by month (due: 2026-03-16)
+- [x] Create bar chart with variances visual from sample pbix (visual calcs)
+- [x] Bank Reconciliation table @delegated(Irina)

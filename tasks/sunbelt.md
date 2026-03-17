@@ -10,14 +10,12 @@
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] 🟠 Update AR RF logic (due: 2026-03-23)
 - [ ] Fix Payroll/Bonus section
-- [ ] Create Daily cash balances (book cash) plotted in a graph
-- [ ] Add Weekly Plant targets to cash flow
+- [ ] 🟠 Create Daily cash balances (book cash) plotted in a graph
+- [ ] 🟠 Add Weekly Plant targets to cash flow
 
 ## Reporting
-- [x] Company scorecards by month (due: 2026-03-16)
 - [ ] Add monthly view to company scorecards
 - [ ] Set up every-other-hour GL/Sage data refresh in PBI/Fabric pipeline
-- [ ] Create bar chart with variances visual from sample pbix (visual calcs)
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
   - [ ] Add MR Steel Invoicing from Sage
@@ -26,9 +24,6 @@
   - [ ] Create override functionality for detail table if date is selected aside from timeframe
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
-- Scheduled Production in Praxis
-  - Is there a day each week where schedules need to be updated (like WIP)? Or can they remove/replace projects a day+ later?
-  - Is there direction to have schedules filled through a certain timeframe (2-4 months)?
 
 ## Analysis
 - [ ] Run full analysis of effect of factor on materials, labor, and gross profit
@@ -67,11 +62,9 @@
 - [ ] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
-
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 
 ## Irina (Direct Report)
 - [ ] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
-- [ ] Bank Reconciliation table @delegated(Irina)
 - [ ] FP&A Data Workspace clean-up @delegated(Irina)
