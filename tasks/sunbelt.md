@@ -67,5 +67,6 @@
 
 ## Irina (Direct Report)
 - [ ] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)
+- [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] FP&A Data Workspace clean-up @delegated(Irina)
