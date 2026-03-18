@@ -5,6 +5,8 @@
 - [ ] Custom domain routing — map user.planyfi.app to each user's Railway instance
 - [ ] Data export — let users download their SQLite file
 - [ ] Railway staging environment
+- [ ] Build out in-app notification system
+- [ ] Trigger notification prompt when future event date elapses — ask user to update current plan with event impacts
 
 ## Product
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
