@@ -15,6 +15,7 @@
 
 ## Reporting
 - [ ] Add monthly view to company scorecards
+- [ ] Update company scorecards: add 2026 quarters, budget revenue + FC revenue for future months/quarters, and new rows for Labor and OH
 - [x] Set up every-other-hour GL/Sage data refresh in PBI/Fabric pipeline
 - [ ] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
 - [ ] Production Report Enhancements
