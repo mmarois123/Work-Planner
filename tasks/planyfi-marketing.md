@@ -14,8 +14,6 @@
 - [ ] Monthly newsletter or FIRE tips series
 
 ### Social Profiles
-- [x] X (@PlanyFI) — bio, profile pic, banner uploaded
-- [x] LinkedIn (linkedin.com/company/planyfi) — tagline, overview, logo, cover image uploaded
 - [ ] Create first X post — introduce PlanyFI, link to landing page
 - [ ] Create first LinkedIn post — announce PlanyFI, link to landing page
 - [ ] Pin a "What is PlanyFI?" tweet on X
@@ -38,7 +36,6 @@
 ## Content
 
 ### Planned
-- [x] "Why I built PlanyFI" — founder story (high priority for launch)
 - [ ] "The problem with spreadsheet financial planning" — problem-aware traffic
 - [ ] "How to build a 10-year financial model for your life" — top of funnel
 - [ ] "Barista FIRE vs Coast FIRE — what's the difference?" — SEO keyword gap

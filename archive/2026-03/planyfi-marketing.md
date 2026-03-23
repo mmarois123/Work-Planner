@@ -29,3 +29,10 @@
 
 ### Analytics
 - [x] Vercel Analytics enabled via adapter config
+
+## 2026-03-23 — Archived
+### Social Profiles
+- [x] X (@PlanyFI) — bio, profile pic, banner uploaded
+- [x] LinkedIn (linkedin.com/company/planyfi) — tagline, overview, logo, cover image uploaded
+### Content
+- [x] "Why I built PlanyFI" — founder story

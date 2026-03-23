@@ -51,3 +51,8 @@
 - [x] Company scorecards by month (due: 2026-03-16)
 - [x] Create bar chart with variances visual from sample pbix (visual calcs)
 - [x] Bank Reconciliation table @delegated(Irina)
+
+## 2026-03-23 — Archived
+- [x] Add monthly view to company scorecards
+- [x] Update company scorecards: add 2026 quarters, budget revenue + FC revenue for future months/quarters, and new rows for Labor and OH
+- [x] Set up every-other-hour GL/Sage data refresh in PBI/Fabric pipeline
