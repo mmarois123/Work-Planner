@@ -4,7 +4,7 @@
 
 ## 13 Week Cash Flow
 
-## Changes to Whitley: Schedule vs Budget — Cash Flow Impact
+### Changes to Whitley: Schedule vs Budget — Cash Flow Impact
 
 Using schedule vs budget for Whitley drives short-term cash consumption, with revenue recovery expected in May/Jun. Key dynamics to document:
 
