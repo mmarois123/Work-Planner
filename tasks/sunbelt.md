@@ -25,12 +25,9 @@
 
 ## Analysis
 - [ ] Run full analysis of effect of factor on materials, labor, and gross profit
-- [ ] Review with Bob: factor impact from baseline
-- [ ] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [ ] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
   - \$ / Factor analysis
-- [ ] Propose labor utilization % targets to Bob based on budget
 - [ ] Analyze labor and material cost for Feb vs Jan vs PY
   - Volume/Mix/Margin analysis month over month and vs PY (Material/Labor/OH and overall)
 
@@ -66,6 +63,9 @@
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 
 ## Bob Review
+- [ ] Review with Bob: factor impact from baseline
+- [ ] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
+- [ ] Propose labor utilization % targets to Bob based on budget
 
 ## Irina (Direct Report)
 - [x] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)
