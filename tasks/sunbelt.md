@@ -65,6 +65,8 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 
+## Bob Review
+
 ## Irina (Direct Report)
 - [x] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)
 - [ ] 🟠 Update AR RF logic (due: 2026-03-23) @delegated(Irina)
