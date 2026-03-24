@@ -35,11 +35,11 @@
 - [ ] Monte Carlo simulation mode — return variance modeling
 - [ ] Interactive demo — hosted read-only instance with sample data
 - [ ] Hide or badge future-event-created accounts ($0 balance) until the event occurs (e.g., "Buy a Home — Mortgage")
-- [ ] Fix "Life Ex.." label truncation on event timeline; clarify visual state for hidden/disabled events
+- [x] Fix "Life Ex.." label truncation on event timeline; clarify visual state for hidden/disabled events
 
 ## Bugs / Issues
-- [ ] Onboarding: Benchmark 50th percentile creates $3,255/yr budget deficit on day 1 — new users see negative Net Remaining immediately after completing onboarding
-- [ ] Onboarding: if couple or family selected, prompt to add partner and dependents to profile (with option to edit names later)
+- [x] Onboarding: Benchmark 50th percentile creates $3,255/yr budget deficit on day 1 — new users see negative Net Remaining immediately after completing onboarding
+- [x] Onboarding: if couple or family selected, prompt to add partner and dependents to profile (with option to edit names later)
 - [ ] Onboarding: set expenses to Joint by default
 - [ ] Current Plan: remove option to add Employer Match
 - [ ] Rename "Guilt-Free Expenses" — consider "Discretionary Expenses" or alternative
