@@ -53,6 +53,7 @@
   - [ ] Meet with Gary re: BD Dashboard example from Ron/Scott
   - [ ] Initial mock-up of Quote \> Order flow
   - [ ] Integrate Toni's GA data into dashboard
+  - [ ] Review Toni's marketing KPI format and integrate into dashboard
   - CRM Pipeline: dealers (Frank), building type, plant, \$ Quoted \> \$ Sold
   - Marketing KPI: website analytics, NPM, Google, LinkedIn; Pre-CRM leads \> monthly
   - Activity-based KPIs
