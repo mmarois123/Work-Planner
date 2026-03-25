@@ -24,3 +24,7 @@ Narrative thread: this isn't deterioration — it's a timing effect from executi
 ## Analysis
 
 ## General
+
+### Praxis Schedule Confidence Indicator
+
+Idea: add a checkbox to Praxis schedule indicating whether a given week is scheduled or not. Alternative/complement: show a confidence interval of x% or $ within plant target amount for unscheduled weeks.

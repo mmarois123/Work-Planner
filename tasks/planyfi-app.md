@@ -16,6 +16,7 @@
 - [ ] Onboarding accessibility — add `aria-label`/`htmlFor` to form inputs, `aria-expanded` on partner checkbox, keyboard support (Tab+Enter) to Demographics percentile table rows
 - [ ] Onboarding: Validate filing status against partner status — "Married Filing Jointly" allowed with `hasPartner=false`, causing incorrect tax calculations
 - [ ] Onboarding: Trim and validate partner name — whitespace-only strings accepted, creating invalid household members. Also block zero-income scenario for retired users (`grossSalary=0` rejected by validation)
+- [x] Employer match — add `employerMatchPercent` field to 401K/HSA rows with percentage-based matching, route combined amount to linked account
 
 ## Product
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
@@ -24,6 +25,11 @@
 - [ ] Onboarding: Add post-skip empty state CTA — after skipping onboarding, empty dashboard has no link back to onboarding; user stranded with "No plan data"
 - [ ] Onboarding: Mobile responsive fixes — `grid-cols-2` without breakpoint on Filing Status/State dropdowns (cramped at 375px); progress bar step labels overflow at mobile width
 - [ ] Onboarding: Minor input/UX polish — validate negative balances on non-debt accounts, explain 50% savings rate cap, warn when expenses exceed take-home, indicate which selected accounts still have $0 balance
+- [ ] Add mortgage calculator: show 30 vs 15 yr vs 5/1 ARM, pull current rates, allow user to adjust overall interest rate to compare impact across loan types
+- [ ] Enhance home purchase calculator: model after Zillow, add maintenance and other homeownership costs
+- [ ] Research (via Claude) what mortgage info a homeowner typically has access to — use to inform current plan input fields
+- [ ] Add message to rent vs buy and home buying event: "Renting an equivalent home for $x/month or less would be a better financial decision over 10 years"
+- [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
 - [ ] Rent vs. Buy — pull property data by address (Zillow/Redfin API or manual entry)
 - [ ] Rent vs. Buy — surface as linked tool inside Scenario Planner HOME_PURCHASE event and Plan
@@ -40,6 +46,6 @@
 ## Bugs / Issues
 - [x] Onboarding: Benchmark 50th percentile creates $3,255/yr budget deficit on day 1 — new users see negative Net Remaining immediately after completing onboarding
 - [x] Onboarding: if couple or family selected, prompt to add partner and dependents to profile (with option to edit names later)
-- [ ] Onboarding: set expenses to Joint by default
-- [ ] Current Plan: remove option to add Employer Match
+- [x] Onboarding: set expenses to Joint by default
+- [x] Current Plan: remove option to add Employer Match
 - [ ] Rename "Guilt-Free Expenses" — consider "Discretionary Expenses" or alternative
