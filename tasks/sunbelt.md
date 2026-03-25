@@ -11,6 +11,7 @@
 - [ ] Fix Payroll/Bonus section
 - [ ] 🟠 Create Daily cash balances (book cash) plotted in a graph
 - [ ] 🟠 Add Weekly Plant targets to cash flow
+- [ ] Add $5m to Revolver for 4/3 in 13WCF — send out by EOD [P1] (due: 2026-03-25)
 
 ## Reporting
 - [ ] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
@@ -25,6 +26,7 @@
 
 ## Analysis
 - [ ] Run full analysis of effect of factor on materials, labor, and gross profit
+- [ ] Build material and labor % logic into FC model
 - [ ] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
   - \$ / Factor analysis
@@ -67,6 +69,7 @@
 - [ ] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [ ] Propose labor utilization % targets to Bob based on budget
 - [ ] Get from Bob: Q3 FC and unscheduled backlog factor + buffer analysis; include % line time
+- [ ] Prep Q2 FC for Bob to review with Littlejohn by 3/30 [P1] (due: 2026-03-27)
 
 ## Irina (Direct Report)
 - [x] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)
