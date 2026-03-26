@@ -56,3 +56,8 @@
 - [x] Add monthly view to company scorecards
 - [x] Update company scorecards: add 2026 quarters, budget revenue + FC revenue for future months/quarters, and new rows for Labor and OH
 - [x] Set up every-other-hour GL/Sage data refresh in PBI/Fabric pipeline
+
+## 2026-03-26 — Archived
+- [x] Add $5m to Revolver for 4/3 in 13WCF [P1] (due: 2026-03-25)
+- [x] Analyze labor and material cost for Feb vs Jan vs PY (Volume/Mix/Margin analysis)
+- [x] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)

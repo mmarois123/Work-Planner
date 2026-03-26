@@ -32,3 +32,27 @@
 - [x] Improve chart Y-axis scaling in "Real" mode
 ### Bugs / Issues
 - [x] EventTimeline and DetailedProjectionBreakdown return null on empty data
+
+## 2026-03-26 — Archived
+### Engineering
+- [x] Build out in-app notification system
+- [x] Trigger notification prompt when future event date elapses
+- [x] Onboarding: Make data writes atomic (transaction/rollback on partial failure)
+- [x] Onboarding: Fix double-click race condition on handleDemographicsNext
+- [x] Onboarding: Add loading indicator during initial guard check
+- [x] Onboarding: Await router.push() after submit
+- [x] Onboarding: Validate filing status against partner status
+- [x] Onboarding: Trim and validate partner name + block zero-income retired users
+- [x] Employer match — employerMatchPercent field for 401K/HSA
+### Product
+- [x] Onboarding: Add inline validation error messages + fix disabled button opacity
+- [x] Onboarding: Fix salary placeholder visibility (dark theme)
+- [x] Onboarding: Mobile responsive fixes (grid-cols-2, progress bar overflow)
+- [x] Onboarding: Minor input/UX polish (negative balances, savings cap, $0 accounts)
+- [x] Fix "Life Ex.." label truncation on event timeline
+### Bugs / Issues
+- [x] Onboarding: Benchmark 50th percentile budget deficit on day 1
+- [x] Onboarding: prompt to add partner/dependents for couple/family
+- [x] Onboarding: set expenses to Joint by default
+- [x] Current Plan: remove option to add Employer Match
+- [x] Rename "Guilt-Free Expenses" to "Discretionary Expenses"

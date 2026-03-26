@@ -11,7 +11,6 @@
 - [ ] Fix Payroll/Bonus section
 - [ ] 🟠 Create Daily cash balances (book cash) plotted in a graph
 - [ ] 🟠 Add Weekly Plant targets to cash flow
-- [x] Add $5m to Revolver for 4/3 in 13WCF — send out by EOD [P1] (due: 2026-03-25)
 
 ## Reporting
 - [ ] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
@@ -30,8 +29,6 @@
 - [ ] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
   - \$ / Factor analysis
-- [x] Analyze labor and material cost for Feb vs Jan vs PY
-  - Volume/Mix/Margin analysis month over month and vs PY (Material/Labor/OH and overall)
 
 ## General
 - [ ] Build safety metrics dashboard with Marci
@@ -72,7 +69,6 @@
 - [ ] Prep Q2 FC for Bob to review with Littlejohn by 3/30 [P1] (due: 2026-03-27)
 
 ## Irina (Direct Report)
-- [x] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)
 - [ ] 🟠 Update AR RF logic (due: 2026-03-27) @delegated(Irina)
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
