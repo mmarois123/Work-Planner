@@ -25,6 +25,7 @@
 - [ ] Quick-compare button — "What if I retire 5 years earlier?"
 - [ ] Monte Carlo simulation mode — return variance modeling
 - [ ] Interactive demo — hosted read-only instance with sample data
+- [ ] Add contact, submit feedback, and support functionality to app
 - [ ] Hide or badge future-event-created accounts ($0 balance) until the event occurs (e.g., "Buy a Home — Mortgage")
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
 

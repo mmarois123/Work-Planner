@@ -26,6 +26,7 @@
 ## Analysis
 - [ ] Run full analysis of effect of factor on materials, labor, and gross profit
 - [ ] 🟠 Build material and labor % logic into FC model
+- [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
   - \$ / Factor analysis
@@ -60,6 +61,8 @@
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
+- [ ] Add recurring tasks for sunbelt to work-planner
+- [ ] Try connecting to OneDrive on personal computer and use Cowork on a couple work files
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
