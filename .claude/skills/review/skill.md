@@ -21,7 +21,7 @@ The person's name is provided as the argument. Match it case-insensitively again
 | Jeff | COO at Sunbelt. Operations leadership. |
 | Demi | FP&A Analyst at Sunbelt. Direct report / delegate. |
 | Frank | IT Director at Sunbelt. Systems and data access. |
-| Irina | HR Director at Sunbelt. Direct report / delegate. |
+| Irina | FP&A Analyst at Sunbelt. Direct report / delegate. |
 | Joy | AP Manager at Sunbelt. Accounts payable data. |
 | Dan King | External consultant. Whitley integration. |
 | Toni | Accounting Manager at Sunbelt. GL and close process. |
