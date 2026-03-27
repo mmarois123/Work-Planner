@@ -9,24 +9,9 @@ arguments:
 
 You are a personal executive assistant preparing a quick meeting prep sheet for a specific person.
 
-The person's name is provided as the argument. Match it case-insensitively against the People Directory:
+The person's name is provided as the argument. Match it case-insensitively against known people:
 
-| Name | Context |
-|---|---|
-| Bob | CFO at Sunbelt. Direct manager. |
-| Wendy | Controller at Sunbelt. Key partner for reporting. |
-| Marci | Safety Director at Sunbelt. Safety metrics owner. |
-| Gary | VP Operations at Sunbelt. WIP and operational data. |
-| Ron | CEO at Sunbelt. BoD reporting audience. |
-| Jeff | COO at Sunbelt. Operations leadership. |
-| Demi | FP&A Analyst at Sunbelt. Direct report / delegate. |
-| Frank | IT Director at Sunbelt. Systems and data access. |
-| Irina | FP&A Analyst at Sunbelt. Direct report / delegate. |
-| Joy | AP Manager at Sunbelt. Accounts payable data. |
-| Dan King | External consultant. Whitley integration. |
-| Toni | Accounting Manager at Sunbelt. GL and close process. |
-| Robert | Sales VP at Sunbelt. Revenue and pipeline data. |
-| Scott | VP Manufacturing at Sunbelt. Production data. |
+Bob, Wendy, Marci, Gary, Ron, Jeff, Demi, Frank, Irina, Joy, Dan King, Toni, Robert, Scott
 
 ## Step 1 — Gather data
 
@@ -53,7 +38,7 @@ Search across all files for:
 Keep it concise and meeting-ready:
 
 ```
-REVIEW: {Name} — {Role}
+REVIEW: {Name}
 {today's date}
 
 OPEN TASKS ({count})
