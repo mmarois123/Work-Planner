@@ -28,5 +28,10 @@
 - [ ] Add contact, submit feedback, and support functionality to app
 - [ ] Hide or badge future-event-created accounts ($0 balance) until the event occurs (e.g., "Buy a Home — Mortgage")
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
+- [ ] Handling elapsed events — update current plan accordingly
+- [ ] Tighten up home buying and tracking in future events, accounts, and current plan
+- [ ] Finalize onboarding modules with 3 paths
+- [ ] Update Milestones module
+- [ ] Update event timeline
 
 ## Bugs / Issues
