@@ -43,5 +43,6 @@
 - [ ] Review all other input sections for consistency with Current Plan styling
 - [ ] Combine tickers and crypto into a single asset option with a lookup/search function
 - [ ] Redesign Accounts page to match Current Plan page style: add summary panel on side, allow balance updates at category level or broken out by asset (similar to sub-category breakout), use consistent row icons, add containers for account types/groups
+- [ ] Update FI Calculator section on financial planner page — evaluate if still needed, brainstorm improvements
 
 ## Bugs / Issues
