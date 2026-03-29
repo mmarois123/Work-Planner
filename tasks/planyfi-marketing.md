@@ -42,6 +42,7 @@
 - [ ] "How much do I need to retire at 40/45/50?" — calculator-style SEO content
 - [ ] Comparison post: "PlanyFI vs spreadsheet vs financial advisor"
 - [ ] "Session-only vs saved models — why we made the free tier full-featured" — pricing philosophy
+- [ ] "Why tracking every transaction is unhealthy" — draw parallel to calorie tracking; tracking helps short-term to build awareness, but the goal is to graduate to intuitive eating / intuitive finances
 
 ## Analytics
 - [ ] Set up Vercel Analytics dashboard and monitor traffic
