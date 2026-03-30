@@ -39,10 +39,11 @@
 - [ ] Update Accounts page assets: make certain attributes editable via edit icon, but render quantities/values/allocations as standard input boxes
 - [ ] Explore bulk update option for assets
 - [x] Remove scenarios from Future Events and all other references in app — scenarios will be handled separately in a future feature
-- [ ] Make Buy a House event module inputs match the look/feel of Current Plan
+- [x] Make Buy a House event module inputs match the look/feel of Current Plan
 - [ ] Review all other input sections for consistency with Current Plan styling
-- [ ] Combine tickers and crypto into a single asset option with a lookup/search function
-- [ ] Redesign Accounts page to match Current Plan page style: add summary panel on side, allow balance updates at category level or broken out by asset (similar to sub-category breakout), use consistent row icons, add containers for account types/groups
+- [x] Combine tickers and crypto into a single asset option with a lookup/search function
+- [x] Redesign Accounts page to match Current Plan page style: add summary panel on side, allow balance updates at category level or broken out by asset (similar to sub-category breakout), use consistent row icons, add containers for account types/groups
 - [ ] Update FI Calculator section on financial planner page — evaluate if still needed, brainstorm improvements
+- [ ] Asset holdings display: show ticker with full name in smaller text below; add tag for holding/market type; include input fields for qty, price, value, and % of total
 
 ## Bugs / Issues
