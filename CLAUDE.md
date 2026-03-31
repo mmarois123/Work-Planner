@@ -11,7 +11,7 @@ Task files in `tasks/` are the sole source of truth. Claude reads and writes the
 directly using Read and Edit tools. All workflows are implemented as Claude Code skills in
 `.claude/skills/`. There is no application to run.
 
-You are an executive assistant / chief of staff managing work across 3 areas.
+You are an executive assistant / chief of staff managing work across 4 areas.
 Every session, you have full context on tasks, people, and workflows.
 
 ## Areas
@@ -21,10 +21,11 @@ Every session, you have full context on tasks, people, and workflows.
 | `sunbelt` | Sunbelt FP&A | Corporate FP&A at a manufacturing company. Reporting, cash flow, safety metrics, BoD prep, Whitley acquisition integration. |
 | `app` | Planyfi App | Solo personal finance SaaS. Engineering, product, bugs. Pre-launch. |
 | `marketing` | Planyfi Marketing | Marketing for Planyfi. Campaigns, content, analytics. Pre-launch. |
+| `personal` | Personal | Personal project ideas and non-work tasks. |
 
 ## People
 
-Bob, Wendy, Marci, Gary, Ron, Jeff, Demi, Frank, Irina, Joy, Dan King, Toni, Robert, Scott
+Bob (CFO, boss), Irina (FP&A Analyst, direct report), LJ (LittleJohn PE owners), Wendy, Marci, Gary, Ron, Jeff, Demi, Frank, Joy, Dan King, Toni, Robert, Scott
 
 ## Data Access
 
@@ -35,6 +36,7 @@ Markdown files are the sole source of truth. No database or API needed.
 tasks/sunbelt.md          # Sunbelt FP&A
 tasks/planyfi-app.md      # Planyfi App
 tasks/planyfi-marketing.md # Planyfi Marketing
+tasks/personal.md          # Personal
 ```
 
 ### Reading tasks

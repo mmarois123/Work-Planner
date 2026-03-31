@@ -3,12 +3,15 @@
 areas:
   sunbelt:
     file: sunbelt.md
-    sections: [BoD, 13 Week Cash Flow, Reporting, Analysis, General, Irina (Direct Report)]
+    sections: [BoD, 13 Week Cash Flow, Reporting, Analysis, General, Bob Review, Irina (Direct Report)]
   app:
     file: planyfi-app.md
     sections: [Engineering, Product, Bugs / Issues]
   marketing:
     file: planyfi-marketing.md
     sections: [Campaigns, Content, Analytics]
+  personal:
+    file: personal.md
+    sections: [General]
 
 # Sync: just use git
