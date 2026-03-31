@@ -63,12 +63,12 @@
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
 - [ ] Try connecting to OneDrive on personal computer and use Cowork on a couple work files
-- [ ] LJ Data Hand-off
-  - [ ] Add cut-over dates in Praxis by company
-  - [ ] Impute factor difficulty
-  - [ ] Remove canceled orders
-  - [ ] Invoices starting 1/1/23
-  - [ ] Review Whitley, Britco, C&B, NWBS — determine if pre-acquisition data is accessible
+- [x] LJ Data Hand-off
+  - [x] Add cut-over dates in Praxis by company
+  - [x] Impute factor difficulty
+  - [x] Remove canceled orders
+  - [x] Invoices starting 1/1/23
+  - [x] Review Whitley, Britco, C&B, NWBS — determine if pre-acquisition data is accessible
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
