@@ -63,18 +63,19 @@
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
 - [ ] Try connecting to OneDrive on personal computer and use Cowork on a couple work files
-- [ ] LJ: Add cut-over dates in Praxis by company @delegated(LJ)
-- [ ] LJ: Impute factor difficulty @delegated(LJ)
-- [ ] LJ: Remove canceled orders @delegated(LJ)
-- [ ] LJ: Invoices starting 1/1/23 @delegated(LJ)
-- [ ] LJ: Review Whitley, Britco, C&B, NWBS — determine if pre-acquisition data is accessible @delegated(LJ)
+- [ ] LJ Data Hand-off
+  - [ ] Add cut-over dates in Praxis by company
+  - [ ] Impute factor difficulty
+  - [ ] Remove canceled orders
+  - [ ] Invoices starting 1/1/23
+  - [ ] Review Whitley, Britco, C&B, NWBS — determine if pre-acquisition data is accessible
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
 - [ ] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [ ] Propose labor utilization % targets to Bob based on budget
 - [ ] Get from Bob: Q3 FC and unscheduled backlog factor + buffer analysis; include % line time
-- [ ] Prep Q2 FC for Bob to review with Littlejohn by 3/30 [P1] (due: 2026-03-27)
+- [x] Prep Q2 FC for Bob to review with Littlejohn by 3/30 [P1] (due: 2026-03-27)
 
 ## Irina (Direct Report)
 - [ ] 🟠 Update AR RF logic (due: 2026-03-27) @delegated(Irina)
