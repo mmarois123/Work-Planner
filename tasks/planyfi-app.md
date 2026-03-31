@@ -9,6 +9,7 @@
 - [ ] Data export — let users download their SQLite file
 - [x] Onboarding accessibility — add `aria-label`/`htmlFor` to form inputs, `aria-expanded` on partner checkbox, keyboard support (Tab+Enter) to Demographics percentile table rows
 - [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback
+- [ ] Move all drawers to slide in from the left, except profile and notifications
 
 ## Product
 - [x] Add mortgage calculator: show 30 vs 15 yr vs 5/1 ARM, pull current rates, allow user to adjust overall interest rate to compare impact across loan types
@@ -45,5 +46,6 @@
 - [x] Redesign Accounts page to match Current Plan page style: add summary panel on side, allow balance updates at category level or broken out by asset (similar to sub-category breakout), use consistent row icons, add containers for account types/groups
 - [ ] Update FI Calculator section on financial planner page — evaluate if still needed, brainstorm improvements
 - [ ] Asset holdings display: show ticker with full name in smaller text below; add tag for holding/market type; include input fields for qty, price, value, and % of total
+- [ ] Rework Fund Strategy deficit logic: remove forced 2-step order (reduce contributions → withdrawal); allow user to mix and match order; explore situation-based configuration
 
 ## Bugs / Issues

@@ -63,6 +63,11 @@
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
 - [ ] Try connecting to OneDrive on personal computer and use Cowork on a couple work files
+- [ ] LJ: Add cut-over dates in Praxis by company @delegated(LJ)
+- [ ] LJ: Impute factor difficulty @delegated(LJ)
+- [ ] LJ: Remove canceled orders @delegated(LJ)
+- [ ] LJ: Invoices starting 1/1/23 @delegated(LJ)
+- [ ] LJ: Review Whitley, Britco, C&B, NWBS — determine if pre-acquisition data is accessible @delegated(LJ)
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
@@ -76,3 +81,4 @@
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] FP&A Data Workspace clean-up @delegated(Irina)
+- [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
