@@ -56,3 +56,17 @@
 - [x] Onboarding: set expenses to Joint by default
 - [x] Current Plan: remove option to add Employer Match
 - [x] Rename "Guilt-Free Expenses" to "Discretionary Expenses"
+
+## 2026-03-31 — Archived
+### Engineering
+- [x] Onboarding accessibility — add `aria-label`/`htmlFor` to form inputs, `aria-expanded` on partner checkbox, keyboard support (Tab+Enter) to Demographics percentile table rows
+### Product
+- [x] Add mortgage calculator: show 30 vs 15 yr vs 5/1 ARM, pull current rates, allow user to adjust overall interest rate to compare impact across loan types
+- [x] Enhance home purchase calculator: model after Zillow, add maintenance and other homeownership costs
+- [x] Add message to rent vs buy and home buying event: "Renting an equivalent home for $x/month or less would be a better financial decision over 10 years"
+- [x] Hide or badge future-event-created accounts ($0 balance) until the event occurs (e.g., "Buy a Home — Mortgage")
+- [x] Handling elapsed events — update current plan accordingly
+- [x] Remove scenarios from Future Events and all other references in app — scenarios will be handled separately in a future feature
+- [x] Make Buy a House event module inputs match the look/feel of Current Plan
+- [x] Combine tickers and crypto into a single asset option with a lookup/search function
+- [x] Redesign Accounts page to match Current Plan page style: add summary panel on side, allow balance updates at category level or broken out by asset (similar to sub-category breakout), use consistent row icons, add containers for account types/groups

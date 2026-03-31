@@ -61,3 +61,13 @@
 - [x] Add $5m to Revolver for 4/3 in 13WCF [P1] (due: 2026-03-25)
 - [x] Analyze labor and material cost for Feb vs Jan vs PY (Volume/Mix/Margin analysis)
 - [x] 🟠 AR Analysis Output (due: 2026-03-23) @delegated(Irina)
+
+## 2026-03-31 — Archived
+- [x] LJ Data Hand-off
+  - [x] Add cut-over dates in Praxis by company
+  - [x] Impute factor difficulty
+  - [x] Remove canceled orders
+  - [x] Invoices starting 1/1/23
+  - [x] Review Whitley, Britco, C&B, NWBS — determine if pre-acquisition data is accessible
+- [x] Prep Q2 FC for Bob to review with Littlejohn by 3/30 [P1] (due: 2026-03-27)
+- [x] 🟠 Add Weekly Plant targets to cash flow
