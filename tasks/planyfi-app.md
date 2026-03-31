@@ -41,5 +41,8 @@
 - [ ] Update FI Calculator section on financial planner page — evaluate if still needed, brainstorm improvements
 - [ ] Asset holdings display: show ticker with full name in smaller text below; add tag for holding/market type; include input fields for qty, price, value, and % of total
 - [ ] Rework Fund Strategy deficit logic: remove forced 2-step order (reduce contributions → withdrawal); allow user to mix and match order; explore situation-based configuration
+- [ ] Update Asset Allocation report: show variances between target and current allocations; add ability to include/exclude accounts (e.g. exclude checking/savings); simplify Tax Status chart with focus on asset allocation; brainstorm additional improvements
+- [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 
 ## Bugs / Issues
+- [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
