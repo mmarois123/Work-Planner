@@ -2,7 +2,7 @@
 
 ## BoD
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
-- [ ] Schedule Q2 metrics review with each department head
+- [ ] 🟠 Schedule Quarterly metrics review with each department head
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
