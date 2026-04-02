@@ -76,7 +76,8 @@
 
 
 ## Irina (Direct Report)
-- [ ] 🟠 Update AR RF logic (due: 2026-03-27) @delegated(Irina)
+- [x] 🟠 Update AR RF logic (due: 2026-03-27) @delegated(Irina)
+- [ ] Integrate new AR Logic into Fabric @delegated(Irina)
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] FP&A Data Workspace clean-up @delegated(Irina)
