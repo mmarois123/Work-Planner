@@ -65,14 +65,14 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
-- [ ] Try connecting to OneDrive on personal computer and use Cowork on a couple work files
+- [x] Try connecting to OneDrive on personal computer and use Cowork on a couple work files
 
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
 - [ ] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [ ] Propose labor utilization % targets to Bob based on budget
-- [ ] Get from Bob: Q3 FC and unscheduled backlog factor + buffer analysis; include % line time
+- [x] Get from Bob: Q3 FC and unscheduled backlog factor + buffer analysis; include % line time
 
 
 ## Irina (Direct Report)
