@@ -23,7 +23,6 @@
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
 - [ ] Create Scheduled Production page (due: 2026-04-03)
-- [x] Fix Previous WIP calculation when viewing MTD
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 
 ## Analysis
@@ -65,18 +64,15 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
-- [x] Try connecting to OneDrive on personal computer and use Cowork on a couple work files
 
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
 - [ ] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [ ] Propose labor utilization % targets to Bob based on budget
-- [x] Get from Bob: Q3 FC and unscheduled backlog factor + buffer analysis; include % line time
 
 
 ## Irina (Direct Report)
-- [x] 🟠 Update AR RF logic (due: 2026-03-27) @delegated(Irina)
 - [ ] Integrate new AR Logic into Fabric @delegated(Irina)
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
