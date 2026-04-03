@@ -25,6 +25,10 @@ Narrative thread: this isn't deterioration — it's a timing effect from executi
 
 ## General
 
+### Invoicing Process (Plant Level)
+
+The GM initiates the invoicing process in Praxis. The Project Coordinator gets the appropriate signoffs from GM, QC, and Sales, then notifies the Accounting Manager that the building is ready to be invoiced. Once invoicing is completed, the Accounting Manager notifies the Project Coordinator, who enters the data in Praxis.
+
 ### Praxis Schedule Confidence Indicator
 
 Idea: add a checkbox to Praxis schedule indicating whether a given week is scheduled or not. Alternative/complement: show a confidence interval of x% or $ within plant target amount for unscheduled weeks.

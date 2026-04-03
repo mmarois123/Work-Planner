@@ -32,6 +32,7 @@
 
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
 
+- [ ] Add refinance mortgage / other debt as a future event type
 - [ ] Tighten up home buying and tracking in future events, accounts, and current plan
 - [ ] Finalize onboarding modules with 3 paths
 - [ ] Update Milestones module
