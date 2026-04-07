@@ -23,6 +23,17 @@ Narrative thread: this isn't deterioration — it's a timing effect from executi
 
 ## Analysis
 
+### Inventory / Purchasing / BOM Analysis — CCC
+
+Components to investigate:
+- Actual SKU costs
+- Specialty SKUs (write-ins)
+- Services (warranty charge, state labels, Engineering)
+- Contingencies
+- Purchasing Take Offs
+- Change Orders
+- Cycle Counts
+
 ## General
 
 ### Invoicing Process (Plant Level)

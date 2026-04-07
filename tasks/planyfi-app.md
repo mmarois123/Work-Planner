@@ -9,7 +9,7 @@
 - [ ] Data export — let users download their SQLite file
 
 - [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback
-- [ ] Add retry logic or user-facing toast for transient API failures in repository layer (e.g. scenarioEventsRepo.getByScenario) — currently throws and logs to console only
+- [x] Add retry logic or user-facing toast for transient API failures in repository layer (e.g. scenarioEventsRepo.getByScenario) — currently throws and logs to console only
 - [ ] Refactor TransactionsDrawer add-transaction from modal to inline form for consistency with other drawers
 - [ ] Unify edit mode state management across drawers (editingId pattern vs mode-based vs boolean)
 
@@ -30,6 +30,7 @@
 - [ ] Interactive demo — hosted read-only instance with sample data
 - [ ] Add contact, submit feedback, and support functionality to app
 
+- [ ] Send beta version to Zach, Julie, AJ, James, and others
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
 
 - [ ] Add refinance mortgage / other debt as a future event type

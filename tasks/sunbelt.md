@@ -1,6 +1,7 @@
 # Sunbelt FP&A
 
 ## BoD
+- [ ] Q1 2026 BoD Deck (due: 2026-04-24)
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
 - [ ] 🟠 Schedule Quarterly metrics review with each department head
 
