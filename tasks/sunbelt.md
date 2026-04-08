@@ -27,6 +27,10 @@
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 
 ## Analysis
+- [ ] LJ: Purchase category breakdown — Sunbelt x Whitley for 2025, Britco from start of Sage purchasing, Whitley Q1-26; show % split by category; break Whitley out by month @delegated(LJ)
+- [ ] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley @delegated(LJ)
+- [ ] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above @delegated(LJ)
+- [ ] Run regression analysis on Praxis data (due: 2026-04-10)
 - [ ] Run full analysis of effect of factor on materials, labor, and gross profit
 - [ ] 🟠 Build material and labor % logic into FC model
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
