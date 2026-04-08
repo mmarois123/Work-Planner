@@ -23,7 +23,7 @@
   - [ ] Create override functionality for detail table if date is selected aside from timeframe
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
-- [ ] Create Scheduled Production page (due: 2026-04-03)
+- [x] Create Scheduled Production page (due: 2026-04-03)
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 
 ## Analysis
