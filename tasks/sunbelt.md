@@ -14,6 +14,11 @@
 
 
 ## Reporting
+- [ ] LJ: Monthly P&Ls by Facility — build initial 1-tab version and send to Arthur for approval [P1]
+  - [ ] Include 2024 and 2025 monthly data
+  - [ ] WIP and non-WIP adjusted basis
+  - [ ] Total company view + Whitley subtotal view
+  - [ ] Send to Arthur Almeida (LJ) for approval before expanding to all companies
 - [ ] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
