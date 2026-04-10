@@ -46,6 +46,9 @@
     }
     nav button:hover { color: #ccc; }
     nav button.active { color: #fff; border-bottom-color: #fff; }
+    nav button.today-tab { color: #f5b041; }
+    nav button.today-tab:hover { color: #f8c471; }
+    nav button.today-tab.active { color: #f8c471; border-bottom-color: #f5b041; }
 
     /* ── Main ── */
     main {
@@ -146,6 +149,24 @@
     }
     .due.overdue { color: #b91c1c; font-weight: 600; }
 
+    /* Area tag (Today view only) */
+    .task-area-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-right: 6px;
+      background: #e0e0e0;
+      color: #666;
+      letter-spacing: 0.04em;
+      vertical-align: 2px;
+    }
+    .task-area-tag.sunbelt { background: #dbeafe; color: #1e40af; }
+    .task-area-tag.app { background: #d1fae5; color: #047857; }
+    .task-area-tag.marketing { background: #fce7f3; color: #be185d; }
+
     /* Right: highlight button */
     .task-right {
       flex-shrink: 0;
@@ -178,6 +199,30 @@
       margin-left: 28px;
       padding: 1px 0;
       line-height: 1.4;
+    }
+
+    /* ── Today view ── */
+    .today-greeting {
+      font-size: 17px;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #333;
+    }
+    .today-block { margin-bottom: 26px; }
+    .today-block-overdue .section-heading { color: #b91c1c; border-bottom-color: #f5b7b1; }
+    .today-block-priorities .section-heading { color: #b45309; border-bottom-color: #fbe9a7; }
+    .today-block-completed .section-heading { color: #047857; border-bottom-color: #b7ebc6; }
+    .today-block-delegated .section-heading { color: #1d4ed8; border-bottom-color: #c3d7f7; }
+    .area-header {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #333;
+      margin: 28px 0 8px 0;
+      padding: 6px 0 4px 0;
+      border-bottom: 2px solid #333;
     }
 
     /* Loading / error */
@@ -215,17 +260,18 @@
 
 <script>
 const AREA_LABELS = { sunbelt: 'Sunbelt', app: 'App', marketing: 'Marketing', personal: 'Personal' };
+const TODAY_AREAS = ['sunbelt', 'app', 'marketing']; // default areas in Today view
 
-let areas = {};
-let currentArea = null;
-let rawLines = [];
+let areas = {};           // from /api/areas
+let areaStates = {};      // { area: { rawLines: [...] } }
+let currentView = null;   // 'today' | 'today:<area>' | '<area>'
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 
 async function init() {
   try {
     const res = await fetch('/api/areas');
-    const list = await res.json(); // ordered array of {key, file, sections}
+    const list = await res.json();
     areas = {};
     for (const a of list) areas[a.key] = a;
   } catch (e) {
@@ -234,38 +280,99 @@ async function init() {
     return;
   }
   buildTabs();
+  window.addEventListener('hashchange', applyHash);
+
+  // Initial route from URL hash
+  const hash = location.hash;
+  if (hash.startsWith('#today/')) {
+    const filter = hash.slice('#today/'.length);
+    if (TODAY_AREAS.includes(filter)) {
+      switchToToday(filter);
+      return;
+    }
+  }
+  if (hash === '#today') {
+    switchToToday(null);
+    return;
+  }
   switchArea(Object.keys(areas)[0]);
 }
 
 function buildTabs() {
   const tabs = document.getElementById('tabs');
   tabs.innerHTML = '';
+
+  // Today tab first
+  const todayBtn = document.createElement('button');
+  todayBtn.textContent = 'Today';
+  todayBtn.className = 'today-tab';
+  todayBtn.dataset.view = 'today';
+  todayBtn.onclick = () => switchToToday(null);
+  tabs.appendChild(todayBtn);
+
+  // Then each area tab in order
   for (const key of Object.keys(areas)) {
     const btn = document.createElement('button');
     btn.textContent = AREA_LABELS[key] || key;
-    btn.dataset.area = key;
+    btn.dataset.view = key;
     btn.onclick = () => switchArea(key);
     tabs.appendChild(btn);
   }
 }
 
+function setActiveTab(view) {
+  document.querySelectorAll('#tabs button').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+}
+
+function applyHash() {
+  const hash = location.hash;
+  if (hash.startsWith('#today/')) {
+    const filter = hash.slice('#today/'.length);
+    if (currentView !== `today:${filter}`) switchToToday(filter);
+  } else if (hash === '#today') {
+    if (currentView !== 'today') switchToToday(null);
+  }
+}
+
+// ── Data fetching ────────────────────────────────────────────────────────────
+
+async function fetchArea(area) {
+  const res = await fetch(`/api/tasks/${area}`);
+  const text = await res.text();
+  areaStates[area] = { rawLines: text.split('\n').map(l => l.replace(/\r$/, '')) };
+}
+
 async function switchArea(area) {
-  currentArea = area;
-  document.querySelectorAll('#tabs button').forEach(b =>
-    b.classList.toggle('active', b.dataset.area === area)
-  );
+  currentView = area;
+  setActiveTab(area);
   document.getElementById('content').innerHTML = '<div class="status">Loading...</div>';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
   try {
-    const res = await fetch(`/api/tasks/${area}`);
-    const text = await res.text();
-    rawLines = text.split('\n').map(l => l.replace(/\r$/, ''));
-    render();
+    await fetchArea(area);
+    renderArea(area);
   } catch (e) {
     document.getElementById('content').innerHTML = '<div class="status">Failed to load tasks.</div>';
   }
 }
 
-// ── Markdown parsing ──────────────────────────────────────────────────────────
+async function switchToToday(filter) {
+  currentView = filter ? `today:${filter}` : 'today';
+  setActiveTab('today');
+  document.getElementById('content').innerHTML = '<div class="status">Loading...</div>';
+  const newHash = filter ? `#today/${filter}` : '#today';
+  if (location.hash !== newHash) history.replaceState(null, '', location.pathname + location.search + newHash);
+  try {
+    const todayAreas = filter ? [filter] : TODAY_AREAS;
+    await Promise.all(todayAreas.map(fetchArea));
+    renderToday(filter);
+  } catch (e) {
+    document.getElementById('content').innerHTML = '<div class="status">Failed to load tasks.</div>';
+  }
+}
+
+// ── Markdown parsing ─────────────────────────────────────────────────────────
 
 function parseLine(line) {
   // Task line: optional indent, - [ ] or - [x], then content
@@ -275,21 +382,17 @@ function parseLine(line) {
     const checked = taskMatch[2] === 'x';
     let rest = taskMatch[3];
 
-    // Highlight
     const highlighted = rest.startsWith('🟠 ');
     if (highlighted) rest = rest.slice('🟠 '.length);
 
-    // Priority badge
     const priMatch = rest.match(/\[(P[123])\]/);
     const priority = priMatch ? priMatch[1] : null;
     if (priMatch) rest = rest.replace(/\s*\[P[123]\]\s*/, ' ').trim();
 
-    // Due date
     const dueMatch = rest.match(/\(due:\s*(\d{4}-\d{2}-\d{2})\)/);
     const due = dueMatch ? dueMatch[1] : null;
     if (dueMatch) rest = rest.replace(/\s*\(due:\s*\d{4}-\d{2}-\d{2}\)\s*/, ' ').trim();
 
-    // Delegation
     const delMatch = rest.match(/@delegated\(([^)]+)\)/);
     const delegated = delMatch ? delMatch[1] : null;
     if (delMatch) rest = rest.replace(/\s*@delegated\([^)]+\)\s*/, ' ').trim();
@@ -297,13 +400,11 @@ function parseLine(line) {
     return { type: 'task', indent, checked, highlighted, priority, due, delegated, text: rest.trim() };
   }
 
-  // Heading
   const headMatch = line.match(/^(#{1,3}) (.+)$/);
   if (headMatch) {
     return { type: 'section', level: headMatch[1].length, text: headMatch[2].trim() };
   }
 
-  // Non-checkbox indented bullet (notes/context)
   if (line.match(/^\s+- /)) {
     const text = line.replace(/^\s+- /, '').replace(/\\(.)/g, '$1');
     return { type: 'note', text };
@@ -318,22 +419,56 @@ function isOverdue(due) {
   return due < today;
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
+// Parse an area into a structured list of sections + top-level tasks (with subtasks & notes)
+function parseArea(area) {
+  const lines = areaStates[area].rawLines;
+  const sections = []; // [{ name, tasks: [...] }]
+  let currentSection = null;
+  let currentTask = null;
 
-function render() {
+  lines.forEach((line, idx) => {
+    const p = parseLine(line);
+    if (p.type === 'section' && p.level === 2) {
+      currentSection = { name: p.text, tasks: [] };
+      sections.push(currentSection);
+      currentTask = null;
+      return;
+    }
+    if (p.type === 'task') {
+      const obj = { ...p, lineIdx: idx, area, subtasks: [], notes: [] };
+      if (p.indent === 0) {
+        currentTask = obj;
+        if (currentSection) currentSection.tasks.push(currentTask);
+      } else if (currentTask) {
+        currentTask.subtasks.push(obj);
+      }
+      return;
+    }
+    if (p.type === 'note' && currentTask) {
+      currentTask.notes.push(p.text);
+    }
+  });
+
+  return sections;
+}
+
+// ── Render: area view (unchanged layout, linear pass over rawLines) ─────────
+
+function renderArea(area) {
   const content = document.getElementById('content');
   content.innerHTML = '';
+  const lines = areaStates[area].rawLines;
 
   let sectionEl = null;
-  let topGroup = null;   // block wrapper: .task row + .subtasks block as siblings
-  let topTaskEl = null;  // the .task flex row for the current top-level task
-  let subtasksEl = null; // the .subtasks block inside topGroup
+  let topGroup = null;
+  let topTaskEl = null;
+  let subtasksEl = null;
 
-  rawLines.forEach((line, idx) => {
+  lines.forEach((line, idx) => {
     const p = parseLine(line);
 
     if (p.type === 'section') {
-      if (p.level === 1) return; // area title — skip
+      if (p.level === 1) return;
       if (p.level === 2) {
         sectionEl = document.createElement('div');
         sectionEl.className = 'section';
@@ -344,7 +479,6 @@ function render() {
         content.appendChild(sectionEl);
         topGroup = null; topTaskEl = null; subtasksEl = null;
       } else {
-        // ### subsection
         const h = document.createElement('div');
         h.className = 'subsection-heading';
         h.textContent = p.text;
@@ -355,9 +489,8 @@ function render() {
     }
 
     if (p.type === 'task') {
-      const el = buildTaskEl(p, idx);
+      const el = buildTaskEl(p, idx, area, false);
       if (p.indent === 0) {
-        // Wrap each top-level task in a group so subtasks sit below as a block sibling
         const group = document.createElement('div');
         group.appendChild(el);
         (sectionEl || content).appendChild(group);
@@ -370,8 +503,6 @@ function render() {
             subtasksEl = document.createElement('div');
             subtasksEl.className = 'subtasks hidden';
             topGroup.appendChild(subtasksEl);
-            // Capture the specific container so the closure isn't affected by
-            // subtasksEl being reassigned later in the loop
             const thisSubtasks = subtasksEl;
             const chev = topTaskEl.querySelector('.chevron');
             if (chev) {
@@ -398,15 +529,163 @@ function render() {
       }
       return;
     }
-    // blank → ignore
   });
 }
 
-function buildTaskEl(p, lineIdx) {
+// ── Render: Today view ──────────────────────────────────────────────────────
+
+function renderToday(filter) {
+  const content = document.getElementById('content');
+  content.innerHTML = '';
+
+  const todayAreas = filter ? [filter] : TODAY_AREAS;
+  const parsed = {};
+  for (const a of todayAreas) parsed[a] = parseArea(a);
+
+  // Greeting
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+  const greeting = document.createElement('div');
+  greeting.className = 'today-greeting';
+  greeting.textContent = 'Good morning — ' + dateStr + (filter ? ` — ${AREA_LABELS[filter]} focus` : '');
+  content.appendChild(greeting);
+
+  // Flatten all top-level tasks across included areas
+  const allTasks = [];
+  for (const a of todayAreas) {
+    for (const sec of parsed[a]) {
+      for (const t of sec.tasks) allTasks.push(t);
+    }
+  }
+
+  // Helper: build a titled block with a set of task groups
+  function buildBlock(title, tasks, blockClass, showTags) {
+    if (!tasks.length) return null;
+    const block = document.createElement('div');
+    block.className = 'today-block' + (blockClass ? ' ' + blockClass : '');
+    const h = document.createElement('div');
+    h.className = 'section-heading';
+    h.textContent = title;
+    block.appendChild(h);
+    for (const t of tasks) block.appendChild(buildTaskGroup(t, showTags));
+    return block;
+  }
+
+  // Completed (pending archive)
+  const completed = allTasks.filter(t => t.checked);
+  const completedBlock = buildBlock(
+    `Completed (${completed.length})`, completed, 'today-block-completed', !filter
+  );
+  if (completedBlock) content.appendChild(completedBlock);
+
+  // Overdue
+  const overdue = allTasks.filter(t => !t.checked && isOverdue(t.due));
+  const overdueBlock = buildBlock(
+    `Overdue (${overdue.length})`, overdue, 'today-block-overdue', !filter
+  );
+  if (overdueBlock) content.appendChild(overdueBlock);
+
+  // Priorities — P1 or highlighted
+  const priorities = allTasks.filter(t =>
+    !t.checked && (t.priority === 'P1' || t.highlighted)
+  );
+  priorities.sort((a, b) => {
+    if (a.priority === 'P1' && b.priority !== 'P1') return -1;
+    if (b.priority === 'P1' && a.priority !== 'P1') return 1;
+    if (a.due && b.due) return a.due.localeCompare(b.due);
+    if (a.due) return -1;
+    if (b.due) return 1;
+    return 0;
+  });
+  const prioritiesBlock = buildBlock(
+    `Priorities (${priorities.length})`, priorities, 'today-block-priorities', !filter
+  );
+  if (prioritiesBlock) content.appendChild(prioritiesBlock);
+
+  // Open by area — each area gets a header, then one block per section
+  for (const a of todayAreas) {
+    const openInArea = [];
+    for (const sec of parsed[a]) openInArea.push(...sec.tasks.filter(t => !t.checked));
+    if (!openInArea.length) continue;
+
+    if (!filter) {
+      const areaHeader = document.createElement('div');
+      areaHeader.className = 'area-header';
+      areaHeader.textContent = `${AREA_LABELS[a]} — ${openInArea.length} open`;
+      content.appendChild(areaHeader);
+    }
+
+    for (const sec of parsed[a]) {
+      const openInSection = sec.tasks.filter(t => !t.checked);
+      if (!openInSection.length) continue;
+      const block = buildBlock(`${sec.name} (${openInSection.length})`, openInSection, null, false);
+      if (block) content.appendChild(block);
+    }
+  }
+
+  // Delegated — Irina
+  const delegated = allTasks.filter(t => !t.checked && t.delegated === 'Irina');
+  const delegatedBlock = buildBlock(
+    `Delegated — Irina (${delegated.length})`, delegated, 'today-block-delegated', !filter
+  );
+  if (delegatedBlock) content.appendChild(delegatedBlock);
+}
+
+// Build a task row + its subtasks (collapsible) and notes
+function buildTaskGroup(task, showAreaTag) {
+  const group = document.createElement('div');
+  const el = buildTaskEl(task, task.lineIdx, task.area, showAreaTag);
+  group.appendChild(el);
+
+  const hasSubtasks = task.subtasks && task.subtasks.length > 0;
+
+  if (hasSubtasks) {
+    const subtasksEl = document.createElement('div');
+    subtasksEl.className = 'subtasks hidden';
+    group.appendChild(subtasksEl);
+
+    const chev = el.querySelector('.chevron');
+    if (chev) {
+      chev.classList.remove('hidden');
+      chev.textContent = '▶';
+      chev.onclick = () => {
+        const nowHidden = subtasksEl.classList.toggle('hidden');
+        chev.textContent = nowHidden ? '▶' : '▼';
+      };
+    }
+
+    for (const sub of task.subtasks) {
+      subtasksEl.appendChild(buildTaskEl(sub, sub.lineIdx, sub.area, false));
+    }
+    for (const note of task.notes) {
+      const n = document.createElement('div');
+      n.className = 'note';
+      n.textContent = note;
+      subtasksEl.appendChild(n);
+    }
+  } else if (task.notes && task.notes.length) {
+    for (const note of task.notes) {
+      const n = document.createElement('div');
+      n.className = 'note';
+      n.textContent = note;
+      group.appendChild(n);
+    }
+  }
+
+  return group;
+}
+
+// ── Task row builder ────────────────────────────────────────────────────────
+
+function buildTaskEl(p, lineIdx, area, showAreaTag) {
   const wrap = document.createElement('div');
   wrap.className = 'task' + (p.checked ? ' completed' : '');
+  wrap.dataset.area = area;
+  wrap.dataset.lineIdx = lineIdx;
 
-  // Left
+  // Left: chevron + checkbox
   const left = document.createElement('div');
   left.className = 'task-left';
 
@@ -418,18 +697,28 @@ function buildTaskEl(p, lineIdx) {
   const cb = document.createElement('input');
   cb.type = 'checkbox';
   cb.checked = p.checked;
-  cb.onchange = () => toggleCheckbox(lineIdx);
+  cb.onchange = () => toggleCheckbox(area, lineIdx);
   left.appendChild(cb);
   wrap.appendChild(left);
 
-  // Body
+  // Body: text + meta
   const body = document.createElement('div');
   body.className = 'task-body';
 
-  const textEl = document.createElement('div');
-  textEl.className = 'task-text';
-  textEl.textContent = p.text;
-  body.appendChild(textEl);
+  const textLine = document.createElement('div');
+  textLine.className = 'task-text';
+
+  if (showAreaTag) {
+    const tag = document.createElement('span');
+    tag.className = 'task-area-tag ' + area;
+    tag.textContent = AREA_LABELS[area] || area;
+    textLine.appendChild(tag);
+  }
+
+  const textSpan = document.createElement('span');
+  textSpan.textContent = p.text;
+  textLine.appendChild(textSpan);
+  body.appendChild(textLine);
 
   if (p.priority || p.due || p.delegated) {
     const meta = document.createElement('div');
@@ -458,33 +747,35 @@ function buildTaskEl(p, lineIdx) {
 
   wrap.appendChild(body);
 
-  // Right — highlight button
+  // Right: highlight button
   const right = document.createElement('div');
   right.className = 'task-right';
   const hl = document.createElement('button');
   hl.className = 'btn-hl' + (p.highlighted ? ' on' : '');
   hl.title = p.highlighted ? 'Remove highlight' : 'Highlight';
   hl.textContent = '🟠';
-  hl.onclick = () => toggleHighlight(lineIdx);
+  hl.onclick = () => toggleHighlight(area, lineIdx);
   right.appendChild(hl);
   wrap.appendChild(right);
 
   return wrap;
 }
 
-// ── Mutations ─────────────────────────────────────────────────────────────────
+// ── Mutations ────────────────────────────────────────────────────────────────
 
-function toggleCheckbox(lineIdx) {
+function toggleCheckbox(area, lineIdx) {
+  const rawLines = areaStates[area].rawLines;
   const line = rawLines[lineIdx];
   if (/^(\s*)- \[ \]/.test(line)) {
     rawLines[lineIdx] = line.replace(/^(\s*)- \[ \]/, '$1- [x]');
   } else {
     rawLines[lineIdx] = line.replace(/^(\s*)- \[x\]/, '$1- [ ]');
   }
-  save();
+  save(area);
 }
 
-function toggleHighlight(lineIdx) {
+function toggleHighlight(area, lineIdx) {
+  const rawLines = areaStates[area].rawLines;
   const line = rawLines[lineIdx];
   const withHL = line.match(/^(\s*- \[[ x]\] )🟠 (.*)$/);
   if (withHL) {
@@ -493,32 +784,51 @@ function toggleHighlight(lineIdx) {
     const without = line.match(/^(\s*- \[[ x]\] )(.*)$/);
     if (without) rawLines[lineIdx] = without[1] + '🟠 ' + without[2];
   }
-  save();
+  save(area);
 }
 
 let saveTimer = null;
+const saveQueue = new Set();
 
-function save() {
-  render();
+function save(area) {
+  rerenderCurrent();
+  saveQueue.add(area);
   const indicator = document.getElementById('saving');
   indicator.classList.add('visible');
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async () => {
-    const content = rawLines.join('\n');
+    const toSave = [...saveQueue];
+    saveQueue.clear();
     try {
-      await fetch(`/api/tasks/${currentArea}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-        body: content,
-      });
+      await Promise.all(toSave.map(async a => {
+        const body = areaStates[a].rawLines.join('\n');
+        await fetch(`/api/tasks/${a}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+          body,
+        });
+      }));
     } catch (e) {
       console.error('Save failed', e);
     }
     indicator.classList.remove('visible');
-  }, 400); // small debounce so rapid clicks batch into one write
+  }, 400);
 }
 
-// ── Go ────────────────────────────────────────────────────────────────────────
+// Re-render whatever view the user is currently looking at, preserving scroll
+function rerenderCurrent() {
+  const scrollY = window.scrollY;
+  if (currentView === 'today') {
+    renderToday(null);
+  } else if (currentView && currentView.startsWith('today:')) {
+    renderToday(currentView.slice('today:'.length));
+  } else if (currentView) {
+    renderArea(currentView);
+  }
+  window.scrollTo(0, scrollY);
+}
+
+// ── Go ───────────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>
