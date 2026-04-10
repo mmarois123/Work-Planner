@@ -3,7 +3,7 @@
 ## BoD
 - [ ] Q1 2026 BoD Deck (due: 2026-04-24)
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
-- [ ] 🟠 Schedule Quarterly metrics review with each department head
+- [x] 🟠 Schedule Quarterly metrics review with each department head
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -35,8 +35,8 @@
 - [ ] LJ: Purchase category breakdown — Sunbelt x Whitley for 2025, Britco from start of Sage purchasing, Whitley Q1-26; show % split by category; break Whitley out by month
 - [ ] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley
 - [ ] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above
-- [ ] Run regression analysis on Praxis data (due: 2026-04-10)
-- [ ] Run full analysis of effect of factor on materials, labor, and gross profit
+- [x] Run regression analysis on Praxis data (due: 2026-04-10)
+- [x] Run full analysis of effect of factor on materials, labor, and gross profit
 - [ ] 🟠 Build material and labor % logic into FC model
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] Automate Buffer Analysis
@@ -88,3 +88,4 @@
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] FP&A Data Workspace clean-up @delegated(Irina)
 - [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
+- [ ] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)
