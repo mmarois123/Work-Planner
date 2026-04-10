@@ -37,7 +37,7 @@
 - [ ] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above
 - [x] Run regression analysis on Praxis data (due: 2026-04-10)
 - [x] Run full analysis of effect of factor on materials, labor, and gross profit
-- [ ] 🟠 Build material and labor % logic into FC model
+- [x] 🟠 Build material and labor % logic into FC model
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
