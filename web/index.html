@@ -370,13 +370,15 @@ function render() {
             subtasksEl = document.createElement('div');
             subtasksEl.className = 'subtasks hidden';
             topGroup.appendChild(subtasksEl);
-            // Wire chevron on the parent task row
+            // Capture the specific container so the closure isn't affected by
+            // subtasksEl being reassigned later in the loop
+            const thisSubtasks = subtasksEl;
             const chev = topTaskEl.querySelector('.chevron');
             if (chev) {
               chev.classList.remove('hidden');
               chev.textContent = '▶';
               chev.onclick = () => {
-                const nowHidden = subtasksEl.classList.toggle('hidden');
+                const nowHidden = thisSubtasks.classList.toggle('hidden');
                 chev.textContent = nowHidden ? '▶' : '▼';
               };
             }
