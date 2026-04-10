@@ -9,7 +9,6 @@
 - [ ] Data export — let users download their SQLite file
 
 - [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback
-- [x] Add retry logic or user-facing toast for transient API failures in repository layer (e.g. scenarioEventsRepo.getByScenario) — currently throws and logs to console only
 - [ ] Refactor TransactionsDrawer add-transaction from modal to inline form for consistency with other drawers
 - [ ] Unify edit mode state management across drawers (editingId pattern vs mode-based vs boolean)
 

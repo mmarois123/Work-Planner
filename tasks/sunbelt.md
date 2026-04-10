@@ -3,7 +3,6 @@
 ## BoD
 - [ ] Q1 2026 BoD Deck (due: 2026-04-24)
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
-- [x] 🟠 Schedule Quarterly metrics review with each department head
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -14,11 +13,6 @@
 
 
 ## Reporting
-- [ ] LJ: Monthly P&Ls by Facility — build initial 1-tab version and send to Arthur for approval [P1]
-  - [ ] Include 2024 and 2025 monthly data
-  - [ ] WIP and non-WIP adjusted basis
-  - [ ] Total company view + Whitley subtotal view
-  - [ ] Send to Arthur Almeida (LJ) for approval before expanding to all companies
 - [ ] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
@@ -28,20 +22,13 @@
   - [ ] Create override functionality for detail table if date is selected aside from timeframe
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
-- [x] Create Scheduled Production page (due: 2026-04-03)
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 
 ## Analysis
 - [ ] LJ: Purchase category breakdown — Sunbelt x Whitley for 2025, Britco from start of Sage purchasing, Whitley Q1-26; show % split by category; break Whitley out by month
 - [ ] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley
 - [ ] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above
-- [x] Run regression analysis on Praxis data (due: 2026-04-10)
-- [x] Run full analysis of effect of factor on materials, labor, and gross profit
-- [x] 🟠 Build material and labor % logic into FC model
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
-- [x] Automate Buffer Analysis
-  - Factor analysis on scheduled production (Feb/Mar)
-  - \$ / Factor analysis
 
 ## General
 - [ ] Build safety metrics dashboard with Marci
