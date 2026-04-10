@@ -26,12 +26,10 @@ def index():
 @app.route('/api/areas')
 def get_areas():
     config = load_config()
-    result = {}
+    # Return as ordered list to guarantee config.yaml area order is preserved
+    result = []
     for key, val in config['areas'].items():
-        result[key] = {
-            'file': val['file'],
-            'sections': val.get('sections', []),
-        }
+        result.append({'key': key, 'file': val['file'], 'sections': val.get('sections', [])})
     return jsonify(result)
 
 

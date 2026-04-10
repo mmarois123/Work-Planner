@@ -225,7 +225,9 @@ let rawLines = [];
 async function init() {
   try {
     const res = await fetch('/api/areas');
-    areas = await res.json();
+    const list = await res.json(); // ordered array of {key, file, sections}
+    areas = {};
+    for (const a of list) areas[a.key] = a;
   } catch (e) {
     document.getElementById('content').innerHTML =
       '<div class="status">Could not connect to server. Is server.py running?</div>';
@@ -323,8 +325,9 @@ function render() {
   content.innerHTML = '';
 
   let sectionEl = null;
-  let topTaskEl = null;
-  let subtasksEl = null;
+  let topGroup = null;   // block wrapper: .task row + .subtasks block as siblings
+  let topTaskEl = null;  // the .task flex row for the current top-level task
+  let subtasksEl = null; // the .subtasks block inside topGroup
 
   rawLines.forEach((line, idx) => {
     const p = parseLine(line);
@@ -339,16 +342,14 @@ function render() {
         h.textContent = p.text;
         sectionEl.appendChild(h);
         content.appendChild(sectionEl);
-        topTaskEl = null;
-        subtasksEl = null;
+        topGroup = null; topTaskEl = null; subtasksEl = null;
       } else {
         // ### subsection
         const h = document.createElement('div');
         h.className = 'subsection-heading';
         h.textContent = p.text;
         (sectionEl || content).appendChild(h);
-        topTaskEl = null;
-        subtasksEl = null;
+        topGroup = null; topTaskEl = null; subtasksEl = null;
       }
       return;
     }
@@ -356,22 +357,28 @@ function render() {
     if (p.type === 'task') {
       const el = buildTaskEl(p, idx);
       if (p.indent === 0) {
+        // Wrap each top-level task in a group so subtasks sit below as a block sibling
+        const group = document.createElement('div');
+        group.appendChild(el);
+        (sectionEl || content).appendChild(group);
+        topGroup = group;
         topTaskEl = el;
         subtasksEl = null;
-        (sectionEl || content).appendChild(el);
       } else {
-        // subtask — attach to parent
-        if (topTaskEl) {
+        if (topGroup) {
           if (!subtasksEl) {
             subtasksEl = document.createElement('div');
             subtasksEl.className = 'subtasks hidden';
-            topTaskEl.appendChild(subtasksEl);
-            // enable chevron on parent
+            topGroup.appendChild(subtasksEl);
+            // Wire chevron on the parent task row
             const chev = topTaskEl.querySelector('.chevron');
             if (chev) {
               chev.classList.remove('hidden');
               chev.textContent = '▶';
-              chev.onclick = () => toggleSubtasks(subtasksEl, chev);
+              chev.onclick = () => {
+                const nowHidden = subtasksEl.classList.toggle('hidden');
+                chev.textContent = nowHidden ? '▶' : '▼';
+              };
             }
           }
           subtasksEl.appendChild(el);
@@ -381,21 +388,16 @@ function render() {
     }
 
     if (p.type === 'note') {
-      if (topTaskEl) {
+      if (topGroup) {
         const note = document.createElement('div');
         note.className = 'note';
         note.textContent = p.text;
-        (subtasksEl || topTaskEl).appendChild(note);
+        (subtasksEl || topGroup).appendChild(note);
       }
       return;
     }
     // blank → ignore
   });
-}
-
-function toggleSubtasks(subtasksEl, chevron) {
-  const isHidden = subtasksEl.classList.toggle('hidden');
-  chevron.textContent = isHidden ? '▶' : '▼';
 }
 
 function buildTaskEl(p, lineIdx) {
