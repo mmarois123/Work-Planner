@@ -39,7 +39,7 @@
 - [x] Run full analysis of effect of factor on materials, labor, and gross profit
 - [x] 🟠 Build material and labor % logic into FC model
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
-- [ ] Automate Buffer Analysis
+- [x] Automate Buffer Analysis
   - Factor analysis on scheduled production (Feb/Mar)
   - \$ / Factor analysis
 
