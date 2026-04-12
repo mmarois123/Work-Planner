@@ -56,7 +56,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Add refinance mortgage / other debt as a future event type
 - [ ] Tighten up home buying and tracking in future events, accounts, and current plan
 - [ ] Finalize onboarding modules with 3 paths
-- [ ] Update Milestones module
+- [x] Update Milestones module
 - [ ] Update event timeline
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
 - [ ] Explore bulk update option for assets
