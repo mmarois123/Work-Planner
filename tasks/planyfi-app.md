@@ -59,7 +59,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [x] Update Milestones module
 - [ ] Update event timeline
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
-- [ ] Explore bulk update option for assets
+- [x] Explore bulk update option for assets
 - [x] Update FI Calculator section on financial planner page — evaluate if still needed, brainstorm improvements
 - [x] Rework Fund Strategy deficit logic: remove forced 2-step order (reduce contributions → withdrawal); allow user to mix and match order; explore situation-based configuration
 - [ ] Update Asset Allocation report: show variances between target and current allocations; add ability to include/exclude accounts (e.g. exclude checking/savings); simplify Tax Status chart with focus on asset allocation; brainstorm additional improvements
