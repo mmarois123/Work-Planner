@@ -73,6 +73,6 @@
 - [ ] Integrate new AR Logic into Fabric @delegated(Irina)
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
-- [ ] FP&A Data Workspace clean-up @delegated(Irina)
+- [x] FP&A Data Workspace clean-up @delegated(Irina)
 - [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
 - [ ] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)
