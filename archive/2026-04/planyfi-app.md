@@ -5,3 +5,20 @@
 - [x] Review all other input sections for consistency with Current Plan styling
 - [x] Asset holdings display: show ticker with full name in smaller text below; add tag for holding/market type; include input fields for qty, price, value, and % of total
 - [x] Add retry logic or user-facing toast for transient API failures in repository layer (e.g. scenarioEventsRepo.getByScenario) — currently throws and logs to console only
+- [x] Review hidden debug sections (ProjectionVerificationTable, DetailedProjectionBreakdown) — decide keep or delete (by 2026-04-11)
+- [x] API route audit — flag routes that must hit server (yahoo-finance quote, notifications/generate) vs routes that can run guest-local
+- [x] Build `guestStore` — in-memory store mirroring the repository/api-client shape (accounts, budgets, scenarios, events, holdings)
+- [x] Data layer router — branch `isGuest` → `guestStore` vs `api-client` (wrapper around existing repos)
+- [x] Update `middleware.ts` — make app routes public; keep API routes auth-gated
+- [x] `ProfileContext` guest branch — when `user === null`, return `{ isGuest: true, currentUserId: 'guest', plan: 'free' }` without DB fetch; wire the already-defined `isGuest` field
+- [x] Onboarding wizard guest path — final submit step branches: guest → `guestStore`, authed → API (reuses existing census-based builder untouched)
+- [x] Refactor TransactionsDrawer add-transaction from modal to inline form for consistency with other drawers
+- [x] Unify edit mode state management across drawers (editingId pattern vs mode-based vs boolean)
+- [x] Update FI Calculator section on financial planner page — evaluate if still needed, brainstorm improvements
+- [x] Rework Fund Strategy deficit logic: remove forced 2-step order (reduce contributions → withdrawal); allow user to mix and match order; explore situation-based configuration
+- [x] Upgrade migration flow — on sign-up + checkout success, push `guestStore` contents to API in one call (conversion-critical)
+- [x] Error monitoring — Sentry (or similar) free tier
+- [x] Update Milestones module
+- [x] Explore bulk update option for assets
+- [x] Update Asset Allocation report: show variances between target and current allocations; add ability to include/exclude accounts (e.g. exclude checking/savings); simplify Tax Status chart with focus on asset allocation; brainstorm additional improvements
+- [x] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
