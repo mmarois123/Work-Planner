@@ -13,7 +13,7 @@
 
 
 ## Reporting
-- [ ] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
+- [x] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
   - [ ] Add MR Steel Invoicing from Sage
@@ -62,7 +62,7 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
-- [ ] Send Littlejohn team purchasing data and accompanying reports [P1] (due: 2026-04-16)
+- [ ] Send Littlejohn team purchasing data and accompanying reports ASAP
 
 
 ## Bob Review
