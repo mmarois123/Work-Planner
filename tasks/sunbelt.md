@@ -29,6 +29,7 @@
 - [ ] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley
 - [ ] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
+- [ ] SKU match Titan purchasing vs Sunbelt purchasing
 
 ## General
 - [ ] Build safety metrics dashboard with Marci
@@ -61,6 +62,7 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
+- [ ] Send Littlejohn team purchasing data and accompanying reports ASAP
 
 
 ## Bob Review

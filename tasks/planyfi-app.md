@@ -5,14 +5,16 @@
 
 ### Free tier / monetization (prerequisite for public beta)
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
-- [ ] Upgrade prompts — on nav away, `Ctrl+S`, manual save clicks; persistent "session only — sign up to save" indicator in UI
+- [x] Upgrade prompts — on nav away, `Ctrl+S`, manual save clicks; persistent "session only — sign up to save" indicator in UI
 - [ ] Stripe Checkout integration — wire to existing `plan: free|premium` Clerk metadata; webhook → `clerkClient.users.updateUserMetadata`
 - [ ] Feature gating — enforce `isPremium` on save actions, scenario comparison, >N saved scenarios, CSV export
 - [ ] CSV export for Premium (feature-gated)
 
 ### Infrastructure / ops (before inviting friends)
-- [ ] Automated SQLite backups — daily `sqlite3 .backup` → upload to S3/R2/B2 (critical: loss surface is Premium user data)
-- [ ] Create Sentry project (Next.js platform) and set `NEXT_PUBLIC_SENTRY_DSN` in Railway
+- [x] Automated SQLite backups — daily `sqlite3 .backup` → upload to S3/R2/B2 (critical: loss surface is Premium user data)
+- [x] Create Sentry project (Next.js platform) and set `NEXT_PUBLIC_SENTRY_DSN` in Railway
+- [ ] Configure R2 bucket + set `R2_*` env vars in Railway — create bucket, generate API token, add credentials
+- [ ] Set up daily cron trigger for `/api/admin/backup` — Railway cron service or GitHub Action
 - [ ] Railway staging environment — second service pointed at a branch, separate volume
 - [ ] Data export (JSON) for Premium — per-user server-side export endpoint
 
@@ -22,6 +24,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [~] ~~Data export — let users download their SQLite file~~ — REPLACED with per-user JSON export (SQLite file would leak other users' data in shared-DB model).
 
 - [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback
+- [ ] Hide cash flow features in production
 
 ## Product
 - [ ] Research (via Claude) what mortgage info a homeowner typically has access to — use to inform current plan input fields
@@ -50,4 +53,23 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
 - [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 
+- [ ] Add reset button to banner for guest/free users
+- [ ] Add linked account option to both Current Plan and Accounts (not just one)
+- [ ] When adding new investment/savings plan category, insert new line directly — no modal
+- [ ] Merge Linked Account and Funding Source into single concept with combined pop-up and icon; explore clearer terminology for "where it's coming from and going to"
+- [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
+- [ ] Add ability to hide/archive elapsed and applied events (events drawer, event timeline, or both)
+- [ ] If user enters plan mid-year with no prior plan, assume same for full year; otherwise use appropriate mix based on effective dates
+- [ ] Debt accounts — add support for: Auto loan (original amount, term, APR, start/end date, auto-calc payment w/ override), Mortgage (loan type, rate, amount, start/end date, auto-calc payment, taxes/insurance/PMI), Student loans, Personal loans, Credit cards
+- [ ] Add monthly view to financial planner, especially for 1–10 year timeframe
+- [ ] Verify that after mortgage on home event ends, property taxes, insurance, and maintenance costs continue
+- [ ] Fix Future Events and Fund Strategy mobile layout bugs
+- [ ] Fix date entry for mobile across app — easy to type or select (bug found in profile birthday field)
+- [ ] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
+- [ ] Add category list (fixed, discretionary, custom) when adding new expense — typeable field with dropdown similar to Empower; evaluate if useful elsewhere (accounts/holdings)
+
 ## Bugs / Issues
+- [ ] Guest store data loss on HMR — dev-mode Hot Module Reload resets module-level `state` in `guest-store.ts`, losing all in-memory data and bouncing users back to onboarding via `OnboardingGuard`
+- [ ] CurrentPlanDrawer Save Plan button not disabled during save — `triggerSaveRef` pattern needs an `isSavingRef` plumbed back from PlanEditor
+- [ ] Account edit form (AccountEditModal) — missing visible field validation error messages (silently blocks submit on empty name, no feedback for invalid APY/interest)
+- [ ] Account setup wizard (AccountSetupWizard) — no validation on empty draft account names before creation
