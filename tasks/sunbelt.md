@@ -67,7 +67,7 @@
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
-- [ ] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
+- [x] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [ ] Propose labor utilization % targets to Bob based on budget
 
 
