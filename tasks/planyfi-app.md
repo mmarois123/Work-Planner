@@ -7,14 +7,14 @@
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
 - [x] Upgrade prompts — on nav away, `Ctrl+S`, manual save clicks; persistent "session only — sign up to save" indicator in UI
 - [ ] Stripe Checkout integration — wire to existing `plan: free|premium` Clerk metadata; webhook → `clerkClient.users.updateUserMetadata`
-- [ ] Feature gating — enforce `isPremium` on save actions, scenario comparison, >N saved scenarios, CSV export
-- [ ] CSV export for Premium (feature-gated)
+- [x] Feature gating — enforce `isPremium` on save actions, scenario comparison, >N saved scenarios, CSV export
+- [x] CSV export for Premium (feature-gated)
 
 ### Infrastructure / ops (before inviting friends)
 - [x] Automated SQLite backups — daily `sqlite3 .backup` → upload to S3/R2/B2 (critical: loss surface is Premium user data)
 - [x] Create Sentry project (Next.js platform) and set `NEXT_PUBLIC_SENTRY_DSN` in Railway
-- [ ] Configure R2 bucket + set `R2_*` env vars in Railway — create bucket, generate API token, add credentials
-- [ ] Set up daily cron trigger for `/api/admin/backup` — Railway cron service or GitHub Action
+- [x] Configure R2 bucket + set `R2_*` env vars in Railway — create bucket, generate API token, add credentials
+- [x] Set up daily cron trigger for `/api/admin/backup` — Railway cron service or GitHub Action
 - [ ] Railway staging environment — second service pointed at a branch, separate volume
 - [ ] Data export (JSON) for Premium — per-user server-side export endpoint
 
@@ -53,7 +53,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
 - [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 
-- [ ] Add reset button to banner for guest/free users
+- [x] Add reset button to banner for guest/free users
 - [ ] Add linked account option to both Current Plan and Accounts (not just one)
 - [ ] When adding new investment/savings plan category, insert new line directly — no modal
 - [ ] Merge Linked Account and Funding Source into single concept with combined pop-up and icon; explore clearer terminology for "where it's coming from and going to"
@@ -69,7 +69,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Add category list (fixed, discretionary, custom) when adding new expense — typeable field with dropdown similar to Empower; evaluate if useful elsewhere (accounts/holdings)
 
 ## Bugs / Issues
-- [ ] Guest store data loss on HMR — dev-mode Hot Module Reload resets module-level `state` in `guest-store.ts`, losing all in-memory data and bouncing users back to onboarding via `OnboardingGuard`
-- [ ] CurrentPlanDrawer Save Plan button not disabled during save — `triggerSaveRef` pattern needs an `isSavingRef` plumbed back from PlanEditor
-- [ ] Account edit form (AccountEditModal) — missing visible field validation error messages (silently blocks submit on empty name, no feedback for invalid APY/interest)
-- [ ] Account setup wizard (AccountSetupWizard) — no validation on empty draft account names before creation
+- [x] Guest store data loss on HMR — dev-mode Hot Module Reload resets module-level `state` in `guest-store.ts`, losing all in-memory data and bouncing users back to onboarding via `OnboardingGuard`
+- [x] CurrentPlanDrawer Save Plan button not disabled during save — `triggerSaveRef` pattern needs an `isSavingRef` plumbed back from PlanEditor
+- [x] Account edit form (AccountEditModal) — missing visible field validation error messages (silently blocks submit on empty name, no feedback for invalid APY/interest)
+- [x] Account setup wizard (AccountSetupWizard) — no validation on empty draft account names before creation

@@ -3,6 +3,10 @@
 ## BoD
 - [ ] Q1 2026 BoD Deck (due: 2026-04-24)
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
+- [ ] WIP Adj. Weekly vs Target (all Praxis plants) — for BoD deck
+- [ ] Monthly Labor Utilization Trend (note plants excluded) — for BoD deck
+- [ ] Quarter Custom / Fleet Invoicing (note about Whitley) — for BoD deck
+- [ ] Add WIP Adj. vs Budget view by plant (incl. total) — for BoD deck
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -23,6 +27,8 @@
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
+- [ ] Add Custom | Fleet field to Production report (consider Operations and Backlog as well)
+- [ ] Fix Budget Target Revenue RLS issue
 
 ## Analysis
 - [ ] LJ: Purchase category breakdown — Sunbelt x Whitley for 2025, Britco from start of Sage purchasing, Whitley Q1-26; show % split by category; break Whitley out by month
