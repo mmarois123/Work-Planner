@@ -32,7 +32,7 @@
 
 ## Analysis
 - [x] LJ: Purchase category breakdown — Sunbelt x Whitley for 2025, Britco from start of Sage purchasing, Whitley Q1-26; show % split by category; break Whitley out by month
-- [ ] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley
+- [x] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley
 - [ ] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] SKU match Titan purchasing vs Sunbelt purchasing
