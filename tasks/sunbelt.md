@@ -68,7 +68,7 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
-- [ ] Send Littlejohn team purchasing data and accompanying reports ASAP
+- [x] Send Littlejohn team purchasing data and accompanying reports ASAP
 
 
 ## Bob Review
