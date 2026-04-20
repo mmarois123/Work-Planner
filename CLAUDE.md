@@ -73,15 +73,10 @@ Move `[x]` lines to `archive/YYYY-MM/{area}.md` (on demand or via end-of-day)
 
 | Command | Purpose |
 |---|---|
+| `/today` | Open work planner in browser with morning summary |
 | `/morning-summary` | Daily briefing of open tasks across all areas |
-| `/triage` | Bulk-assign priorities and due dates to unprioritized tasks |
 | `/add-task` | Natural language task creation with smart routing |
-| `/weekly-review` | Weekly review: completed, overdue, stale, next week priorities |
-| `/end-of-day` | EOD wrap-up: done today, due tomorrow, tomorrow's top 3 |
-| `/delegation-check` | Review delegated tasks by person, suggest follow-ups |
-| `/area-status` | Deep dive into one area's task health |
-| `/process-inbox` | Parse Incoming/ files into structured tasks |
-| `/process-email` | Fetch forwarded emails from Gmail, parse into tasks |
+| `/process-inbox` | Parse Incoming/ files or Gmail emails into tasks (`/process-inbox email` for Gmail) |
 
 ## Key Files
 

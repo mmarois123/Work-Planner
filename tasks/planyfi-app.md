@@ -6,7 +6,7 @@
 ### Free tier / monetization (prerequisite for public beta)
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
 - [x] Upgrade prompts — on nav away, `Ctrl+S`, manual save clicks; persistent "session only — sign up to save" indicator in UI
-- [ ] Stripe Checkout integration — wire to existing `plan: free|premium` Clerk metadata; webhook → `clerkClient.users.updateUserMetadata`
+- [x] Stripe Checkout integration — wire to existing `plan: free|premium` Clerk metadata; webhook → `clerkClient.users.updateUserMetadata`
 - [x] Feature gating — enforce `isPremium` on save actions, scenario comparison, >N saved scenarios, CSV export
 - [x] CSV export for Premium (feature-gated)
 
@@ -16,14 +16,13 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [x] Configure R2 bucket + set `R2_*` env vars in Railway — create bucket, generate API token, add credentials
 - [x] Set up daily cron trigger for `/api/admin/backup` — Railway cron service or GitHub Action
 - [ ] Railway staging environment — second service pointed at a branch, separate volume
-- [ ] Data export (JSON) for Premium — per-user server-side export endpoint
-
 ### Deferred / reconsidered
 - [~] ~~Provisioning layer — automate per-user Railway instance creation via API~~ — DROPPED. Shared multi-tenant SQLite + Clerk userId scoping already covers isolation. Per-instance economics kill $5/mo margin. Revisit only as Enterprise tier.
 - [~] ~~Custom domain routing — map user.planyfi.app to each user's Railway instance~~ — DROPPED with the above.
 - [~] ~~Data export — let users download their SQLite file~~ — REPLACED with per-user JSON export (SQLite file would leak other users' data in shared-DB model).
+- [ ] Data export (JSON) for Premium — per-user server-side export endpoint — DEFERRED, not needed for beta
+- [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback — DEFERRED, low priority
 
-- [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback
 - [ ] Hide cash flow features in production
 
 ## Product
@@ -38,8 +37,6 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Mobile-responsive layout — full mobile compatibility pass across all pages and components; touch-friendly interactions throughout
 - [ ] Integrate US census data more deeply into app
 - [ ] Add view mode for filtering/browsing different demographics
-- [ ] Quick-compare button — "What if I retire 5 years earlier?"
-- [ ] Monte Carlo simulation mode — return variance modeling
 - [ ] Interactive demo — hosted read-only instance with sample data
 - [ ] Add contact, submit feedback, and support functionality to app
 
@@ -58,15 +55,41 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] When adding new investment/savings plan category, insert new line directly — no modal
 - [ ] Merge Linked Account and Funding Source into single concept with combined pop-up and icon; explore clearer terminology for "where it's coming from and going to"
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
-- [ ] Add ability to hide/archive elapsed and applied events (events drawer, event timeline, or both)
+- [x] Add ability to hide/archive elapsed and applied events (events drawer, event timeline, or both)
 - [ ] If user enters plan mid-year with no prior plan, assume same for full year; otherwise use appropriate mix based on effective dates
-- [ ] Debt accounts — add support for: Auto loan (original amount, term, APR, start/end date, auto-calc payment w/ override), Mortgage (loan type, rate, amount, start/end date, auto-calc payment, taxes/insurance/PMI), Student loans, Personal loans, Credit cards
-- [ ] Add monthly view to financial planner, especially for 1–10 year timeframe
-- [ ] Verify that after mortgage on home event ends, property taxes, insurance, and maintenance costs continue
+- [x] Debt accounts — add support for: Auto loan (original amount, term, APR, start/end date, auto-calc payment w/ override), Mortgage (loan type, rate, amount, start/end date, auto-calc payment, taxes/insurance/PMI), Student loans, Personal loans, Credit cards
+- [ ] Credit card account enrichment — extend CC editor with loan-detail-style fields (APR per card, minimum payment tracking, payoff estimates)
+- [x] Add monthly view to financial planner, especially for 1–10 year timeframe
+- [x] Verify that after mortgage on home event ends, property taxes, insurance, and maintenance costs continue
 - [ ] Fix Future Events and Fund Strategy mobile layout bugs
 - [ ] Fix date entry for mobile across app — easy to type or select (bug found in profile birthday field)
 - [ ] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
 - [ ] Add category list (fixed, discretionary, custom) when adding new expense — typeable field with dropdown similar to Empower; evaluate if useful elsewhere (accounts/holdings)
+
+### Design Review (Apr 2026)
+Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.
+
+**Planner**
+- [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]
+- [ ] Mode-specific summary rails — replace monolithic ScenarioSummaryBox with per-mode components (NetWorthRail, IncomeRail, etc.); each has one-sentence thesis + ≤5 stats + CTA [M effort, High leverage]
+- [ ] Event ↔ chart causal hover — hover a year → see upstream events + per-event delta; hover an event → see contribution on chart; attribute deltas via projection-with minus projection-without [M effort, Med leverage]
+- [ ] Allocation drift panel — show top 3 drifted asset classes (actual vs. target bars) in Net Worth summary rail; rebalance recommendation line [S effort, Med leverage]
+
+**Accounts**
+- [ ] Freshness-first account list + Monthly Update flow — "Updated X days ago" on every row; Monthly Update mode filters stale accounts (>30 days) with focus-and-advance keyboard flow; net worth delta preview [S effort, High leverage]
+- [ ] Explicit account-mode chips — persistent [Manual] / [Holdings · N] / [Allocation] chip per row; chip becomes mode-switch menu; add freshness, day-change, link badge to same row [S effort, Med leverage]
+
+**Drawers (Current Plan / Events / Milestones)**
+- [ ] Plan editor progressive disclosure — lift 3 key overrides (cadence, end condition, growth) as visible chips on each row; collapse to nothing if all defaults; keep 17 fields behind "Advanced →" [M effort, High leverage]
+- [ ] Event impact sparklines — 180×40px sparkline per event card showing projection-with minus projection-without; magnitude number (+$412k at FI); left-border color by event type [M effort, High leverage]
+- [ ] Milestones on the x-axis — add 'milestones' to XAxisMode; ticks become milestone labels with vertical guides; clicking a tick shows usage panel (which budget/event items reference it); collapses milestones drawer [S effort, Med leverage]
+
+**Net Worth chart deep dive**
+- [ ] Living axis — year strip + per-member age strips + milestone strip + event strip below chart; hover/clickable; color-coded life phases [M effort, High leverage]
+- [ ] Confidence band — fan chart with p10/p50/p90; Phase 1: deterministic ±1.5σ; Phase 2: Monte Carlo [M effort, High leverage]
+- [ ] Composition reveal (peelable layers) — default single line; "Break out" chip splits into stacked investments / home equity / cash / liabilities; collapses mode switcher [M effort, Med leverage]
+- [ ] Ghost lines — prior plan versions as faded dashed lines; delta callout ("retirement moved forward 14 months since March"); "Why" link opens events since that version [S effort, Med leverage]
+- [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Bugs / Issues
 - [x] Guest store data loss on HMR — dev-mode Hot Module Reload resets module-level `state` in `guest-store.ts`, losing all in-memory data and bouncing users back to onboarding via `OnboardingGuard`
