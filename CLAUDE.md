@@ -77,6 +77,7 @@ Move `[x]` lines to `archive/YYYY-MM/{area}.md` (on demand or via end-of-day)
 | `/morning-summary` | Daily briefing of open tasks across all areas |
 | `/add-task` | Natural language task creation with smart routing |
 | `/process-inbox` | Parse Incoming/ files or Gmail emails into tasks (`/process-inbox email` for Gmail) |
+| `/archive` | Move completed tasks to archive. Optional area arg: `sunbelt`, `planyfi-app`, `planyfi-marketing` |
 
 ## Key Files
 
