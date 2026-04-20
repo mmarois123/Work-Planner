@@ -63,7 +63,7 @@
   - Marketing KPI: website analytics, NPM, Google, LinkedIn; Pre-CRM leads \> monthly
   - Activity-based KPIs
   - Bring in updated CRM data \> create mock-up
-- [ ] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations
+- [x] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
