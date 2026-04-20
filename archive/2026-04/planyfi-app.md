@@ -22,3 +22,20 @@
 - [x] Explore bulk update option for assets
 - [x] Update Asset Allocation report: show variances between target and current allocations; add ability to include/exclude accounts (e.g. exclude checking/savings); simplify Tax Status chart with focus on asset allocation; brainstorm additional improvements
 - [x] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
+- [x] Upgrade prompts — on nav away, `Ctrl+S`, manual save clicks; persistent "session only — sign up to save" indicator in UI
+- [x] Stripe Checkout integration — wire to existing `plan: free|premium` Clerk metadata; webhook → `clerkClient.users.updateUserMetadata`
+- [x] Feature gating — enforce `isPremium` on save actions, scenario comparison, >N saved scenarios, CSV export
+- [x] CSV export for Premium (feature-gated)
+- [x] Automated SQLite backups — daily `sqlite3 .backup` → upload to S3/R2/B2 (critical: loss surface is Premium user data)
+- [x] Create Sentry project (Next.js platform) and set `NEXT_PUBLIC_SENTRY_DSN` in Railway
+- [x] Configure R2 bucket + set `R2_*` env vars in Railway — create bucket, generate API token, add credentials
+- [x] Set up daily cron trigger for `/api/admin/backup` — Railway cron service or GitHub Action
+- [x] Add reset button to banner for guest/free users
+- [x] Add ability to hide/archive elapsed and applied events (events drawer, event timeline, or both)
+- [x] Debt accounts — add support for: Auto loan (original amount, term, APR, start/end date, auto-calc payment w/ override), Mortgage (loan type, rate, amount, start/end date, auto-calc payment, taxes/insurance/PMI), Student loans, Personal loans, Credit cards
+- [x] Add monthly view to financial planner, especially for 1–10 year timeframe
+- [x] Verify that after mortgage on home event ends, property taxes, insurance, and maintenance costs continue
+- [x] Guest store data loss on HMR — dev-mode Hot Module Reload resets module-level `state` in `guest-store.ts`, losing all in-memory data and bouncing users back to onboarding via `OnboardingGuard`
+- [x] CurrentPlanDrawer Save Plan button not disabled during save — `triggerSaveRef` pattern needs an `isSavingRef` plumbed back from PlanEditor
+- [x] Account edit form (AccountEditModal) — missing visible field validation error messages (silently blocks submit on empty name, no feedback for invalid APY/interest)
+- [x] Account setup wizard (AccountSetupWizard) — no validation on empty draft account names before creation

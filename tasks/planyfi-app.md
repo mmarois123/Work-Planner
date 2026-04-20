@@ -5,16 +5,7 @@
 
 ### Free tier / monetization (prerequisite for public beta)
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
-- [x] Upgrade prompts — on nav away, `Ctrl+S`, manual save clicks; persistent "session only — sign up to save" indicator in UI
-- [x] Stripe Checkout integration — wire to existing `plan: free|premium` Clerk metadata; webhook → `clerkClient.users.updateUserMetadata`
-- [x] Feature gating — enforce `isPremium` on save actions, scenario comparison, >N saved scenarios, CSV export
-- [x] CSV export for Premium (feature-gated)
-
 ### Infrastructure / ops (before inviting friends)
-- [x] Automated SQLite backups — daily `sqlite3 .backup` → upload to S3/R2/B2 (critical: loss surface is Premium user data)
-- [x] Create Sentry project (Next.js platform) and set `NEXT_PUBLIC_SENTRY_DSN` in Railway
-- [x] Configure R2 bucket + set `R2_*` env vars in Railway — create bucket, generate API token, add credentials
-- [x] Set up daily cron trigger for `/api/admin/backup` — Railway cron service or GitHub Action
 - [ ] Railway staging environment — second service pointed at a branch, separate volume
 ### Deferred / reconsidered
 - [~] ~~Provisioning layer — automate per-user Railway instance creation via API~~ — DROPPED. Shared multi-tenant SQLite + Clerk userId scoping already covers isolation. Per-instance economics kill $5/mo margin. Revisit only as Enterprise tier.
@@ -50,17 +41,12 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
 - [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 
-- [x] Add reset button to banner for guest/free users
 - [ ] Add linked account option to both Current Plan and Accounts (not just one)
 - [ ] When adding new investment/savings plan category, insert new line directly — no modal
 - [ ] Merge Linked Account and Funding Source into single concept with combined pop-up and icon; explore clearer terminology for "where it's coming from and going to"
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
-- [x] Add ability to hide/archive elapsed and applied events (events drawer, event timeline, or both)
 - [ ] If user enters plan mid-year with no prior plan, assume same for full year; otherwise use appropriate mix based on effective dates
-- [x] Debt accounts — add support for: Auto loan (original amount, term, APR, start/end date, auto-calc payment w/ override), Mortgage (loan type, rate, amount, start/end date, auto-calc payment, taxes/insurance/PMI), Student loans, Personal loans, Credit cards
 - [ ] Credit card account enrichment — extend CC editor with loan-detail-style fields (APR per card, minimum payment tracking, payoff estimates)
-- [x] Add monthly view to financial planner, especially for 1–10 year timeframe
-- [x] Verify that after mortgage on home event ends, property taxes, insurance, and maintenance costs continue
 - [ ] Fix Future Events and Fund Strategy mobile layout bugs
 - [ ] Fix date entry for mobile across app — easy to type or select (bug found in profile birthday field)
 - [ ] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
@@ -92,7 +78,3 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Bugs / Issues
-- [x] Guest store data loss on HMR — dev-mode Hot Module Reload resets module-level `state` in `guest-store.ts`, losing all in-memory data and bouncing users back to onboarding via `OnboardingGuard`
-- [x] CurrentPlanDrawer Save Plan button not disabled during save — `triggerSaveRef` pattern needs an `isSavingRef` plumbed back from PlanEditor
-- [x] Account edit form (AccountEditModal) — missing visible field validation error messages (silently blocks submit on empty name, no feedback for invalid APY/interest)
-- [x] Account setup wizard (AccountSetupWizard) — no validation on empty draft account names before creation

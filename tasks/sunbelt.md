@@ -17,7 +17,6 @@
 
 
 ## Reporting
-- [x] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
   - [ ] Add MR Steel Invoicing from Sage
@@ -31,9 +30,6 @@
 - [ ] Fix Budget Target Revenue RLS issue
 
 ## Analysis
-- [x] LJ: Purchase category breakdown — Sunbelt x Whitley for 2025, Britco from start of Sage purchasing, Whitley Q1-26; show % split by category; break Whitley out by month
-- [x] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley
-- [x] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] SKU match Titan purchasing vs Sunbelt purchasing
 
@@ -63,16 +59,15 @@
   - Marketing KPI: website analytics, NPM, Google, LinkedIn; Pre-CRM leads \> monthly
   - Activity-based KPIs
   - Bring in updated CRM data \> create mock-up
-- [x] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations- [ ] Integrate Sep–Dec invoice data from Whitley- [ ] Add Britco, C&B, NWBS detailed account information
+- [ ] Integrate Sep–Dec invoice data from Whitley
+- [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
-- [x] Send Littlejohn team purchasing data and accompanying reports ASAP
 
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
-- [x] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [ ] Propose labor utilization % targets to Bob based on budget
 
 
@@ -80,6 +75,5 @@
 - [ ] Integrate new AR Logic into Fabric @delegated(Irina)
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
-- [x] FP&A Data Workspace clean-up @delegated(Irina)
 - [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
 - [ ] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)

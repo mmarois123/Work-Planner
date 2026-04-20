@@ -16,3 +16,11 @@
 - [x] Run full analysis of effect of factor on materials, labor, and gross profit
 - [x] 🟠 Build material and labor % logic into FC model
 - [x] Automate Buffer Analysis
+- [x] Check PBI/Fabric refresh — resource/cost impact of every-other-hour cadence (due: 2026-04-17)
+- [x] LJ: Purchase category breakdown — Sunbelt x Whitley for 2025, Britco from start of Sage purchasing, Whitley Q1-26; show % split by category; break Whitley out by month
+- [x] LJ: Top vendors vs others — Q1-26, broken down between Sunbelt and Whitley
+- [x] LJ: Consider Apr 1–Mar 31 fiscal view for Britco and Sunbelt for both requests above
+- [x] Get remaining invoice data from Jeff (Sep–Nov), add to Sales eliminations
+- [x] Send Littlejohn team purchasing data and accompanying reports ASAP
+- [x] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
+- [x] FP&A Data Workspace clean-up @delegated(Irina)
