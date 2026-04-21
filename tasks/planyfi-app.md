@@ -78,3 +78,4 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Bugs / Issues
+- [ ] Fix Daily SQLite Backup GitHub Action failure [P1]
