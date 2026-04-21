@@ -76,7 +76,7 @@ Move `[x]` lines to `archive/YYYY-MM/{area}.md` (on demand or via end-of-day)
 | `/today` | Open work planner in browser with morning summary |
 | `/morning-summary` | Daily briefing of open tasks across all areas |
 | `/add-task` | Natural language task creation with smart routing |
-| `/process-inbox` | Parse Incoming/ files or Gmail emails into tasks (`/process-inbox email` for Gmail) |
+| `/process-inbox` | Gmail first, then Incoming/ folder. Use `/process-inbox files` to skip Gmail. |
 | `/archive` | Move completed tasks to archive. Optional area arg: `sunbelt`, `planyfi-app`, `planyfi-marketing` |
 
 ## Key Files

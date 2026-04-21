@@ -35,7 +35,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
 
 - [ ] Add refinance mortgage / other debt as a future event type
-- [ ] Tighten up home buying and tracking in future events, accounts, and current plan
+- [x] Tighten up home buying and tracking in future events, accounts, and current plan
 - [ ] Finalize onboarding modules with 3 paths
 - [ ] Update event timeline
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
@@ -68,7 +68,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 **Drawers (Current Plan / Events / Milestones)**
 - [ ] Plan editor progressive disclosure — lift 3 key overrides (cadence, end condition, growth) as visible chips on each row; collapse to nothing if all defaults; keep 17 fields behind "Advanced →" [M effort, High leverage]
 - [ ] Event impact sparklines — 180×40px sparkline per event card showing projection-with minus projection-without; magnitude number (+$412k at FI); left-border color by event type [M effort, High leverage]
-- [ ] Milestones on the x-axis — add 'milestones' to XAxisMode; ticks become milestone labels with vertical guides; clicking a tick shows usage panel (which budget/event items reference it); collapses milestones drawer [S effort, Med leverage]
+- [x] Milestones on the x-axis — add 'milestones' to XAxisMode; ticks become milestone labels with vertical guides; clicking a tick shows usage panel (which budget/event items reference it); collapses milestones drawer [S effort, Med leverage]
 
 **Net Worth chart deep dive**
 - [ ] Living axis — year strip + per-member age strips + milestone strip + event strip below chart; hover/clickable; color-coded life phases [M effort, High leverage]

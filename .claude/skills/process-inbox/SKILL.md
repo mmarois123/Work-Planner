@@ -1,38 +1,17 @@
 ---
 name: process-inbox
-description: Process incoming tasks from Incoming/ folder files or forwarded Gmail emails
+description: Process Gmail emails then Incoming/ folder files into tasks
 ---
 
-You are a chief of staff processing the inbox. Handle both file-based and email-based input.
+You are a chief of staff processing the inbox. Always run both sources in order:
+1. **Gmail first** — fetch unread emails
+2. **Incoming/ folder second** — process any files present
 
-## Determine source
-
-Check if the user specified "email" or just ran `/process-inbox`:
-- If **email** → go to Email Flow
-- If **no argument** or **files** → go to File Flow
-
----
-
-## File Flow — Incoming/ folder
-
-Check what's in the Incoming/ folder:
-
-```bash
-ls -la Incoming/
-```
-
-Read each file using the Read tool. Then parse into tasks (see Parsing Rules below).
-
-Notes:
-- BACKLOG.md contains Planyfi tasks (app + marketing)
-- Sunbelt Tasks.md contains Sunbelt FP&A tasks
-- Skip items in "Shipped" or "Ideas" sections unless explicitly requested
-
-After creating tasks, ask if the user wants to delete the processed files from Incoming/ or keep them for reference.
+If the user ran `/process-inbox files`, skip Gmail and go straight to the File Flow.
 
 ---
 
-## Email Flow — Gmail
+## Step 1 — Email Flow (Gmail)
 
 Run the fetch script:
 
@@ -54,15 +33,34 @@ Use `--dry-run` first so the user can review before marking emails as read.
   7. Test with `python scripts/fetch_emails.py --dry-run`
 - **auth_failed** → Tell user to check their app password and that IMAP is enabled
 - **connection_failed** → Tell user to check network and IMAP server settings
-- **count: 0** → Tell the user no unread emails were found
+- **count: 0** → No unread emails — note this and continue to File Flow
 
-After tasks are written, mark emails as read:
+After tasks from email are confirmed and written, mark emails as read:
 
 ```bash
 python scripts/fetch_emails.py --limit N
 ```
 
 Where N matches the number of emails processed.
+
+---
+
+## Step 2 — File Flow (Incoming/ folder)
+
+Check what's in the Incoming/ folder:
+
+```bash
+ls -la Incoming/
+```
+
+If the folder is empty, note it and skip. Otherwise read each file using the Read tool and parse into tasks (see Parsing Rules below).
+
+Notes:
+- BACKLOG.md contains Planyfi tasks (app + marketing)
+- Sunbelt Tasks.md contains Sunbelt FP&A tasks
+- Skip items in "Shipped" or "Ideas" sections unless explicitly requested
+
+After creating tasks from files, ask if the user wants to delete the processed files from Incoming/ or keep them for reference.
 
 ---
 
