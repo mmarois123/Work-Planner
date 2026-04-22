@@ -1,7 +1,7 @@
 # Sunbelt FP&A
 
 ## BoD
-- [ ] 🟠 Q1 2026 BoD Deck (due: 2026-04-24)
+- [ ] Q1 2026 BoD Deck (due: 2026-04-24)
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
 - [ ] WIP Adj. Weekly vs Target (all Praxis plants) — for BoD deck
 - [ ] Monthly Labor Utilization Trend (note plants excluded) — for BoD deck
