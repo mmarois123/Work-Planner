@@ -31,7 +31,7 @@
 
 ## Analysis
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
-- [ ] SKU match Titan purchasing vs Sunbelt purchasing
+- [x] SKU match Titan purchasing vs Sunbelt purchasing
 
 ## General
 - [ ] Build safety metrics dashboard with Marci
