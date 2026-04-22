@@ -27,7 +27,7 @@
 - [ ] Add quarter/year view to balance sheet
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 - [ ] Add Custom | Fleet field to Production report (consider Operations and Backlog as well)
-- [ ] Fix Budget Target Revenue RLS issue
+- [x] Fix Budget Target Revenue RLS issue
 
 ## Analysis
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
