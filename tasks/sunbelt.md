@@ -27,6 +27,7 @@
 - [ ] Add quarter/year view to balance sheet
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 - [ ] Add Custom | Fleet field to Production report (consider Operations and Backlog as well)
+- [ ] Fix invoice logic from Praxis data
 - [x] Fix Budget Target Revenue RLS issue
 
 ## Analysis

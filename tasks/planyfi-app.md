@@ -6,7 +6,8 @@
 ### Free tier / monetization (prerequisite for public beta)
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
 ### Infrastructure / ops (before inviting friends)
-- [ ] Railway staging environment — second service pointed at a branch, separate volume
+- [x] Railway staging environment — second service pointed at a branch, separate volume
+- [ ] Stripe account setup — create account, configure test prices ($5/mo, $50/yr), add webhook for staging (`incredible-inspiration-production.up.railway.app/api/stripe/webhook`), set STRIPE_* env vars on both production and staging Railway services
 ### Deferred / reconsidered
 - [~] ~~Provisioning layer — automate per-user Railway instance creation via API~~ — DROPPED. Shared multi-tenant SQLite + Clerk userId scoping already covers isolation. Per-instance economics kill $5/mo margin. Revisit only as Enterprise tier.
 - [~] ~~Custom domain routing — map user.planyfi.app to each user's Railway instance~~ — DROPPED with the above.
@@ -34,7 +35,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Send beta version to Zach, Julie, AJ, James, and others (blocked on: session-only free tier + backups + error monitoring)
 - [ ] Onboarding module improvements — refine UX and flows as design evolves
 
-- [ ] Add refinance mortgage / other debt as a future event type
+- [x] Add refinance mortgage / other debt as a future event type
 - [x] Tighten up home buying and tracking in future events, accounts, and current plan
 - [ ] Finalize onboarding modules with 3 paths
 - [ ] Update event timeline
@@ -47,8 +48,8 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
 - [ ] If user enters plan mid-year with no prior plan, assume same for full year; otherwise use appropriate mix based on effective dates
 - [ ] Credit card account enrichment — extend CC editor with loan-detail-style fields (APR per card, minimum payment tracking, payoff estimates)
-- [ ] Fix Future Events and Fund Strategy mobile layout bugs
-- [ ] Fix date entry for mobile across app — easy to type or select (bug found in profile birthday field)
+- [x] Fix Future Events and Fund Strategy mobile layout bugs
+- [x] Fix date entry for mobile across app — easy to type or select (bug found in profile birthday field)
 - [ ] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
 - [ ] Add category list (fixed, discretionary, custom) when adding new expense — typeable field with dropdown similar to Empower; evaluate if useful elsewhere (accounts/holdings)
 
@@ -78,4 +79,4 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Bugs / Issues
-- [ ] Fix Daily SQLite Backup GitHub Action failure [P1]
+- [x] Fix Daily SQLite Backup GitHub Action failure [P1]
