@@ -4,7 +4,7 @@
 - [ ] 🟠 Q1 2026 BoD Deck (due: 2026-04-24)
 - [ ] Create PDF outputs from BoD Template (suggest adding appendix slides)
 - [x] WIP Adj. Weekly vs Target (all Praxis plants) — for BoD deck
-- [ ] Monthly Labor Utilization Trend (note plants excluded) — for BoD deck
+- [x] Monthly Labor Utilization Trend (note plants excluded) — for BoD deck
 - [ ] Quarter Custom / Fleet Invoicing (note about Whitley) — for BoD deck
 - [ ] Add WIP Adj. vs Budget view by plant (incl. total) — for BoD deck
 
