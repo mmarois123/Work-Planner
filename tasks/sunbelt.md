@@ -6,7 +6,7 @@
 - [x] WIP Adj. Weekly vs Target (all Praxis plants) — for BoD deck
 - [x] Monthly Labor Utilization Trend (note plants excluded) — for BoD deck
 - [x] Quarter Custom / Fleet Invoicing (note about Whitley) — for BoD deck
-- [ ] Add WIP Adj. vs Budget view by plant (incl. total) — for BoD deck
+- [x] Add WIP Adj. vs Budget view by plant (incl. total) — for BoD deck
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
