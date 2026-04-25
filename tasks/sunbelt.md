@@ -19,7 +19,7 @@
 ## Reporting
 - [ ] Production Report Enhancements
   - [ ] Utilize Calendar table from Joy for working days
-  - [ ] Add MR Steel Invoicing from Sage
+  - [x] Add MR Steel Invoicing from Sage
   - [ ] Add dates to Current and Previous WIP in card visual
   - [ ] Use historical backlog in card for Line Time / Drawings
   - [ ] Create override functionality for detail table if date is selected aside from timeframe
