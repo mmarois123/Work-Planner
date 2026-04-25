@@ -22,7 +22,7 @@
   - [x] Add MR Steel Invoicing from Sage
   - [ ] Add dates to Current and Previous WIP in card visual
   - [ ] Use historical backlog in card for Line Time / Drawings
-  - [ ] Create override functionality for detail table if date is selected aside from timeframe
+  - [x] Create override functionality for detail table if date is selected aside from timeframe
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
