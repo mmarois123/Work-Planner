@@ -58,7 +58,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 
 **Planner**
 - [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]
-- [ ] Mode-specific summary rails — replace monolithic ScenarioSummaryBox with per-mode components (NetWorthRail, IncomeRail, etc.); each has one-sentence thesis + ≤5 stats + CTA [M effort, High leverage]
+- [x] Mode-specific summary rails — replace monolithic ScenarioSummaryBox with per-mode components (NetWorthRail, IncomeRail, etc.); each has one-sentence thesis + ≤5 stats + CTA [M effort, High leverage]
 - [x] Event ↔ chart causal hover — hover a year → see upstream events + per-event delta; hover an event → see contribution on chart; attribute deltas via projection-with minus projection-without [M effort, Med leverage]
 - [ ] Allocation drift panel — show top 3 drifted asset classes (actual vs. target bars) in Net Worth summary rail; rebalance recommendation line [S effort, Med leverage]
 
