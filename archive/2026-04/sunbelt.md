@@ -24,3 +24,10 @@
 - [x] Send Littlejohn team purchasing data and accompanying reports ASAP
 - [x] Per Bob: dig into purchasing, BOMs, POs to better understand and FC margin (materials pricing); investigate cycle counts data and how it's captured
 - [x] FP&A Data Workspace clean-up @delegated(Irina)
+- [x] Create PDF outputs from BoD Template (suggest adding appendix slides)
+- [x] WIP Adj. Weekly vs Target (all Praxis plants) — for BoD deck
+- [x] Monthly Labor Utilization Trend (note plants excluded) — for BoD deck
+- [x] Quarter Custom / Fleet Invoicing (note about Whitley) — for BoD deck
+- [x] Add WIP Adj. vs Budget view by plant (incl. total) — for BoD deck
+- [x] Fix Budget Target Revenue RLS issue
+- [x] SKU match Titan purchasing vs Sunbelt purchasing

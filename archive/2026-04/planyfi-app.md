@@ -39,3 +39,20 @@
 - [x] CurrentPlanDrawer Save Plan button not disabled during save — `triggerSaveRef` pattern needs an `isSavingRef` plumbed back from PlanEditor
 - [x] Account edit form (AccountEditModal) — missing visible field validation error messages (silently blocks submit on empty name, no feedback for invalid APY/interest)
 - [x] Account setup wizard (AccountSetupWizard) — no validation on empty draft account names before creation
+- [x] Railway staging environment — second service pointed at a branch, separate volume
+- [x] Hide cash flow features in production
+- [x] Add refinance mortgage / other debt as a future event type
+- [x] Tighten up home buying and tracking in future events, accounts, and current plan
+- [x] Update event timeline
+- [x] Fix Future Events and Fund Strategy mobile layout bugs
+- [x] Fix date entry for mobile across app — easy to type or select (bug found in profile birthday field)
+- [x] Mode-specific summary rails — replace monolithic ScenarioSummaryBox with per-mode components (NetWorthRail, IncomeRail, etc.); each has one-sentence thesis + ≤5 stats + CTA [M effort, High leverage]
+- [x] Event ↔ chart causal hover — hover a year → see upstream events + per-event delta; hover an event → see contribution on chart; attribute deltas via projection-with minus projection-without [M effort, Med leverage]
+- [x] Freshness-first account list + Monthly Update flow — "Updated X days ago" on every row; Monthly Update mode filters stale accounts (>30 days) with focus-and-advance keyboard flow; net worth delta preview [S effort, High leverage]
+- [x] Explicit account-mode chips — persistent [Manual] / [Holdings · N] / [Allocation] chip per row; chip becomes mode-switch menu; add freshness, day-change, link badge to same row [S effort, Med leverage]
+- [x] Plan editor progressive disclosure — lift 3 key overrides (cadence, end condition, growth) as visible chips on each row; collapse to nothing if all defaults; keep 17 fields behind "Advanced →" [M effort, High leverage]
+- [x] Milestones on the x-axis — add 'milestones' to XAxisMode; ticks become milestone labels with vertical guides; clicking a tick shows usage panel (which budget/event items reference it); collapses milestones drawer [S effort, Med leverage]
+- [x] Living axis — year strip + per-member age strips + milestone strip + event strip below chart; hover/clickable; color-coded life phases [M effort, High leverage]
+- [x] Composition reveal (peelable layers) — default single line; "Break out" chip splits into stacked investments / home equity / cash / liabilities; collapses mode switcher [M effort, Med leverage]
+- [x] Ghost lines — prior plan versions as faded dashed lines; delta callout ("retirement moved forward 14 months since March"); "Why" link opens events since that version [S effort, Med leverage]
+- [x] Fix Daily SQLite Backup GitHub Action failure [P1]

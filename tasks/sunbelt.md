@@ -2,11 +2,6 @@
 
 ## BoD
 - [ ] 🟠 Q1 2026 BoD Deck (due: 2026-04-24)
-- [x] Create PDF outputs from BoD Template (suggest adding appendix slides)
-- [x] WIP Adj. Weekly vs Target (all Praxis plants) — for BoD deck
-- [x] Monthly Labor Utilization Trend (note plants excluded) — for BoD deck
-- [x] Quarter Custom / Fleet Invoicing (note about Whitley) — for BoD deck
-- [x] Add WIP Adj. vs Budget view by plant (incl. total) — for BoD deck
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -28,11 +23,9 @@
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 - [ ] Add Custom | Fleet field to Production report (consider Operations and Backlog as well)
 - [ ] Fix invoice logic from Praxis data
-- [x] Fix Budget Target Revenue RLS issue
 
 ## Analysis
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
-- [x] SKU match Titan purchasing vs Sunbelt purchasing
 
 ## General
 - [ ] Build safety metrics dashboard with Marci
