@@ -28,7 +28,7 @@
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 
 ## General
-- [ ] Build safety metrics dashboard with Marci
+- [x] Build safety metrics dashboard with Marci
   - LTIR, TRIR, DART (Days Away, Lost Time)
   - \# lost time incidents, Hours worked (from TCP)
   - \# incidents (OSHA log, Safety coordinator)
