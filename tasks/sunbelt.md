@@ -1,7 +1,7 @@
 # Sunbelt FP&A
 
 ## BoD
-- [ ] 🟠 Q1 2026 BoD Deck (due: 2026-04-24)
+- [x] 🟠 Q1 2026 BoD Deck (due: 2026-04-24)
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
