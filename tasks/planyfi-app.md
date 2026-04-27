@@ -62,3 +62,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Bugs / Issues
+- [ ] Detailed onboarding: jump straight into account wizard without requiring button press to launch
+- [ ] After adding accounts, success message shows but displays 0 accounts and blocks navigation to next screen
+- [ ] Update account wizard UI to match rest of app styling
+- [ ] Renaming accounts: replace inline rename with edit icon + popup for better mobile UX
