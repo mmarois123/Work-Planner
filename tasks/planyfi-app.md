@@ -15,7 +15,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Data export (JSON) for Premium — per-user server-side export endpoint — DEFERRED, not needed for beta
 - [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback — DEFERRED, low priority
 
-- [ ] Hide cash flow features in production
+- [x] Hide cash flow features in production
 
 ## Product
 - [ ] Research (via Claude) what mortgage info a homeowner typically has access to — use to inform current plan input fields
@@ -38,7 +38,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [x] Add refinance mortgage / other debt as a future event type
 - [x] Tighten up home buying and tracking in future events, accounts, and current plan
 - [ ] Finalize onboarding modules with 3 paths
-- [ ] Update event timeline
+- [x] Update event timeline
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
 - [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 
@@ -63,19 +63,19 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Allocation drift panel — show top 3 drifted asset classes (actual vs. target bars) in Net Worth summary rail; rebalance recommendation line [S effort, Med leverage]
 
 **Accounts**
-- [ ] Freshness-first account list + Monthly Update flow — "Updated X days ago" on every row; Monthly Update mode filters stale accounts (>30 days) with focus-and-advance keyboard flow; net worth delta preview [S effort, High leverage]
-- [ ] Explicit account-mode chips — persistent [Manual] / [Holdings · N] / [Allocation] chip per row; chip becomes mode-switch menu; add freshness, day-change, link badge to same row [S effort, Med leverage]
+- [x] Freshness-first account list + Monthly Update flow — "Updated X days ago" on every row; Monthly Update mode filters stale accounts (>30 days) with focus-and-advance keyboard flow; net worth delta preview [S effort, High leverage]
+- [x] Explicit account-mode chips — persistent [Manual] / [Holdings · N] / [Allocation] chip per row; chip becomes mode-switch menu; add freshness, day-change, link badge to same row [S effort, Med leverage]
 
 **Drawers (Current Plan / Events / Milestones)**
-- [ ] Plan editor progressive disclosure — lift 3 key overrides (cadence, end condition, growth) as visible chips on each row; collapse to nothing if all defaults; keep 17 fields behind "Advanced →" [M effort, High leverage]
+- [x] Plan editor progressive disclosure — lift 3 key overrides (cadence, end condition, growth) as visible chips on each row; collapse to nothing if all defaults; keep 17 fields behind "Advanced →" [M effort, High leverage]
 - [ ] Event impact sparklines — 180×40px sparkline per event card showing projection-with minus projection-without; magnitude number (+$412k at FI); left-border color by event type [M effort, High leverage]
 - [x] Milestones on the x-axis — add 'milestones' to XAxisMode; ticks become milestone labels with vertical guides; clicking a tick shows usage panel (which budget/event items reference it); collapses milestones drawer [S effort, Med leverage]
 
 **Net Worth chart deep dive**
-- [ ] Living axis — year strip + per-member age strips + milestone strip + event strip below chart; hover/clickable; color-coded life phases [M effort, High leverage]
+- [x] Living axis — year strip + per-member age strips + milestone strip + event strip below chart; hover/clickable; color-coded life phases [M effort, High leverage]
 - [ ] Confidence band — fan chart with p10/p50/p90; Phase 1: deterministic ±1.5σ; Phase 2: Monte Carlo [M effort, High leverage]
-- [ ] Composition reveal (peelable layers) — default single line; "Break out" chip splits into stacked investments / home equity / cash / liabilities; collapses mode switcher [M effort, Med leverage]
-- [ ] Ghost lines — prior plan versions as faded dashed lines; delta callout ("retirement moved forward 14 months since March"); "Why" link opens events since that version [S effort, Med leverage]
+- [x] Composition reveal (peelable layers) — default single line; "Break out" chip splits into stacked investments / home equity / cash / liabilities; collapses mode switcher [M effort, Med leverage]
+- [x] Ghost lines — prior plan versions as faded dashed lines; delta callout ("retirement moved forward 14 months since March"); "Why" link opens events since that version [S effort, Med leverage]
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Bugs / Issues
