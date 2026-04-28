@@ -5,7 +5,7 @@
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
-  - [ ] Update Property Taxes with updated list from Wendy Teams
+  - [x] Update Property Taxes with updated list from Wendy Teams
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Fix Payroll/Bonus section
 - [ ] 🟠 Create Daily cash balances (book cash) plotted in a graph
