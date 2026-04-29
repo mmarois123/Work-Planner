@@ -2,7 +2,7 @@
 
 ## BoD
 - [x] 🟠 Q1 2026 BoD Deck (due: 2026-04-24)
-- [ ] 🟠 Update Ron slide in BoD deck: add backlog % Custom/Fleet split
+- [x] 🟠 Update Ron slide in BoD deck: add backlog % Custom/Fleet split
 
 ## 13 Week Cash Flow
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
