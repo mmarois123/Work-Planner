@@ -44,6 +44,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Credit card account enrichment — extend CC editor with loan-detail-style fields (APR per card, minimum payment tracking, payoff estimates)
 - [ ] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
 - [ ] Add category list (fixed, discretionary, custom) when adding new expense — typeable field with dropdown similar to Empower; evaluate if useful elsewhere (accounts/holdings)
+- [ ] Add % of take-home pay as an input option for expenses in Edit Current Plan
 
 ### Design Review (Apr 2026)
 Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.

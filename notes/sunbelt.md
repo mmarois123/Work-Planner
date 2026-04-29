@@ -77,3 +77,17 @@ The GM initiates the invoicing process in Praxis. The Project Coordinator gets t
 ### Praxis Schedule Confidence Indicator
 
 Idea: add a checkbox to Praxis schedule indicating whether a given week is scheduled or not. Alternative/complement: show a confidence interval of x% or $ within plant target amount for unscheduled weeks.
+
+### Safety Incident Rate Formulas
+
+**Lost Time Incident Rate (LTIR)**
+(Number of lost time cases × 200,000) / Total hours worked
+→ Represents lost time incidents per 100 full-time employees. The 200,000 baseline = 100 employees × 40 hrs/week × 50 weeks.
+
+**Total Recordable Incident Rate (TRIR)**
+(Number of recordable incidents × 200,000) / Total hours worked
+→ Standardizes recordable incidents across different-sized companies using the same 200,000 baseline.
+
+**DART Rate** (Days Away, Restricted, or Transferred)
+(Number of DART incidents × 200,000) / Total hours worked
+→ OSHA-approved rate for injuries/illnesses resulting in missed work, restricted duties, or job transfer. Same 200,000 multiplier.
