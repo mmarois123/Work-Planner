@@ -10,6 +10,7 @@
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Fix Payroll/Bonus section
 - [ ] 🟠 Create Daily cash balances (book cash) plotted in a graph
+- [ ] Update Financial FC file using data table approach
 
 
 ## Reporting

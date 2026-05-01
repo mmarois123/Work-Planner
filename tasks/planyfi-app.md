@@ -30,19 +30,19 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Add contact, submit feedback, and support functionality to app
 
 - [ ] Send beta version to Zach, Julie, AJ, James, and others (blocked on: session-only free tier + backups + error monitoring)
-- [ ] Onboarding module improvements — refine UX and flows as design evolves
+- [x] Onboarding module improvements — refine UX and flows as design evolves
 
-- [ ] Finalize onboarding modules with 3 paths
+- [x] Finalize onboarding modules with 3 paths
 - [ ] Allow users to enter plan numbers at high-level category (Investments, Fixed, Discretionary) instead of requiring category or account level detail
 - [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 
-- [ ] Add linked account option to both Current Plan and Accounts (not just one)
-- [ ] When adding new investment/savings plan category, insert new line directly — no modal
-- [ ] Merge Linked Account and Funding Source into single concept with combined pop-up and icon; explore clearer terminology for "where it's coming from and going to"
+- [x] Add linked account option to both Current Plan and Accounts (not just one)
+- [x] When adding new investment/savings plan category, insert new line directly — no modal
+- [x] Merge Linked Account and Funding Source into single concept with combined pop-up and icon; explore clearer terminology for "where it's coming from and going to"
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
 - [ ] If user enters plan mid-year with no prior plan, assume same for full year; otherwise use appropriate mix based on effective dates
 - [ ] Credit card account enrichment — extend CC editor with loan-detail-style fields (APR per card, minimum payment tracking, payoff estimates)
-- [ ] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
+- [x] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
 - [ ] Add category list (fixed, discretionary, custom) when adding new expense — typeable field with dropdown similar to Empower; evaluate if useful elsewhere (accounts/holdings)
 - [ ] Add % of take-home pay as an input option for expenses in Edit Current Plan
 
@@ -63,7 +63,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Bugs / Issues
-- [ ] Detailed onboarding: jump straight into account wizard without requiring button press to launch
-- [ ] After adding accounts, success message shows but displays 0 accounts and blocks navigation to next screen
-- [ ] Update account wizard UI to match rest of app styling
-- [ ] Renaming accounts: replace inline rename with edit icon + popup for better mobile UX
+- [x] Detailed onboarding: jump straight into account wizard without requiring button press to launch
+- [x] After adding accounts, success message shows but displays 0 accounts and blocks navigation to next screen
+- [x] Update account wizard UI to match rest of app styling
+- [x] Renaming accounts: replace inline rename with edit icon + popup for better mobile UX
