@@ -8,6 +8,7 @@ from flask import Flask, jsonify, request, send_file, abort
 BASE_DIR = Path(__file__).resolve().parent.parent
 CONFIG_PATH = BASE_DIR / 'config.yaml'
 TASKS_DIR = BASE_DIR / 'tasks'
+NOTES_DIR = BASE_DIR / 'notes'
 WEB_DIR = BASE_DIR / 'web'
 
 app = Flask(__name__)
@@ -39,6 +40,19 @@ def get_tasks(area):
     if area not in config['areas']:
         abort(404)
     file_path = TASKS_DIR / config['areas'][area]['file']
+    with open(file_path, encoding='utf-8') as f:
+        content = f.read()
+    return content, 200, {'Content-Type': 'text/plain; charset=utf-8'}
+
+
+@app.route('/api/notes/<area>', methods=['GET'])
+def get_notes(area):
+    config = load_config()
+    if area not in config['areas']:
+        abort(404)
+    file_path = NOTES_DIR / config['areas'][area]['file']
+    if not file_path.exists():
+        return '', 200, {'Content-Type': 'text/plain; charset=utf-8'}
     with open(file_path, encoding='utf-8') as f:
         content = f.read()
     return content, 200, {'Content-Type': 'text/plain; charset=utf-8'}
