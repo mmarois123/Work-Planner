@@ -680,11 +680,6 @@ function renderToday() {
     return block;
   }
 
-  // Completed (pending archive)
-  const completed = allTasks.filter(t => t.checked);
-  const completedBlock = buildBlock(`Completed (${completed.length})`, completed, 'today-block-completed', true);
-  if (completedBlock) content.appendChild(completedBlock);
-
   // Overdue
   const overdue = allTasks.filter(t => !t.checked && isOverdue(t.due));
   const overdueBlock = buildBlock(`Overdue (${overdue.length})`, overdue, 'today-block-overdue', true);
@@ -729,6 +724,11 @@ function renderToday() {
   const delegated = allTasks.filter(t => !t.checked && t.delegated === 'Irina');
   const delegatedBlock = buildBlock(`Delegated — Irina (${delegated.length})`, delegated, 'today-block-delegated', true);
   if (delegatedBlock) content.appendChild(delegatedBlock);
+
+  // Completed (pending archive)
+  const completed = allTasks.filter(t => t.checked);
+  const completedBlock = buildBlock(`Completed (${completed.length})`, completed, 'today-block-completed', true);
+  if (completedBlock) content.appendChild(completedBlock);
 }
 
 // Build a task row + its subtasks (collapsible) and notes
