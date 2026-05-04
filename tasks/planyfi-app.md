@@ -1,7 +1,7 @@
 # Planyfi — App
 
 ## Engineering
-- [ ] Accessibility pass — add keyboard handlers to backdrop overlays, aria-labels to icon-only buttons, keyboard support to clickable table rows
+- [x] Accessibility pass — add keyboard handlers to backdrop overlays, aria-labels to icon-only buttons, keyboard support to clickable table rows
 
 ### Free tier / monetization (prerequisite for public beta)
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
@@ -44,7 +44,11 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Credit card account enrichment — extend CC editor with loan-detail-style fields (APR per card, minimum payment tracking, payoff estimates)
 - [x] Onboarding/quick entry: start with accounts first, then auto-populate Current Plan categories
 - [ ] Add category list (fixed, discretionary, custom) when adding new expense — typeable field with dropdown similar to Empower; evaluate if useful elsewhere (accounts/holdings)
-- [ ] Add % of take-home pay as an input option for expenses in Edit Current Plan
+- [x] Add % of take-home pay as an input option for expenses in Edit Current Plan
+
+- [ ] Rename onboarding path "Start from Scratch" — consider "Quick Start" or similar
+- [ ] Add ability to change household member colors during onboarding
+- [ ] Make first entered checking and savings accounts the primary cash flow accounts by default
 
 ### Design Review (Apr 2026)
 Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.
@@ -67,3 +71,10 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [x] After adding accounts, success message shows but displays 0 accounts and blocks navigation to next screen
 - [x] Update account wizard UI to match rest of app styling
 - [x] Renaming accounts: replace inline rename with edit icon + popup for better mobile UX
+- [ ] Editing account names in onboarding (mobile) is still difficult — update UI
+- [ ] Ticker symbol search for holdings not working — make seamless; search should pull up ranked list of securities with best match
+- [ ] Investments subtotal not updating when adding underlying account balances — only shows first entered amount
+- [ ] Popup boxes blend into background on mobile — increase contrast/color to make them stand out; applies to Accounts and Current Plan modules specifically
+- [ ] Account balances not saving from detailed onboarding process
+- [ ] Date input on mobile still broken — can't type "/" so manual entry fails; date picker/navigator also poor experience; needs full fix across app
+- [ ] Mortgage rates in home purchase event may not be updating — verify live rate pull; should refresh when user creates event and display current avg rate as a note when event is opened
