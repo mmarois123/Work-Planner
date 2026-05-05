@@ -7,6 +7,7 @@
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
 ### Infrastructure / ops (before inviting friends)
 - [ ] Stripe account setup — create account, configure test prices ($5/mo, $50/yr), add webhook for staging (`incredible-inspiration-production.up.railway.app/api/stripe/webhook`), set STRIPE_* env vars on both production and staging Railway services
+- [ ] Clerk production instance — create Production instance in Clerk dashboard, swap `sk_test_`/`pk_test_` keys for live keys on Railway production service (currently using Development keys)
 ### Deferred / reconsidered
 - [~] ~~Provisioning layer — automate per-user Railway instance creation via API~~ — DROPPED. Shared multi-tenant SQLite + Clerk userId scoping already covers isolation. Per-instance economics kill $5/mo margin. Revisit only as Enterprise tier.
 - [~] ~~Custom domain routing — map user.planyfi.app to each user's Railway instance~~ — DROPPED with the above.
@@ -27,7 +28,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Integrate US census data more deeply into app
 - [ ] Add view mode for filtering/browsing different demographics
 - [ ] Interactive demo — hosted read-only instance with sample data
-- [ ] Add contact, submit feedback, and support functionality to app
+- [x] Add contact, submit feedback, and support functionality to app
 
 - [ ] Send beta version to Zach, Julie, AJ, James, and others (blocked on: session-only free tier + backups + error monitoring)
 - [x] Onboarding module improvements — refine UX and flows as design evolves
@@ -65,6 +66,13 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 **Net Worth chart deep dive**
 - [ ] Confidence band — fan chart with p10/p50/p90; Phase 1: deterministic ±1.5σ; Phase 2: Monte Carlo [M effort, High leverage]
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
+
+## Security
+- [ ] Rate limiting — add rate limits on `/api/feedback`, `/api/finance/*`, and auth-adjacent endpoints (consider `@upstash/ratelimit` or middleware-based)
+- [ ] Request body size limits — cap POST body size on `/api/guest-migrate` and `/api/onboarding/submit` to prevent memory/write abuse
+- [ ] Admin token hardening — rotate `ADMIN_SECRET`, consider IP allowlist or short-lived tokens for `/api/admin/*` routes
+- [ ] CORS policy — explicitly configure allowed origins in `next.config.ts` headers for API routes
+- [ ] Content-Security-Policy header — add CSP to restrict script sources (requires auditing inline scripts and third-party loads)
 
 ## Bugs / Issues
 - [x] Detailed onboarding: jump straight into account wizard without requiring button press to launch
