@@ -74,4 +74,4 @@
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
-- [ ] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)
+- [x] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)
