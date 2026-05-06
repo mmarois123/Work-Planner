@@ -68,11 +68,11 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Security
-- [ ] Rate limiting — add rate limits on `/api/feedback`, `/api/finance/*`, and auth-adjacent endpoints (consider `@upstash/ratelimit` or middleware-based)
-- [ ] Request body size limits — cap POST body size on `/api/guest-migrate` and `/api/onboarding/submit` to prevent memory/write abuse
-- [ ] Admin token hardening — rotate `ADMIN_SECRET`, consider IP allowlist or short-lived tokens for `/api/admin/*` routes
-- [ ] CORS policy — explicitly configure allowed origins in `next.config.ts` headers for API routes
-- [ ] Content-Security-Policy header — add CSP to restrict script sources (requires auditing inline scripts and third-party loads)
+- [x] Rate limiting — add rate limits on `/api/feedback`, `/api/finance/*`, and auth-adjacent endpoints (consider `@upstash/ratelimit` or middleware-based)
+- [x] Request body size limits — cap POST body size on `/api/guest-migrate` and `/api/onboarding/submit` to prevent memory/write abuse
+- [x] Admin token hardening — rotate `ADMIN_SECRET`, consider IP allowlist or short-lived tokens for `/api/admin/*` routes
+- [x] CORS policy — explicitly configure allowed origins in `next.config.ts` headers for API routes
+- [x] Content-Security-Policy header — add CSP to restrict script sources (requires auditing inline scripts and third-party loads)
 
 ## Bugs / Issues
 - [x] Detailed onboarding: jump straight into account wizard without requiring button press to launch

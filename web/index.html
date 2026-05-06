@@ -4,32 +4,138 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Work Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
+    /* ── Design Tokens (Light) ── */
+    :root {
+      --bg:            #faf8f3;
+      --bg-alt:        #f3f0e8;
+      --nav-bg:        #1c1812;
+      --nav-border:    transparent;
+      --nav-logo:      #8a7258;
+      --nav-tab-idle:  #6b5f4e;
+      --nav-tab-hover: #c8b99a;
+      --nav-tab-active:#f0ece2;
+      --nav-tab-active-border: #f0ece2;
+      --text:          #1c1812;
+      --text-sub:      #6a5c48;
+      --text-muted:    #9c8b72;
+      --text-muted-dim:#bfb098;
+      --greet-border:  #2a2218;
+      --section-label: #9c8b72;
+      --rule-maj:      #cfc8b8;
+      --rule-min:      #e8e2d5;
+      --task-hover:    rgba(0,0,0,0.04);
+      --task-border:   #eae4d8;
+      --cb-border:     #9c8b72;
+      --cb-checked:    #1c1812;
+      --area-header-color:  #1c1812;
+      --area-header-border: #1c1812;
+      --note-color:    #b0a090;
+      --badge-p1-bg:     #fde8e4; --badge-p1-text: #c0392b; --badge-p1-border: #f5b8b0;
+      --badge-p2-bg:     #fef3d0; --badge-p2-text: #7d5a00; --badge-p2-border: #e8ca70;
+      --badge-p3-bg:     #f0ece2; --badge-p3-text: #6a5c48; --badge-p3-border: #cfc8b8;
+      --badge-del-bg:    #e4eef8; --badge-del-text: #1a4a7a; --badge-del-border: #a8c8ea;
+      --badge-overdue-bg:  #fde8e4; --badge-overdue-text: #c0392b; --badge-overdue-border: #f5b8b0;
+      --tag-sunbelt-bg:  #dbeafe; --tag-sunbelt-text: #1e40af;
+      --tag-app-bg:      #d1fae5; --tag-app-text:     #047857;
+      --tag-mkt-bg:      #fce7f3; --tag-mkt-text:     #be185d;
+      --due-muted:     #a09080;
+      --due-over:      #c0392b;
+      --hl-btn:        rgba(0,0,0,0.15);
+      --hl-btn-on:     #c0392b;
+      --hl-btn-on-bg:  #fde8e4;
+      --saving-bg:     #1c1812;
+      --saving-text:   #f0ece2;
+      --accent-today:  #c0392b;
+      --search-bg:     #fff;
+      --search-border: #cfc8b8;
+      --search-border-focus: #9c8b72;
+      --notes-tab-idle: #7c9fcf;
+      --notes-tab-hover: #a8c4e8;
+      --notes-tab-active-border: #7c9fcf;
+    }
+
+    :root.dark {
+      --bg:            #181310;
+      --bg-alt:        #211c15;
+      --nav-bg:        #0d0b08;
+      --nav-border:    #2e2418;
+      --nav-logo:      #7a6448;
+      --nav-tab-idle:  #5a4a35;
+      --nav-tab-hover: #a08060;
+      --nav-tab-active:#e0cca8;
+      --nav-tab-active-border: #c8a870;
+      --text:          #e0d0b8;
+      --text-sub:      #a09070;
+      --text-muted:    #7a6448;
+      --text-muted-dim:#5a4a35;
+      --greet-border:  #3a2e1e;
+      --section-label: #7a6448;
+      --rule-maj:      #2e2418;
+      --rule-min:      #241e14;
+      --task-hover:    rgba(255,255,255,0.04);
+      --task-border:   #241e14;
+      --cb-border:     #6a5438;
+      --cb-checked:    #c8a870;
+      --area-header-color:  #c8a870;
+      --area-header-border: #3a2e1e;
+      --note-color:    #5a4a35;
+      --badge-p1-bg:     #3a1508; --badge-p1-text: #e8806a; --badge-p1-border: #6a2810;
+      --badge-p2-bg:     #281e04; --badge-p2-text: #c8a040; --badge-p2-border: #4e3a08;
+      --badge-p3-bg:     #1e1a10; --badge-p3-text: #8a7858; --badge-p3-border: #3a3020;
+      --badge-del-bg:    #0c1e30; --badge-del-text: #6898c8; --badge-del-border: #1a3850;
+      --badge-overdue-bg:  #3a1508; --badge-overdue-text: #e8806a; --badge-overdue-border: #6a2810;
+      --tag-sunbelt-bg:  #0e1f38; --tag-sunbelt-text: #5a95d5;
+      --tag-app-bg:      #0e2818; --tag-app-text:     #4ab870;
+      --tag-mkt-bg:      #2a0e1e; --tag-mkt-text:     #c85898;
+      --due-muted:     #6a5438;
+      --due-over:      #e8806a;
+      --hl-btn:        rgba(255,255,255,0.12);
+      --hl-btn-on:     #e8806a;
+      --hl-btn-on-bg:  #3a1508;
+      --saving-bg:     #e0cca8;
+      --saving-text:   #181310;
+      --accent-today:  #e8806a;
+      --search-bg:     #211c15;
+      --search-border: #2e2418;
+      --search-border-focus: #6a5438;
+      --notes-tab-idle: #6898c8;
+      --notes-tab-hover: #8ab0d8;
+      --notes-tab-active-border: #6898c8;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #efefef;
-      color: #1a1a1a;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
       font-size: 14px;
       line-height: 1.5;
+      transition: background 0.25s, color 0.25s;
     }
 
     /* ── Nav ── */
     nav {
-      background: #111;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--nav-border);
       display: flex;
       align-items: center;
       padding: 0 20px;
+      height: 44px;
       position: sticky;
       top: 0;
       z-index: 10;
+      transition: background 0.25s;
     }
     nav .logo {
-      color: #555;
+      color: var(--nav-logo);
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-right: 24px;
       white-space: nowrap;
@@ -38,93 +144,153 @@
       background: none;
       border: none;
       border-bottom: 2px solid transparent;
-      color: #777;
+      color: var(--nav-tab-idle);
       cursor: pointer;
-      font-size: 13px;
-      padding: 13px 14px 11px;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      padding: 13px 13px 11px;
       transition: color 0.15s;
+      white-space: nowrap;
     }
-    nav button:hover { color: #ccc; }
-    nav button.active { color: #fff; border-bottom-color: #fff; }
-    nav button.today-tab { color: #f5b041; }
-    nav button.today-tab:hover { color: #f8c471; }
-    nav button.today-tab.active { color: #f8c471; border-bottom-color: #f5b041; }
+    nav button:hover { color: var(--nav-tab-hover); }
+    nav button.active { color: var(--nav-tab-active); border-bottom-color: var(--nav-tab-active-border); }
+    nav button.today-tab { color: var(--accent-today); }
+    nav button.today-tab:hover { color: var(--accent-today); }
+    nav button.today-tab.active { color: var(--accent-today); border-bottom-color: var(--accent-today); }
+
+    /* Nav anchors */
+    nav .nav-anchor {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--nav-tab-idle);
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      padding: 13px 11px 11px;
+      transition: color 0.15s;
+      opacity: 0.7;
+    }
+    nav .nav-anchor:hover { color: var(--nav-tab-hover); opacity: 1; }
+    nav .nav-sep { color: #333; font-size: 11px; padding: 0 6px; user-select: none; line-height: 42px; opacity: 0.5; }
+
+    /* Notes tab */
+    nav button.notes-tab { color: var(--notes-tab-idle); }
+    nav button.notes-tab:hover { color: var(--notes-tab-hover); }
+    nav button.notes-tab.active { color: var(--notes-tab-hover); border-bottom-color: var(--notes-tab-active-border); }
+
+    /* Dark mode toggle */
+    .dark-toggle {
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--nav-tab-idle) !important;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--nav-tab-idle);
+      padding: 3px 10px !important;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .dark-toggle:hover { color: var(--nav-tab-hover) !important; border-color: var(--nav-tab-hover) !important; }
 
     /* ── Main ── */
     main {
-      max-width: 860px;
-      margin: 28px auto;
-      padding: 0 20px 60px;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 28px 24px 80px;
     }
 
     /* ── Section ── */
-    .section { margin-bottom: 28px; }
+    .section { margin-bottom: 26px; }
 
     .section-heading {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #777;
-      padding-bottom: 6px;
-      margin-bottom: 4px;
-      border-bottom: 1px solid #d8d8d8;
+      color: var(--section-label);
+      padding-bottom: 5px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid var(--rule-maj);
     }
 
     .subsection-heading {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 600;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #aaa;
-      margin: 14px 0 4px 0;
+      color: var(--text-muted-dim);
+      margin: 12px 0 4px 0;
     }
 
     /* ── Task row ── */
     .task {
       display: flex;
       align-items: flex-start;
-      gap: 6px;
+      gap: 7px;
       padding: 4px 6px;
-      border-radius: 5px;
-      transition: background 0.1s;
+      border-radius: 4px;
+      border-bottom: 1px solid var(--task-border);
+      transition: background 0.12s, transform 0.12s;
+      cursor: default;
     }
-    .task:hover { background: rgba(0,0,0,0.05); }
-    .task.completed .task-text { text-decoration: line-through; color: #aaa; }
-    .task.completed { opacity: 0.6; }
+    .task:last-child { border-bottom: none; }
+    .task:hover { background: var(--task-hover); transform: translateX(2px); }
+    .task.completed .task-text { text-decoration: line-through; color: var(--text-muted-dim); }
+    .task.completed { opacity: 0.55; }
 
     /* Left: chevron + checkbox */
     .task-left {
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
       flex-shrink: 0;
-      padding-top: 2px;
+      padding-top: 3px;
     }
     .chevron {
       background: none;
       border: none;
-      color: #bbb;
+      color: var(--text-muted-dim);
       cursor: pointer;
-      font-size: 9px;
+      font-size: 8px;
       padding: 0;
-      width: 14px;
+      width: 12px;
       text-align: center;
       line-height: 1;
       flex-shrink: 0;
+      transition: color 0.1s;
     }
+    .chevron:hover { color: var(--text-muted); }
     .chevron.hidden { visibility: hidden; pointer-events: none; }
+
+    /* Custom checkbox */
     input[type="checkbox"] {
-      cursor: pointer;
-      width: 14px;
-      height: 14px;
-      accent-color: #333;
+      width: 13px;
+      height: 13px;
+      border: 1.5px solid var(--cb-border);
+      border-radius: 2px;
       flex-shrink: 0;
+      cursor: pointer;
+      background: transparent;
+      appearance: none;
+      -webkit-appearance: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    input[type="checkbox"]:checked {
+      background: var(--cb-checked);
+      border-color: var(--cb-checked);
     }
 
     /* Body: text + meta */
     .task-body { flex: 1; min-width: 0; }
-    .task-text { word-break: break-word; }
+    .task-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.5;
+      word-break: break-word;
+    }
 
     .task-meta {
       display: flex;
@@ -134,20 +300,22 @@
       align-items: center;
     }
     .badge {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       padding: 1px 5px;
-      border-radius: 3px;
+      border-radius: 2px;
+      letter-spacing: 0.05em;
+      border: 1px solid transparent;
     }
-    .badge-p1 { background: #fde0e0; color: #b91c1c; }
-    .badge-p2 { background: #fef3cd; color: #92400e; }
-    .badge-p3 { background: #ebebeb; color: #666; }
-    .badge-delegated { background: #dbeafe; color: #1d4ed8; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 600; }
+    .badge-p1 { background: var(--badge-p1-bg); color: var(--badge-p1-text); border-color: var(--badge-p1-border); }
+    .badge-p2 { background: var(--badge-p2-bg); color: var(--badge-p2-text); border-color: var(--badge-p2-border); }
+    .badge-p3 { background: var(--badge-p3-bg); color: var(--badge-p3-text); border-color: var(--badge-p3-border); }
+    .badge-delegated { background: var(--badge-del-bg); color: var(--badge-del-text); border-color: var(--badge-del-border); font-size: 9px; padding: 1px 5px; border-radius: 2px; font-weight: 600; }
     .due {
       font-size: 11px;
-      color: #999;
+      color: var(--due-muted);
     }
-    .due.overdue { color: #b91c1c; font-weight: 600; }
+    .due.overdue { color: var(--due-over); font-weight: 600; }
 
     /* Area tag (Today view only) */
     .task-area-tag {
@@ -156,86 +324,91 @@
       font-weight: 700;
       text-transform: uppercase;
       padding: 1px 5px;
-      border-radius: 3px;
+      border-radius: 2px;
       margin-right: 6px;
-      background: #e0e0e0;
-      color: #666;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.07em;
       vertical-align: 2px;
     }
-    .task-area-tag.sunbelt { background: #dbeafe; color: #1e40af; }
-    .task-area-tag.app { background: #d1fae5; color: #047857; }
-    .task-area-tag.marketing { background: #fce7f3; color: #be185d; }
+    .task-area-tag.sunbelt { background: var(--tag-sunbelt-bg); color: var(--tag-sunbelt-text); }
+    .task-area-tag.app { background: var(--tag-app-bg); color: var(--tag-app-text); }
+    .task-area-tag.marketing { background: var(--tag-mkt-bg); color: var(--tag-mkt-text); }
+    .task-area-tag.personal { background: var(--badge-p3-bg); color: var(--badge-p3-text); }
 
     /* Right: highlight button */
     .task-right {
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      padding-top: 1px;
+      padding-top: 3px;
     }
     .btn-hl {
       background: none;
       border: 1px solid transparent;
-      border-radius: 4px;
+      border-radius: 3px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 11px;
       line-height: 1;
-      opacity: 0.18;
+      color: var(--hl-btn);
       padding: 2px 4px;
-      transition: opacity 0.12s, background 0.12s;
+      transition: color 0.12s, background 0.12s;
     }
-    .btn-hl:hover { opacity: 0.55; }
-    .btn-hl.on { opacity: 1; background: #fff7e0; border-color: #f0a030; }
+    .btn-hl:hover { color: var(--hl-btn-on); }
+    .btn-hl.on { color: var(--hl-btn-on); background: var(--hl-btn-on-bg); border-color: var(--hl-btn-on); }
 
     /* Subtasks */
-    .subtasks { margin-left: 28px; }
+    .subtasks { margin-left: 26px; }
     .subtasks.hidden { display: none; }
 
     /* Non-checkbox notes */
     .note {
-      font-size: 12px;
-      color: #aaa;
-      margin-left: 28px;
-      padding: 1px 0;
+      font-size: 11px;
+      color: var(--note-color);
+      margin-left: 26px;
+      padding: 2px 0;
       line-height: 1.4;
     }
 
     /* ── Today view ── */
     .today-greeting {
-      font-size: 17px;
-      font-weight: 600;
-      color: #222;
-      margin-bottom: 24px;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 28px;
       padding-bottom: 14px;
-      border-bottom: 2px solid #333;
+      border-bottom: 2px solid var(--greet-border);
     }
-    .today-block { margin-bottom: 26px; }
-    .today-block-overdue .section-heading { color: #b91c1c; border-bottom-color: #f5b7b1; }
-    .today-block-priorities .section-heading { color: #b45309; border-bottom-color: #fbe9a7; }
-    .today-block-completed .section-heading { color: #047857; border-bottom-color: #b7ebc6; }
-    .today-block-delegated .section-heading { color: #1d4ed8; border-bottom-color: #c3d7f7; }
+    .today-greeting .greeting-date {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+    .today-block { margin-bottom: 24px; }
+    .today-block-overdue .section-heading { color: var(--accent-today); border-bottom-color: var(--badge-p1-border); }
+    .today-block-priorities .section-heading { color: var(--text-sub); border-bottom-color: var(--badge-p2-border); }
+    .today-block-completed .section-heading { color: var(--tag-app-text); border-bottom-color: var(--tag-app-bg); }
+    .today-block-delegated .section-heading { color: var(--badge-del-text); border-bottom-color: var(--badge-del-border); }
     .area-header {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: #333;
-      margin: 28px 0 8px 0;
-      padding: 6px 0 4px 0;
-      border-bottom: 2px solid #333;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--area-header-color);
+      margin: 28px 0 6px 0;
+      padding: 6px 0 5px 0;
+      border-bottom: 1.5px solid var(--area-header-border);
     }
 
     /* Loading / error */
-    .status { color: #999; padding: 40px 0; text-align: center; font-size: 13px; }
+    .status { color: var(--text-muted); padding: 40px 0; text-align: center; font-size: 13px; }
 
     /* Saving indicator */
     #saving {
       position: fixed;
       bottom: 16px;
       right: 16px;
-      background: #333;
-      color: #fff;
-      font-size: 11px;
+      background: var(--saving-bg);
+      color: var(--saving-text);
+      font-size: 10px;
+      font-family: 'DM Sans', sans-serif;
       padding: 4px 10px;
       border-radius: 4px;
       opacity: 0;
@@ -244,74 +417,57 @@
     }
     #saving.visible { opacity: 1; }
 
-    /* Nav anchors (area scroll shortcuts, not full tabs) */
-    nav .nav-anchor {
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      color: #4a4a4a;
-      cursor: pointer;
-      font-size: 12px;
-      padding: 13px 11px 11px;
-      transition: color 0.15s;
-    }
-    nav .nav-anchor:hover { color: #999; }
-    nav .nav-sep { color: #333; font-size: 11px; padding: 0 4px; user-select: none; line-height: 42px; }
-
-    /* Notes tab */
-    nav button.notes-tab { color: #7c9fcf; }
-    nav button.notes-tab:hover { color: #a8c4e8; }
-    nav button.notes-tab.active { color: #a8c4e8; border-bottom-color: #7c9fcf; }
-
-    /* Notes view */
+    /* ── Notes view ── */
     .notes-search-wrap { margin-bottom: 24px; }
     .notes-search-input {
       width: 100%;
       max-width: 420px;
       padding: 8px 12px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--search-border);
       border-radius: 6px;
       font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
       outline: none;
-      background: #fff;
-      color: #1a1a1a;
+      background: var(--search-bg);
+      color: var(--text);
+      transition: border-color 0.15s;
     }
-    .notes-search-input:focus { border-color: #888; }
+    .notes-search-input:focus { border-color: var(--search-border-focus); }
     .note-area-block { margin-bottom: 32px; }
     .note-area-block-header {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      color: #333;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--area-header-color);
       margin: 0 0 12px 0;
-      padding: 6px 0 4px 0;
-      border-bottom: 2px solid #333;
+      padding: 6px 0 5px 0;
+      border-bottom: 1.5px solid var(--area-header-border);
     }
     .note-section-el { margin-bottom: 18px; }
     .note-sec-heading {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #777;
-      padding-bottom: 6px;
+      color: var(--section-label);
+      padding-bottom: 5px;
       margin-bottom: 8px;
-      border-bottom: 1px solid #d8d8d8;
+      border-bottom: 1px solid var(--rule-maj);
     }
     .note-subsec-heading {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 600;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: #aaa;
+      color: var(--text-muted-dim);
       margin: 14px 0 6px 0;
     }
-    .note-para { font-size: 13px; color: #333; margin: 5px 0; line-height: 1.6; }
+    .note-para { font-size: 13px; color: var(--text-sub); margin: 5px 0; line-height: 1.6; }
     .note-ul { margin: 5px 0 5px 18px; padding: 0; }
-    .note-ul li { font-size: 13px; color: #444; line-height: 1.6; margin: 2px 0; }
-    .note-ul li strong { color: #222; }
-    .note-code { font-family: 'Menlo', 'Consolas', monospace; background: #f0f0f0; padding: 1px 4px; border-radius: 3px; font-size: 12px; }
-    .notes-no-results { color: #aaa; font-style: italic; font-size: 13px; padding: 24px 0; text-align: center; }
+    .note-ul li { font-size: 13px; color: var(--text-sub); line-height: 1.6; margin: 2px 0; }
+    .note-ul li strong { color: var(--text); }
+    .note-code { font-family: 'Menlo', 'Consolas', monospace; background: var(--bg-alt); padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+    .notes-no-results { color: var(--text-muted); font-style: italic; font-size: 13px; padding: 24px 0; text-align: center; }
   </style>
 </head>
 <body>
@@ -319,21 +475,46 @@
 <nav>
   <span class="logo">Work Planner</span>
   <div id="tabs"></div>
+  <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()"></button>
 </nav>
 
 <main id="content">
   <div class="status">Loading...</div>
 </main>
 
-<div id="saving">Saving…</div>
+<div id="saving">Saving&hellip;</div>
 
 <script>
 const AREA_LABELS = { sunbelt: 'Sunbelt', app: 'App', marketing: 'Marketing', personal: 'Personal' };
-const TODAY_AREAS = ['sunbelt', 'app', 'marketing']; // default areas in Today view
+const TODAY_AREAS = ['sunbelt', 'app', 'marketing'];
 
-let areas = {};           // from /api/areas
-let areaStates = {};      // { area: { rawLines: [...] } }
-let currentView = null;   // 'today' | 'today:<area>' | '<area>'
+let areas = {};
+let areaStates = {};
+let currentView = null;
+
+// ── Dark mode ─────────────────────────────────────────────────────────────────
+
+function initDarkMode() {
+  const saved = localStorage.getItem('wp-dark-mode');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = saved !== null ? saved === 'true' : prefersDark;
+  applyDarkMode(dark);
+}
+
+function applyDarkMode(dark) {
+  document.documentElement.classList.toggle('dark', dark);
+  const btn = document.getElementById('dark-toggle');
+  if (btn) btn.textContent = dark ? '\u2600 Light' : '\u263E Dark';
+}
+
+function toggleDarkMode() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('wp-dark-mode', isDark);
+  const btn = document.getElementById('dark-toggle');
+  if (btn) btn.textContent = isDark ? '\u2600 Light' : '\u263E Dark';
+}
+
+initDarkMode();
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 
@@ -351,7 +532,6 @@ async function init() {
   buildTabs();
   window.addEventListener('hashchange', applyHash);
 
-  // Initial route from URL hash
   const hash = location.hash;
   if (hash === '#notes') { switchToNotes(); return; }
   if (hash.startsWith('#today/')) {
@@ -367,7 +547,6 @@ function buildTabs() {
   const tabs = document.getElementById('tabs');
   tabs.innerHTML = '';
 
-  // Today tab
   const todayBtn = document.createElement('button');
   todayBtn.textContent = 'Today';
   todayBtn.className = 'today-tab';
@@ -381,7 +560,6 @@ function buildTabs() {
   };
   tabs.appendChild(todayBtn);
 
-  // Area anchor buttons — scroll to sections in Today view
   for (const key of TODAY_AREAS) {
     const btn = document.createElement('button');
     btn.textContent = AREA_LABELS[key] || key;
@@ -391,13 +569,11 @@ function buildTabs() {
     tabs.appendChild(btn);
   }
 
-  // Separator
   const sep = document.createElement('span');
   sep.className = 'nav-sep';
   sep.textContent = '|';
   tabs.appendChild(sep);
 
-  // Notes tab
   const notesBtn = document.createElement('button');
   notesBtn.textContent = 'Notes';
   notesBtn.className = 'notes-tab';
@@ -482,15 +658,14 @@ async function navigateToArea(area) {
 // ── Markdown parsing ─────────────────────────────────────────────────────────
 
 function parseLine(line) {
-  // Task line: optional indent, - [ ] or - [x], then content
   const taskMatch = line.match(/^(\s*)- \[([ x])\] (.*)$/);
   if (taskMatch) {
     const indent = taskMatch[1].length;
     const checked = taskMatch[2] === 'x';
     let rest = taskMatch[3];
 
-    const highlighted = rest.startsWith('🟠 ');
-    if (highlighted) rest = rest.slice('🟠 '.length);
+    const highlighted = rest.startsWith('\u{1F7E0} ');
+    if (highlighted) rest = rest.slice('\u{1F7E0} '.length);
 
     const priMatch = rest.match(/\[(P[123])\]/);
     const priority = priMatch ? priMatch[1] : null;
@@ -526,10 +701,9 @@ function isOverdue(due) {
   return due < today;
 }
 
-// Parse an area into a structured list of sections + top-level tasks (with subtasks & notes)
 function parseArea(area) {
   const lines = areaStates[area].rawLines;
-  const sections = []; // [{ name, tasks: [...] }]
+  const sections = [];
   let currentSection = null;
   let currentTask = null;
 
@@ -559,7 +733,7 @@ function parseArea(area) {
   return sections;
 }
 
-// ── Render: area view (unchanged layout, linear pass over rawLines) ─────────
+// ── Render: area view ────────────────────────────────────────────────────────
 
 function renderArea(area) {
   const content = document.getElementById('content');
@@ -614,10 +788,10 @@ function renderArea(area) {
             const chev = topTaskEl.querySelector('.chevron');
             if (chev) {
               chev.classList.remove('hidden');
-              chev.textContent = '▶';
+              chev.textContent = '\u25B6';
               chev.onclick = () => {
                 const nowHidden = thisSubtasks.classList.toggle('hidden');
-                chev.textContent = nowHidden ? '▶' : '▼';
+                chev.textContent = nowHidden ? '\u25B6' : '\u25BC';
               };
             }
           }
@@ -656,7 +830,7 @@ function renderToday() {
   const greeting = document.createElement('div');
   greeting.className = 'today-greeting';
   greeting.id = 'today-top';
-  greeting.textContent = 'Good morning — ' + dateStr;
+  greeting.innerHTML = 'Good morning <span class="greeting-date">\u2014 ' + dateStr + '</span>';
   content.appendChild(greeting);
 
   // Flatten all top-level tasks across all areas
@@ -682,10 +856,10 @@ function renderToday() {
 
   // Overdue
   const overdue = allTasks.filter(t => !t.checked && isOverdue(t.due));
-  const overdueBlock = buildBlock(`Overdue (${overdue.length})`, overdue, 'today-block-overdue', true);
+  const overdueBlock = buildBlock(`\u26A0 Overdue \u00B7 ${overdue.length}`, overdue, 'today-block-overdue', true);
   if (overdueBlock) content.appendChild(overdueBlock);
 
-  // Priorities — P1 or highlighted
+  // Priorities
   const priorities = allTasks.filter(t =>
     !t.checked && (t.priority === 'P1' || t.highlighted)
   );
@@ -697,10 +871,10 @@ function renderToday() {
     if (b.due) return 1;
     return 0;
   });
-  const prioritiesBlock = buildBlock(`Priorities (${priorities.length})`, priorities, 'today-block-priorities', true);
+  const prioritiesBlock = buildBlock(`\u2605 Priorities \u00B7 ${priorities.length}`, priorities, 'today-block-priorities', true);
   if (prioritiesBlock) content.appendChild(prioritiesBlock);
 
-  // Open by area — each area gets a scroll-anchor header, then one block per section
+  // Open by area
   for (const a of TODAY_AREAS) {
     const openInArea = [];
     for (const sec of parsed[a]) openInArea.push(...sec.tasks.filter(t => !t.checked));
@@ -709,25 +883,25 @@ function renderToday() {
     const areaHeader = document.createElement('div');
     areaHeader.className = 'area-header';
     areaHeader.id = `area-section-${a}`;
-    areaHeader.textContent = `${AREA_LABELS[a]} — ${openInArea.length} open`;
+    areaHeader.innerHTML = `${AREA_LABELS[a]} <span style="font-size:11px;font-weight:400;color:var(--text-muted)">${openInArea.length} open</span>`;
     content.appendChild(areaHeader);
 
     for (const sec of parsed[a]) {
       const openInSection = sec.tasks.filter(t => !t.checked);
       if (!openInSection.length) continue;
-      const block = buildBlock(`${sec.name} (${openInSection.length})`, openInSection, null, false);
+      const block = buildBlock(`${sec.name} \u00B7 ${openInSection.length}`, openInSection, null, false);
       if (block) content.appendChild(block);
     }
   }
 
-  // Delegated — Irina
+  // Delegated
   const delegated = allTasks.filter(t => !t.checked && t.delegated === 'Irina');
-  const delegatedBlock = buildBlock(`Delegated — Irina (${delegated.length})`, delegated, 'today-block-delegated', true);
+  const delegatedBlock = buildBlock(`Delegated \u2014 Irina \u00B7 ${delegated.length}`, delegated, 'today-block-delegated', true);
   if (delegatedBlock) content.appendChild(delegatedBlock);
 
-  // Completed (pending archive)
+  // Completed
   const completed = allTasks.filter(t => t.checked);
-  const completedBlock = buildBlock(`Completed (${completed.length})`, completed, 'today-block-completed', true);
+  const completedBlock = buildBlock(`Completed \u00B7 ${completed.length}`, completed, 'today-block-completed', true);
   if (completedBlock) content.appendChild(completedBlock);
 }
 
@@ -747,10 +921,10 @@ function buildTaskGroup(task, showAreaTag) {
     const chev = el.querySelector('.chevron');
     if (chev) {
       chev.classList.remove('hidden');
-      chev.textContent = '▶';
+      chev.textContent = '\u25B6';
       chev.onclick = () => {
         const nowHidden = subtasksEl.classList.toggle('hidden');
-        chev.textContent = nowHidden ? '▶' : '▼';
+        chev.textContent = nowHidden ? '\u25B6' : '\u25BC';
       };
     }
 
@@ -789,7 +963,7 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
 
   const chev = document.createElement('button');
   chev.className = 'chevron hidden';
-  chev.textContent = '▶';
+  chev.textContent = '\u25B6';
   left.appendChild(chev);
 
   const cb = document.createElement('input');
@@ -831,7 +1005,7 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
       const d = document.createElement('span');
       const overdue = isOverdue(p.due);
       d.className = 'due' + (overdue ? ' overdue' : '');
-      d.textContent = (overdue ? '⚠ ' : '') + 'due ' + p.due;
+      d.textContent = (overdue ? '\u26A0 ' : '') + 'due ' + p.due;
       meta.appendChild(d);
     }
     if (p.delegated) {
@@ -845,13 +1019,13 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
 
   wrap.appendChild(body);
 
-  // Right: highlight button
+  // Right: highlight button (star instead of orange circle)
   const right = document.createElement('div');
   right.className = 'task-right';
   const hl = document.createElement('button');
   hl.className = 'btn-hl' + (p.highlighted ? ' on' : '');
   hl.title = p.highlighted ? 'Remove highlight' : 'Highlight';
-  hl.textContent = '🟠';
+  hl.textContent = '\u2605';
   hl.onclick = () => toggleHighlight(area, lineIdx);
   right.appendChild(hl);
   wrap.appendChild(right);
@@ -875,12 +1049,12 @@ function toggleCheckbox(area, lineIdx) {
 function toggleHighlight(area, lineIdx) {
   const rawLines = areaStates[area].rawLines;
   const line = rawLines[lineIdx];
-  const withHL = line.match(/^(\s*- \[[ x]\] )🟠 (.*)$/);
+  const withHL = line.match(/^(\s*- \[[ x]\] )\u{1F7E0} (.*)$/u);
   if (withHL) {
     rawLines[lineIdx] = withHL[1] + withHL[2];
   } else {
     const without = line.match(/^(\s*- \[[ x]\] )(.*)$/);
-    if (without) rawLines[lineIdx] = without[1] + '🟠 ' + without[2];
+    if (without) rawLines[lineIdx] = without[1] + '\u{1F7E0} ' + without[2];
   }
   save(area);
 }
@@ -937,7 +1111,6 @@ async function switchToNotes() {
 function renderNotes(query) {
   const content = document.getElementById('content');
 
-  // Build or reuse search bar
   let searchInput = document.getElementById('notes-search');
   if (!searchInput) {
     content.innerHTML = '';
@@ -946,7 +1119,7 @@ function renderNotes(query) {
     searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.id = 'notes-search';
-    searchInput.placeholder = 'Search notes…';
+    searchInput.placeholder = 'Search notes\u2026';
     searchInput.className = 'notes-search-input';
     searchInput.addEventListener('input', () => renderNotes(searchInput.value));
     searchWrap.appendChild(searchInput);
@@ -1058,13 +1231,12 @@ function renderInlineMarkdown(text) {
     .replace(/~~(.+?)~~/g, '<s>$1</s>');
 }
 
-// Re-render whatever view the user is currently looking at, preserving scroll
 function rerenderCurrent() {
   const scrollY = window.scrollY;
   if (currentView === 'today') {
     renderToday();
   } else if (currentView === 'notes') {
-    // notes view handles its own scroll via the stable search bar
+    // notes view handles its own scroll
   } else if (currentView) {
     renderArea(currentView);
   }
