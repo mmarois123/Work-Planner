@@ -38,12 +38,12 @@ Use Python's `webbrowser` module — it's cross-platform and handles URL encodin
 
 **No filter:**
 ```bash
-python -c "import webbrowser; webbrowser.open('http://localhost:5000/#today')"
+python -c "import webbrowser; webbrowser.open_new('http://localhost:5000/#today')"
 ```
 
 **With filter:**
 ```bash
-python -c "import webbrowser; webbrowser.open('http://localhost:5000/#today/sunbelt')"
+python -c "import webbrowser; webbrowser.open_new('http://localhost:5000/#today/sunbelt')"
 ```
 
 Substitute the filter value (`sunbelt` / `app` / `marketing`).
