@@ -34,19 +34,33 @@ Then verify again with the same curl command before continuing.
 
 ## Step 3 — Open the browser
 
-Use Python's `webbrowser` module — it's cross-platform and handles URL encoding reliably.
+Use the browser's `--new-window` flag directly for a true new window. Try Chrome then Edge, fall back to `webbrowser.open_new` if neither is found.
 
 **No filter:**
 ```bash
-python -c "import webbrowser; webbrowser.open_new('http://localhost:5000/#today')"
+python -c "
+import subprocess, webbrowser
+url = 'http://localhost:5000/#today'
+candidates = ['chrome', 'msedge', r'C:\Program Files\Google\Chrome\Application\chrome.exe', r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe']
+for exe in candidates:
+    try: subprocess.Popen([exe, '--new-window', url]); break
+    except (FileNotFoundError, OSError): pass
+else: webbrowser.open_new(url)
+"
 ```
 
-**With filter:**
+**With filter** (substitute the area value):
 ```bash
-python -c "import webbrowser; webbrowser.open_new('http://localhost:5000/#today/sunbelt')"
+python -c "
+import subprocess, webbrowser
+url = 'http://localhost:5000/#today/sunbelt'
+candidates = ['chrome', 'msedge', r'C:\Program Files\Google\Chrome\Application\chrome.exe', r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe']
+for exe in candidates:
+    try: subprocess.Popen([exe, '--new-window', url]); break
+    except (FileNotFoundError, OSError): pass
+else: webbrowser.open_new(url)
+"
 ```
-
-Substitute the filter value (`sunbelt` / `app` / `marketing`).
 
 ## Step 4 — Print a terse chat summary
 
