@@ -701,6 +701,11 @@ function isOverdue(due) {
   return due < today;
 }
 
+function formatDue(due) {
+  const [y, m, d] = due.split('-');
+  return `${+m}/${+d}/${y.slice(2)}`;
+}
+
 function parseArea(area) {
   const lines = areaStates[area].rawLines;
   const sections = [];
@@ -1005,7 +1010,7 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
       const d = document.createElement('span');
       const overdue = isOverdue(p.due);
       d.className = 'due' + (overdue ? ' overdue' : '');
-      d.textContent = (overdue ? '\u26A0 ' : '') + 'due ' + p.due;
+      d.textContent = (overdue ? '\u26A0 ' : '') + 'due ' + formatDue(p.due);
       meta.appendChild(d);
     }
     if (p.delegated) {
