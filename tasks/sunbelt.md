@@ -61,7 +61,7 @@
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Add recurring tasks for sunbelt to work-planner
 - [ ] 🟠 Send updated Financial FC to LJ by 5/15 — for going to market on debt (due: 2026-05-15)
-- [ ] Formalize Material % and Labor % FC file and report for Bob / LJ
+- [ ] 🟠 Formalize Material % and Labor % FC file and report for Bob / LJ
 
 
 ## Bob Review
