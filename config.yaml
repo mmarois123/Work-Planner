@@ -12,6 +12,6 @@ areas:
     sections: [Campaigns, Content, Analytics]
   personal:
     file: personal.md
-    sections: [General]
+    sections: [General, Notch]
 
 # Sync: just use git
