@@ -10,8 +10,11 @@ areas:
   marketing:
     file: planyfi-marketing.md
     sections: [Campaigns, Content, Analytics]
+  notch:
+    file: notch.md
+    sections: [General]
   personal:
     file: personal.md
-    sections: [General, Notch]
+    sections: [General]
 
 # Sync: just use git
