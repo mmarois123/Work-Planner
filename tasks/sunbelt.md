@@ -15,7 +15,7 @@
 - [ ] 🟠 Formalize Material % and Labor % FC file and report for Bob / LJ
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] 🟠 Build FC app: P&L line by company — revenue by company, material cost, etc.
-- [ ] Bring factor and fleet/custom into FC app
+- [ ] 🟠 Bring factor and fleet/custom into FC app
 - [ ] Investigate how HTML reporting is calculated under the hood (Python?); determine if custom logic like weighted factor totals is supported
 - [ ] Consider displaying P&L FC output in Excel version that feeds balance sheet and cash flow — keep it simple vs. building custom app
 
