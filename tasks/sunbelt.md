@@ -74,3 +74,10 @@
 - [ ] Propose labor utilization % targets to Bob based on budget
 - [ ] Ask Bob about labor and OH % for WIP entry
 
+
+## Irina (Direct Report)
+- [ ] Integrate new AR Logic into Fabric @delegated(Irina)
+- [ ] AR Payment Report @delegated(Irina)
+- [ ] Fabric Analytics Engineer certification @delegated(Irina)
+- [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
+- [x] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)
