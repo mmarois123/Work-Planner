@@ -63,6 +63,13 @@
 - [ ] 🟠 Add recurring tasks for sunbelt to work-planner
 - [ ] 🟠 Send updated Financial FC to LJ by 5/15 — for going to market on debt (due: 2026-05-15)
 - [ ] 🟠 Formalize Material % and Labor % FC file and report for Bob / LJ
+- [ ] Meeting with Devin: discuss inventory tech — cameras tracking completeness
+- [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
+- [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
+- [ ] Build FC app: P&L line by company — revenue by company, material cost, etc.
+- [ ] Bring factor and fleet/custom into FC app
+- [ ] Investigate how HTML reporting is calculated under the hood (Python?); determine if custom logic like weighted factor totals is supported
+- [ ] Consider displaying P&L FC output in Excel version that feeds balance sheet and cash flow — keep it simple vs. building custom app
 
 
 ## Bob Review
