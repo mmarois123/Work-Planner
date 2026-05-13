@@ -10,7 +10,7 @@
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Fix Payroll/Bonus section
 - [ ] 🟠 Create Daily cash balances (book cash) plotted in a graph
-- [ ] Update Financial FC file using data table approach
+- [ ] 🟠 Update Financial FC file using data table approach
 - [ ] 🟠 Send updated Financial FC to LJ by 5/15 — for going to market on debt (due: 2026-05-15)
 - [ ] 🟠 Formalize Material % and Labor % FC file and report for Bob / LJ
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
