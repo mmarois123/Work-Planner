@@ -9,7 +9,7 @@
   - [x] Update Property Taxes with updated list from Wendy Teams
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Fix Payroll/Bonus section
-- [ ] 🟠 Create Daily cash balances (book cash) plotted in a graph
+- [ ] Create Daily cash balances (book cash) plotted in a graph
 - [ ] 🟠 Update Financial FC file using data table approach
 - [ ] 🟠 Send updated Financial FC to LJ by 5/15 — for going to market on debt (due: 2026-05-15)
 - [ ] 🟠 Formalize Material % and Labor % FC file and report for Bob / LJ
