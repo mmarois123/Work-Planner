@@ -1,8 +1,6 @@
 # Sunbelt FP&A
 
 ## BoD
-- [x] 🟠 Q1 2026 BoD Deck (due: 2026-04-24)
-- [x] 🟠 Update Ron slide in BoD deck: add backlog % Custom/Fleet split
 
 ## Forecasting
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -16,7 +14,6 @@
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] 🟠 Build FC app: P&L line by company — revenue by company, material cost, etc.
 - [ ] 🟠 Bring factor and fleet/custom into FC app
-- [x] Investigate how HTML reporting is calculated under the hood (Python?); determine if custom logic like weighted factor totals is supported
 - [ ] Consider displaying P&L FC output in Excel version that feeds balance sheet and cash flow — keep it simple vs. building custom app
 
 
@@ -32,15 +29,8 @@
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 - [ ] Add Custom | Fleet field to Production report (consider Operations and Backlog as well)
 - [ ] Fix Timeframe and date selection in Finance and Operations reports; explore bookmark approach for switching between timeframe and date selection modes
-- [x] 🟠 Fix invoice logic from Praxis data
 
 ## General
-- [x] Build safety metrics dashboard with Marci
-  - LTIR, TRIR, DART (Days Away, Lost Time)
-  - \# lost time incidents, Hours worked (from TCP)
-  - \# incidents (OSHA log, Safety coordinator)
-  - Internal log (type, job transfer), Compliance Map, Claims lag time
-  - Schedule meeting re: Lost Time, Incidents, Workers Comp + Warranty w/ Robert
 - [ ] Document and standardize monthly WIP reconciliation process
   - WIP % by project, Price per project
   - Material, Labor, OH % — should these change frequently? Quarterly? Revisit in April
@@ -80,4 +70,3 @@
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
-- [x] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)
