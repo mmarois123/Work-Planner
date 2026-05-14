@@ -15,6 +15,8 @@
 - [x] 🟠 Build FC app: P&L line by company — revenue by company, material cost, etc.
 - [ ] 🟠 Bring factor and fleet/custom into FC app
 - [ ] 🟠 Consider displaying P&L FC output in Excel version that feeds balance sheet and cash flow — keep it simple vs. building custom app
+- [ ] FC App: create detailed revenue view — include plant target, FC committed, scheduled production, etc.
+- [ ] FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
 
 
 ## Reporting
@@ -59,8 +61,6 @@
 - [ ] Meeting with Devin: discuss inventory tech — cameras tracking completeness
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
-- [ ] FC App: create detailed revenue view — include plant target, FC committed, scheduled production, etc.
-- [ ] FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
