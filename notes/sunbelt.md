@@ -70,6 +70,12 @@ Components to investigate:
 
 ## General
 
+### Ron — 3 Key Focus Areas
+
+1. Estimating / pricing right
+2. Purchasing materials / inventory right (materials = ~50% of costs)
+3. Volume — increase backlog with orders, capture demand
+
 ### Invoicing Process (Plant Level)
 
 The GM initiates the invoicing process in Praxis. The Project Coordinator gets the appropriate signoffs from GM, QC, and Sales, then notifies the Accounting Manager that the building is ready to be invoiced. Once invoicing is completed, the Accounting Manager notifies the Project Coordinator, who enters the data in Praxis.

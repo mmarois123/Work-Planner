@@ -29,6 +29,7 @@
 - [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 - [ ] Add Custom | Fleet field to Production report (consider Operations and Backlog as well)
 - [ ] Fix Timeframe and date selection in Finance and Operations reports; explore bookmark approach for switching between timeframe and date selection modes
+- [ ] Build Plant Scorecard PDFs per plant: current data, historical trends, and qualitative info (project types, etc.) — per Bob's concept
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
@@ -58,6 +59,8 @@
 - [ ] Meeting with Devin: discuss inventory tech — cameras tracking completeness
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
+- [ ] FC App: create detailed revenue view — include plant target, FC committed, scheduled production, etc.
+- [ ] FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
