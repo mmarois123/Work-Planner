@@ -73,3 +73,4 @@
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
+- [ ] Build project roadmaps and structure for Irina on larger workstreams so she has something concrete to drive against

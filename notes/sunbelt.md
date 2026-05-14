@@ -68,6 +68,32 @@ Components to investigate:
 - Change Orders
 - Cycle Counts
 
+## Irina (Direct Report)
+
+### 1:1 Alignment — May 2026
+
+**What's gone well**
+- Picking up routine ownership cleanly: Praxis refresh, 13WCF, BR reconciliation, stepping in on routine tasks when Wendy and I were out
+- Pushing work into Fabric and moving us off Power BI dataflows toward something that scales
+
+**Where to focus**
+- Proactive ownership and follow-through — driving work forward and over-communicating, not waiting until something's done or until I ask
+- On my side: owe her better roadmaps and structure on larger projects so she has something concrete to drive against
+
+**Scope going forward**
+- End-to-end ownership of the Fabric workspace: lakehouse, medallion architecture, dataflows, pipelines, notebooks
+- Taking on new analyses and reports that she'll present to stakeholders directly
+
+**Update cadence**
+- EoD Monday, Wednesday, Friday to start
+- Goal: step down to Tuesday/Friday, then eventually Friday-only as rhythm develops
+- Format: Progress (what moved) / Stuck (where she needs help) / Next (what she's picking up)
+
+**On the horizon**
+- Path to share appreciation plan and/or quarterly bonus eligibility as company grows
+- Potential for officially designated full-time remote depending on corporate office policy
+- These are paths, not commitments
+
 ## General
 
 ### Ron — 3 Key Focus Areas
