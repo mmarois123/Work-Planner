@@ -15,7 +15,7 @@
 - [x] 🟠 Build FC app: P&L line by company — revenue by company, material cost, etc.
 - [x] 🟠 Bring factor and fleet/custom into FC app
 - [x] 🟠 Consider displaying P&L FC output in Excel version that feeds balance sheet and cash flow — keep it simple vs. building custom app
-- [ ] 🟠 FC App: create detailed revenue view — include plant target, FC committed, scheduled production, etc.
+- [x] 🟠 FC App: create detailed revenue view — include plant target, FC committed, scheduled production, etc.
 - [ ] 🟠 FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
 
 
