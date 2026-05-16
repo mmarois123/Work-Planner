@@ -103,3 +103,4 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [x] Milestones badge shows "4" but 6 milestones are listed (Coast FI, FI, 2x Retirement, 2x Life Expectancy) — badge count is wrong
 - [x] "Collectables" typo in account type selection during onboarding — should be "Collectibles"
 - [x] Mobile nav tabs are icon-only with no visible labels — despite tooltip work (QA-047), new mobile users still can't identify tabs; need visible text labels or a labeled bottom nav bar
+- [ ] Fix Daily SQLite Backup GitHub Actions workflow failure
