@@ -24,7 +24,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [x] Chart default views — Outlays chart should default to stacked/breakout view showing taxes, expenses, and savings separately instead of a single line identical to Income. Income chart should indicate whether inflation/raises are modeled, or add a note about assumptions (QA-045, QA-046)
 - [x] Add "Real" vs "Nominal" tooltip — event form has Real/Nominal toggle with no explanation. Add tooltip: "Real = today's dollars (adjusted for inflation), Nominal = future dollar amounts" (QA-042)
 
-- [ ] Research (via Claude) what mortgage info a homeowner typically has access to — use to inform current plan input fields
+- [>] Research (via Claude) what mortgage info a homeowner typically has access to — use to inform current plan input fields
 
 - [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
@@ -103,4 +103,4 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [x] Milestones badge shows "4" but 6 milestones are listed (Coast FI, FI, 2x Retirement, 2x Life Expectancy) — badge count is wrong
 - [x] "Collectables" typo in account type selection during onboarding — should be "Collectibles"
 - [x] Mobile nav tabs are icon-only with no visible labels — despite tooltip work (QA-047), new mobile users still can't identify tabs; need visible text labels or a labeled bottom nav bar
-- [ ] Fix Daily SQLite Backup GitHub Actions workflow failure
+- [x] Fix Daily SQLite Backup GitHub Actions workflow failure

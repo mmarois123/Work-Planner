@@ -61,6 +61,7 @@
 - [ ] Meeting with Devin: discuss inventory tech — cameras tracking completeness
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
+- [ ] Send specific questions to Jay ahead of Tuesday meeting
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline

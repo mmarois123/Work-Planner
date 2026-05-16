@@ -57,6 +57,17 @@ Granularity options to explore: Per plant / Per customer / Per end user (market)
 
 ## Analysis
 
+### SKU Pricing Hypothesis — Estimating vs. Actual Purchasing
+
+SKUs in Praxis are updated weekly with pricing from Sage. When estimators build quotes/BOMs, they select from a list of SKUs and may choose:
+- The higher-priced SKU
+- An average-priced SKU
+- The one they expect will actually be used
+
+The gap: no substitutable SKUs or generic/placeholder items that can be mapped back to actual purchases and inventory. This creates a disconnect between estimated material costs and what's actually bought/used — likely a driver of factor variance.
+
+Worth investigating: can we introduce generic/substitutable SKU logic to improve estimate-to-actual matching?
+
 ### Inventory / Purchasing / BOM Analysis — CCC
 
 Components to investigate:
