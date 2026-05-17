@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Work Planner</title>
+  <title>plan/m</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 56'><rect width='32' height='56' rx='6' fill='%231c1812'/><line x1='22' y1='6' x2='10' y2='50' stroke='%236a9678' stroke-width='5' stroke-linecap='round'/><circle cx='22' cy='6' r='4' fill='%236a9678'/><circle cx='10' cy='50' r='3' fill='%23c8b99a'/></svg>"/>
   <style>
     /* ── Design Tokens (Light) ── */
     :root {
@@ -34,22 +35,22 @@
       --area-header-color:  #1c1812;
       --area-header-border: #1c1812;
       --note-color:    #b0a090;
-      --badge-p1-bg:     #fde8e4; --badge-p1-text: #c0392b; --badge-p1-border: #f5b8b0;
+      --badge-p1-bg:     #e8f3ec; --badge-p1-text: #3e6049; --badge-p1-border: #b0d4bc;
       --badge-p2-bg:     #fef3d0; --badge-p2-text: #7d5a00; --badge-p2-border: #e8ca70;
       --badge-p3-bg:     #f0ece2; --badge-p3-text: #6a5c48; --badge-p3-border: #cfc8b8;
       --badge-del-bg:    #e4eef8; --badge-del-text: #1a4a7a; --badge-del-border: #a8c8ea;
-      --badge-overdue-bg:  #fde8e4; --badge-overdue-text: #c0392b; --badge-overdue-border: #f5b8b0;
+      --badge-overdue-bg:  #e8f3ec; --badge-overdue-text: #3e6049; --badge-overdue-border: #b0d4bc;
       --tag-sunbelt-bg:  #dbeafe; --tag-sunbelt-text: #1e40af;
       --tag-app-bg:      #d1fae5; --tag-app-text:     #047857;
       --tag-mkt-bg:      #fce7f3; --tag-mkt-text:     #be185d;
       --due-muted:     #a09080;
-      --due-over:      #c0392b;
+      --due-over:      #6a9678;
       --hl-btn:        rgba(0,0,0,0.15);
-      --hl-btn-on:     #c0392b;
-      --hl-btn-on-bg:  #fde8e4;
+      --hl-btn-on:     #6a9678;
+      --hl-btn-on-bg:  #e8f3ec;
       --saving-bg:     #1c1812;
       --saving-text:   #f0ece2;
-      --accent-today:  #c0392b;
+      --accent-today:  #6a9678;
       --search-bg:     #fff;
       --search-border: #cfc8b8;
       --search-border-focus: #9c8b72;
@@ -83,22 +84,22 @@
       --area-header-color:  #c8a870;
       --area-header-border: #3a2e1e;
       --note-color:    #5a4a35;
-      --badge-p1-bg:     #3a1508; --badge-p1-text: #e8806a; --badge-p1-border: #6a2810;
+      --badge-p1-bg:     #0e2218; --badge-p1-text: #96c4a4; --badge-p1-border: #1e4a32;
       --badge-p2-bg:     #281e04; --badge-p2-text: #c8a040; --badge-p2-border: #4e3a08;
       --badge-p3-bg:     #1e1a10; --badge-p3-text: #8a7858; --badge-p3-border: #3a3020;
       --badge-del-bg:    #0c1e30; --badge-del-text: #6898c8; --badge-del-border: #1a3850;
-      --badge-overdue-bg:  #3a1508; --badge-overdue-text: #e8806a; --badge-overdue-border: #6a2810;
+      --badge-overdue-bg:  #0e2218; --badge-overdue-text: #96c4a4; --badge-overdue-border: #1e4a32;
       --tag-sunbelt-bg:  #0e1f38; --tag-sunbelt-text: #5a95d5;
       --tag-app-bg:      #0e2818; --tag-app-text:     #4ab870;
       --tag-mkt-bg:      #2a0e1e; --tag-mkt-text:     #c85898;
       --due-muted:     #6a5438;
-      --due-over:      #e8806a;
+      --due-over:      #96c4a4;
       --hl-btn:        rgba(255,255,255,0.12);
-      --hl-btn-on:     #e8806a;
-      --hl-btn-on-bg:  #3a1508;
+      --hl-btn-on:     #96c4a4;
+      --hl-btn-on-bg:  #0e2218;
       --saving-bg:     #e0cca8;
       --saving-text:   #181310;
-      --accent-today:  #e8806a;
+      --accent-today:  #96c4a4;
       --search-bg:     #211c15;
       --search-border: #2e2418;
       --search-border-focus: #6a5438;
@@ -136,7 +137,6 @@
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.08em;
-      text-transform: uppercase;
       margin-right: 24px;
       white-space: nowrap;
     }
@@ -473,7 +473,14 @@
 <body>
 
 <nav>
-  <span class="logo">Work Planner</span>
+  <span class="logo" style="display:flex;align-items:center;gap:0;text-transform:none;letter-spacing:0">
+    <span style="font-size:14px;font-weight:700;letter-spacing:-0.03em;color:#c8b99a">plan</span>
+    <svg width="8" height="20" viewBox="0 0 32 76" fill="none" style="flex-shrink:0">
+      <line x1="26" y1="4" x2="6" y2="72" stroke="var(--accent-today)" stroke-width="6.5" stroke-linecap="round"/>
+      <circle cx="26" cy="4" r="5" fill="var(--accent-today)"/>
+    </svg>
+    <span style="font-size:14px;font-weight:300;letter-spacing:-0.03em;color:#c8b99a">m</span>
+  </span>
   <div id="tabs"></div>
   <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()"></button>
 </nav>

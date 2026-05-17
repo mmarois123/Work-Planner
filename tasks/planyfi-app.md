@@ -12,8 +12,13 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [~] ~~Data export — let users download their SQLite file~~ — REPLACED with per-user JSON export (SQLite file would leak other users' data in shared-DB model).
 - [ ] Data export (JSON) for Premium — per-user server-side export endpoint — DEFERRED, not needed for beta
 - [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback — DEFERRED, low priority
+- [x] Home Purchase event should populate full mortgage details on auto-created accounts — set `originalAmount`, `loanTermMonths`, `loanStartDate`, `pairedAccountId`, and escrow fields from wizard inputs so AccountEditModal and MortgageBreakdownSummary work immediately
+- [x] Auto-pair Mortgage and Real Estate accounts when created together — set `pairedAccountId` on both when created via Account Setup wizard or Home Purchase event
 
 ## Product
+- [x] Event type buttons truncated in Add Event drawer — text cut to "Custo...", "Job Ch..." at drawer width; consider icons-only with tooltips or scrollable single-row layout
+- [ ] Home Purchase form UX for second/vacation home — "Rent to Remove" is confusing for existing homeowners buying another property; add "second home" toggle or auto-detect from existing Real Estate accounts; also fix truncated labels in Ongoing Costs section ("Property Tax Rate", "Home Appreciation" cut off)
+- [ ] Insurance unit mismatch between HomePurchaseForm (monthly) and AccountEditModal (annual) — standardize or auto-convert when transferring event data to accounts
 - [x] Onboarding: capture partner/spouse info in Quick Start — when "I have a partner/spouse" is checked, expand to collect partner name, age/DOB, and current/future salary. Auto-switch Filing Status to "Married Filing Jointly." Pre-populate partner section in Current Plan post-onboarding. Currently partner is completely invisible despite checking the spouse box (QA-026, QA-031, QA-005, QA-011)
 - [x] Onboarding: add age/DOB field — age is critical for retirement projections, FI date, and Social Security estimates. Currently not collected in any onboarding path (QA-003)
 - [x] Onboarding: improve Expenses & Savings step clarity — add tooltip/examples for Fixed vs Discretionary ("Rent, car payment, insurance" vs "dining, entertainment, shopping"); remove negative signs from Monthly Summary outflows (use color only, not minus + red); explain what "Remaining" money represents; clarify whether Savings Rate is gross or net and whether it includes 401k (QA-014, QA-015, QA-020, QA-021, QA-023, QA-016, QA-032)
@@ -24,7 +29,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [x] Chart default views — Outlays chart should default to stacked/breakout view showing taxes, expenses, and savings separately instead of a single line identical to Income. Income chart should indicate whether inflation/raises are modeled, or add a note about assumptions (QA-045, QA-046)
 - [x] Add "Real" vs "Nominal" tooltip — event form has Real/Nominal toggle with no explanation. Add tooltip: "Real = today's dollars (adjusted for inflation), Nominal = future dollar amounts" (QA-042)
 
-- [>] Research (via Claude) what mortgage info a homeowner typically has access to — use to inform current plan input fields
+- [x] Research (via Claude) what mortgage info a homeowner typically has access to — use to inform current plan input fields
 
 - [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
@@ -46,12 +51,15 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [x] Onboarding plan: show owner names on income/investment line items (e.g., "Kylie's Salary", "Kevin's Bonus") instead of requiring hover on tiny person icon — critical for households with two earners
 - [x] Onboarding: partner salary placeholder — when partner is not working, show $0 default instead of $65k placeholder, or add "Not currently employed" toggle to avoid ambiguity
 - [x] Onboarding: add childcare/daycare as default expense category when user has dependents — often the single biggest family expense, currently missing from both Fixed and Discretionary defaults
-- [ ] Onboarding plan: progressive disclosure — add collapsible sections, section jump nav, and reduce visual complexity (6 icons per line item overwhelms new users; consider hiding advanced controls behind a "more" menu)
+- [x] Onboarding plan: progressive disclosure — add collapsible sections, section jump nav, and reduce visual complexity (6 icons per line item overwhelms new users; consider hiding advanced controls behind a "more" menu)
 - [x] Onboarding: filter account types shown for dependents — a 9-month-old doesn't need Traditional 401k, Mortgage, or HELOC options; show only age-appropriate types (529 Plan, Savings, Brokerage)
 - [x] Onboarding accounts review: show net worth total at bottom of account list as an early "wow moment" before reaching the dashboard
 - [x] Mobile: surface "What's Next" checklist on mobile — currently hidden on small screens, losing the key new-user engagement tool
 - [x] Dashboard: rename "Outlays" chart tab to "Expenses" or "Spending" — "Outlays" is financial jargon unfamiliar to most users
 - [x] Guided tour: expand from 3 to 5+ steps — add coverage for Milestones, What's Next checklist, and how to edit the plan
+- [ ] Standardize drawer width on mobile — Future Events, Milestones, Fund Strategy, and FI Details drawers render at ~50% width on mobile; make all drawers full-width at mobile breakpoint for consistency with Current Plan and Accounts
+- [ ] Standardize overlay theme — Account Edit/Setup modals and Notifications/Help dropdowns use light/white backgrounds while all drawers and popovers use dark; pick one direction for visual consistency
+- [ ] Standardize form controls across overlays — unify dropdown implementation (Income Type uses custom menu, everything else uses native <select>); unify owner selection (pills in Account Setup vs <select> in Account Edit); unify primary action button labels ("✓ Save" vs "Done" vs "Save Changes")
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
 - [x] If user enters plan mid-year with no prior plan, assume same for full year; otherwise use appropriate mix based on effective dates
 - [x] Credit card account enrichment — extend CC editor with loan-detail-style fields (APR per card, minimum payment tracking, payoff estimates)
@@ -87,6 +95,9 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [x] Disable beforeunload dialog for guest/session-only users — "Leave site?" dialog fires even though data won't persist. Only show for signed-in users with unsaved changes (QA-049)
 
 ## Bugs / Issues
+- [x] Home Purchase event fails to save for guest/session users — `createAccountsFromEvent` in `account-impacts.ts` uses raw `fetch()` bypassing guest-aware `api-client.ts`; API calls hit auth-protected endpoints and fail. Same issue in `updateAccountsFromEvent`, `deleteAccountsByEvent`, `unlinkAccountsFromEvent`
+- [ ] Income Type dropdown on mobile clips last items — bottom-anchored "Rental" and "Other" options cut off at viewport edge
+- [x] Property Tax % in Account Edit Modal calculated against loan amount instead of home value — label says "% of loan" but property taxes are assessed against property value; entering a known rate (e.g., 1.1%) produces incorrect dollar amount. Use paired asset balance when available, label as "% of home value"
 - [x] Update CLAUDE.md route table and QA skill — `/profile`, `/budget-actuals`, `/transactions`, `/accounts`, `/net-worth`, `/cash-flow` all redirect to `/financial-planner`; route list is stale
 - [x] Detailed onboarding: jump straight into account wizard without requiring button press to launch
 - [x] After adding accounts, success message shows but displays 0 accounts and blocks navigation to next screen
