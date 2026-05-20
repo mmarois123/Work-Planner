@@ -79,6 +79,18 @@ Components to investigate:
 - Change Orders
 - Cycle Counts
 
+### Call with Jay — SKU / BOM / Estimating Notes
+
+**Comparable/substitutable SKU mapping?**
+Not really — currently only category > sub-category. Could go one level deeper for certain sub-categories to get like-for-like comparisons.
+
+**How do estimators select SKUs when building BOMs?**
+They select sub-assemblies or create Add-Ons when necessary. Not pulling from a master inventory or recent purchases list.
+
+**How quickly do price changes flow into Praxis/estimating BOMs?**
+- Items on contract: updated automatically
+- Non-commodity items (caulking, windows, etc.): reviewed monthly using last price paid
+
 ## Irina (Direct Report)
 
 ### 1:1 Alignment — May 2026

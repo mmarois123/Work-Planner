@@ -33,6 +33,9 @@
 - [ ] Fix Timeframe and date selection in Finance and Operations reports; explore bookmark approach for switching between timeframe and date selection modes
 - [ ] Build Plant Scorecard PDFs per plant: current data, historical trends, and qualitative info (project types, etc.) — per Bob's concept
 
+## Analysis
+- [ ] Analyze pricing changes/impact at Evergreen: compare orders quoted in Praxis YTD April vs orders quoted in 2H 2025
+
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
   - WIP % by project, Price per project
