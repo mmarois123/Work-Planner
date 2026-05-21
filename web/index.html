@@ -45,6 +45,8 @@
       --tag-mkt-bg:      #fce7f3; --tag-mkt-text:     #be185d;
       --due-muted:     #a09080;
       --due-over:      #6a9678;
+      --due-btn:       rgba(0,0,0,0.15);
+      --due-btn-on:    #a09080;
       --hl-btn:        rgba(0,0,0,0.15);
       --hl-btn-on:     #6a9678;
       --hl-btn-on-bg:  #e8f3ec;
@@ -94,6 +96,8 @@
       --tag-mkt-bg:      #2a0e1e; --tag-mkt-text:     #c85898;
       --due-muted:     #6a5438;
       --due-over:      #96c4a4;
+      --due-btn:       rgba(255,255,255,0.12);
+      --due-btn-on:    #6a5438;
       --hl-btn:        rgba(255,255,255,0.12);
       --hl-btn-on:     #96c4a4;
       --hl-btn-on-bg:  #0e2218;
@@ -314,7 +318,9 @@
     .due {
       font-size: 11px;
       color: var(--due-muted);
+      cursor: pointer;
     }
+    .due:hover { text-decoration: underline; }
     .due.overdue { color: var(--due-over); font-weight: 600; }
 
     /* Area tag (Today view only) */
@@ -341,6 +347,19 @@
       align-items: center;
       padding-top: 3px;
     }
+    .btn-due {
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 11px;
+      line-height: 1;
+      color: var(--due-btn);
+      padding: 2px 4px;
+      transition: color 0.12s, background 0.12s;
+    }
+    .btn-due:hover { color: var(--due-btn-on); }
+    .btn-due.on { color: var(--due-btn-on); }
     .btn-hl {
       background: none;
       border: 1px solid transparent;
@@ -354,6 +373,39 @@
     }
     .btn-hl:hover { color: var(--hl-btn-on); }
     .btn-hl.on { color: var(--hl-btn-on); background: var(--hl-btn-on-bg); border-color: var(--hl-btn-on); }
+
+    /* Date picker popup */
+    .date-picker-popup {
+      position: absolute;
+      z-index: 100;
+      background: var(--bg);
+      border: 1px solid var(--task-border);
+      border-radius: 6px;
+      padding: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .date-picker-popup input[type="date"] {
+      font-size: 12px;
+      padding: 3px 6px;
+      border: 1px solid var(--task-border);
+      border-radius: 3px;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .date-picker-popup .btn-remove-due {
+      font-size: 10px;
+      padding: 3px 6px;
+      border: 1px solid var(--task-border);
+      border-radius: 3px;
+      background: none;
+      color: var(--due-over);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .date-picker-popup .btn-remove-due:hover { background: var(--task-hover); }
 
     /* Subtasks */
     .subtasks { margin-left: 26px; }
@@ -1013,6 +1065,8 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
       const overdue = isOverdue(p.due);
       d.className = 'due' + (overdue ? ' overdue' : '');
       d.textContent = (overdue ? '\u26A0 ' : '') + 'due ' + formatDue(p.due);
+      d.style.cursor = 'pointer';
+      d.onclick = (e) => { e.stopPropagation(); showDatePicker(area, lineIdx, p.due, d); };
       meta.appendChild(d);
     }
     if (p.delegated) {
@@ -1026,9 +1080,15 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
 
   wrap.appendChild(body);
 
-  // Right: highlight button (star instead of orange circle)
+  // Right: due-date button + highlight button
   const right = document.createElement('div');
   right.className = 'task-right';
+  const dueBtn = document.createElement('button');
+  dueBtn.className = 'btn-due' + (p.due ? ' on' : '');
+  dueBtn.title = p.due ? 'Edit due date' : 'Add due date';
+  dueBtn.innerHTML = '&#128197;';
+  dueBtn.onclick = (e) => { e.stopPropagation(); showDatePicker(area, lineIdx, p.due, dueBtn); };
+  right.appendChild(dueBtn);
   const hl = document.createElement('button');
   hl.className = 'btn-hl' + (p.highlighted ? ' on' : '');
   hl.title = p.highlighted ? 'Remove highlight' : 'Highlight';
@@ -1063,6 +1123,86 @@ function toggleHighlight(area, lineIdx) {
     const without = line.match(/^(\s*- \[[ x]\] )(.*)$/);
     if (without) rawLines[lineIdx] = without[1] + '\u{1F7E0} ' + without[2];
   }
+  save(area);
+}
+
+// ── Due date picker ──────────────────────────────────────────────────────────
+
+let activeDatePopup = null;
+
+function closeDatePicker() {
+  if (activeDatePopup) {
+    activeDatePopup.remove();
+    activeDatePopup = null;
+  }
+}
+
+function showDatePicker(area, lineIdx, currentDue, anchorEl) {
+  closeDatePicker();
+
+  const popup = document.createElement('div');
+  popup.className = 'date-picker-popup';
+
+  const input = document.createElement('input');
+  input.type = 'date';
+  if (currentDue) input.value = currentDue;
+  input.onchange = () => {
+    if (input.value) {
+      setDueDate(area, lineIdx, input.value);
+      closeDatePicker();
+    }
+  };
+  popup.appendChild(input);
+
+  if (currentDue) {
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'btn-remove-due';
+    removeBtn.textContent = 'Remove';
+    removeBtn.onclick = () => {
+      setDueDate(area, lineIdx, null);
+      closeDatePicker();
+    };
+    popup.appendChild(removeBtn);
+  }
+
+  document.body.appendChild(popup);
+  activeDatePopup = popup;
+
+  // Position near the anchor
+  const rect = anchorEl.getBoundingClientRect();
+  const popupRect = popup.getBoundingClientRect();
+  let top = rect.bottom + 4;
+  let left = rect.left - popupRect.width + rect.width;
+  if (left < 4) left = 4;
+  if (top + popupRect.height > window.innerHeight) top = rect.top - popupRect.height - 4;
+  popup.style.top = top + 'px';
+  popup.style.left = left + 'px';
+
+  // Auto-focus the input
+  setTimeout(() => input.focus(), 0);
+
+  // Close on outside click
+  setTimeout(() => {
+    document.addEventListener('mousedown', function handler(e) {
+      if (!popup.contains(e.target)) {
+        closeDatePicker();
+        document.removeEventListener('mousedown', handler);
+      }
+    });
+  }, 0);
+}
+
+function setDueDate(area, lineIdx, dateStr) {
+  const rawLines = areaStates[area].rawLines;
+  let line = rawLines[lineIdx];
+  // Remove existing due date if present
+  line = line.replace(/\s*\(due:\s*\d{4}-\d{2}-\d{2}\)/, '');
+  if (dateStr) {
+    // Insert due date before trailing metadata tags (@delegated, [P1] etc.) or at end
+    // Find the end of the task text (before any trailing whitespace)
+    line = line.trimEnd() + ' (due: ' + dateStr + ')';
+  }
+  rawLines[lineIdx] = line;
   save(area);
 }
 
