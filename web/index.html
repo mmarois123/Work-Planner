@@ -316,12 +316,18 @@
     .badge-p3 { background: var(--badge-p3-bg); color: var(--badge-p3-text); border-color: var(--badge-p3-border); }
     .badge-delegated { background: var(--badge-del-bg); color: var(--badge-del-text); border-color: var(--badge-del-border); font-size: 9px; padding: 1px 5px; border-radius: 2px; font-weight: 600; }
     .due {
-      font-size: 11px;
-      color: var(--due-muted);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 2px;
+      letter-spacing: 0.05em;
+      background: var(--badge-p1-bg);
+      color: var(--badge-p1-text);
+      border: 1px solid var(--badge-p1-border);
       cursor: pointer;
     }
-    .due:hover { text-decoration: underline; }
-    .due.overdue { color: var(--due-over); font-weight: 600; }
+    .due:hover { opacity: 0.8; }
+    .due.overdue { background: var(--badge-overdue-bg); color: var(--badge-overdue-text); border-color: var(--badge-overdue-border); }
 
     /* Area tag (Today view only) */
     .task-area-tag {
