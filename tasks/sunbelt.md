@@ -71,7 +71,7 @@
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
-- [ ] Propose labor utilization % targets to Bob based on budget
+- [x] Propose labor utilization % targets to Bob based on budget
 - [ ] Ask Bob about labor and OH % for WIP entry
 
 
