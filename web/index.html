@@ -46,7 +46,7 @@
       --due-muted:     #a09080;
       --due-over:      #6a9678;
       --due-btn:       rgba(0,0,0,0.15);
-      --due-btn-on:    #a09080;
+      --due-btn-on:    #6a9678;
       --hl-btn:        rgba(0,0,0,0.15);
       --hl-btn-on:     #6a9678;
       --hl-btn-on-bg:  #e8f3ec;
@@ -97,7 +97,7 @@
       --due-muted:     #6a5438;
       --due-over:      #96c4a4;
       --due-btn:       rgba(255,255,255,0.12);
-      --due-btn-on:    #6a5438;
+      --due-btn-on:    #96c4a4;
       --hl-btn:        rgba(255,255,255,0.12);
       --hl-btn-on:     #96c4a4;
       --hl-btn-on-bg:  #0e2218;
@@ -352,11 +352,12 @@
       border: 1px solid transparent;
       border-radius: 3px;
       cursor: pointer;
-      font-size: 11px;
-      line-height: 1;
+      line-height: 0;
       color: var(--due-btn);
       padding: 2px 4px;
       transition: color 0.12s, background 0.12s;
+      display: flex;
+      align-items: center;
     }
     .btn-due:hover { color: var(--due-btn-on); }
     .btn-due.on { color: var(--due-btn-on); }
@@ -1086,7 +1087,7 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
   const dueBtn = document.createElement('button');
   dueBtn.className = 'btn-due' + (p.due ? ' on' : '');
   dueBtn.title = p.due ? 'Edit due date' : 'Add due date';
-  dueBtn.innerHTML = '&#128197;';
+  dueBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="3" width="13" height="11.5" rx="1.5"/><line x1="1.5" y1="6.5" x2="14.5" y2="6.5"/><line x1="5" y1="1" x2="5" y2="4.5"/><line x1="11" y1="1" x2="11" y2="4.5"/></svg>';
   dueBtn.onclick = (e) => { e.stopPropagation(); showDatePicker(area, lineIdx, p.due, dueBtn); };
   right.appendChild(dueBtn);
   const hl = document.createElement('button');
