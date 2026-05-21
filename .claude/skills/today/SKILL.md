@@ -23,7 +23,7 @@ Run all three of these in **parallel** (simultaneous Bash tool calls):
 git -C "$(git rev-parse --show-toplevel)" pull --ff-only 2>/dev/null || true
 ```
 
-**Call 2 — Ensure server is running and open browser:**
+**Call 2 — Ensure server is running and open browser in a new window:**
 ```bash
 # Check server, start if needed (poll instead of sleep), then open browser
 if ! curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/areas 2>/dev/null | grep -q 200; then
@@ -33,12 +33,16 @@ if ! curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/areas 2>/d
     curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/areas 2>/dev/null | grep -q 200 && break
   done
 fi
-start "" "http://localhost:5000/#today{filter_suffix}"
+URL="http://localhost:5000/#today{filter_suffix}"
+# Try Chrome then Edge with --new-window, fall back to start
+"/c/Program Files/Google/Chrome/Application/chrome.exe" --new-window "$URL" 2>/dev/null \
+  || "/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --new-window "$URL" 2>/dev/null \
+  || start "" "$URL"
 ```
 
 Where `{filter_suffix}` is `/{area}` if a filter was applied, otherwise empty.
 
-The `start` command opens the URL in the user's default browser instantly on Windows — no Python overhead needed.
+Uses `--new-window` to force a fresh browser window. Falls back to `start` if neither Chrome nor Edge is found at the standard paths.
 
 ## Step 3 — Print a terse chat summary (while browser opens)
 
