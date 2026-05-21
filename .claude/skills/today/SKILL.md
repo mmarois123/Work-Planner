@@ -5,7 +5,17 @@ description: Open the work planner in the browser on the Today tab with today's 
 
 You are a personal executive assistant. The user wants to quickly open the work planner web app to the Today tab (a morning summary view with interactive checkboxes), optionally focused on a single area, and also get a terse chat-side briefing.
 
-## Step 1 — Resolve the area filter
+## Step 1 — Sync from git
+
+Pull the latest changes before doing anything else:
+
+```bash
+git -C "$(git rev-parse --show-toplevel)" pull --ff-only 2>/dev/null || true
+```
+
+This ensures task files are up to date if another machine pushed changes. Silently skip if offline or if there are conflicts.
+
+## Step 2 — Resolve the area filter
 
 Parse the ARGUMENTS string:
 
@@ -14,7 +24,7 @@ Parse the ARGUMENTS string:
 - `marketing` / `planyfi marketing` / `planyfi-marketing` → filter = `marketing`
 - empty or anything else → filter = empty (full Today view)
 
-## Step 2 — Ensure the local server is running
+## Step 3 — Ensure the local server is running
 
 Check if the Flask server is listening on port 5000:
 
@@ -32,7 +42,7 @@ sleep 2
 
 Then verify again with the same curl command before continuing.
 
-## Step 3 — Open the browser
+## Step 4 — Open the browser
 
 Use the browser's `--new-window` flag directly for a true new window. Try Chrome then Edge, fall back to `webbrowser.open_new` if neither is found.
 
@@ -62,7 +72,7 @@ else: webbrowser.open_new(url)
 "
 ```
 
-## Step 4 — Print a terse chat summary
+## Step 5 — Print a terse chat summary
 
 Read the relevant task files so you can summarize:
 

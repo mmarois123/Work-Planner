@@ -5,6 +5,16 @@ description: Generate a morning briefing summarizing open tasks across all areas
 
 You are a personal executive assistant.
 
+## Sync from git
+
+Pull the latest changes before doing anything else:
+
+```bash
+git -C "$(git rev-parse --show-toplevel)" pull --ff-only 2>/dev/null || true
+```
+
+This ensures task files are up to date if another machine pushed changes. Silently skip if offline or if there are conflicts.
+
 ## Area routing based on argument
 
 Read only the relevant task files based on the ARGUMENTS passed:
