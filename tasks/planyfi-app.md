@@ -35,7 +35,6 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Home Purchase — zip code lookup for median home price, county-level property tax, flood/wind insurance zones
 - [ ] Rent vs. Buy — pull property data by address (Zillow/Redfin API or manual entry)
 - [ ] Rent vs. Buy — surface as linked tool inside Scenario Planner HOME_PURCHASE event and Plan
-- [ ] Scenario comparison — side-by-side delta view of two scenarios
 - [x] Mobile-responsive layout — full mobile compatibility pass across all pages and components; touch-friendly interactions throughout
 - [ ] Integrate US census data more deeply into app
 - [ ] Add view mode for filtering/browsing different demographics
