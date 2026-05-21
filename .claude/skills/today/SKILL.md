@@ -5,17 +5,7 @@ description: Open the work planner in the browser on the Today tab with today's 
 
 You are a personal executive assistant. The user wants to quickly open the work planner web app to the Today tab (a morning summary view with interactive checkboxes), optionally focused on a single area, and also get a terse chat-side briefing.
 
-## Step 1 — Sync from git
-
-Pull the latest changes before doing anything else:
-
-```bash
-git -C "$(git rev-parse --show-toplevel)" pull --ff-only 2>/dev/null || true
-```
-
-This ensures task files are up to date if another machine pushed changes. Silently skip if offline or if there are conflicts.
-
-## Step 2 — Resolve the area filter
+## Step 1 — Resolve the area filter
 
 Parse the ARGUMENTS string:
 
@@ -24,57 +14,35 @@ Parse the ARGUMENTS string:
 - `marketing` / `planyfi marketing` / `planyfi-marketing` → filter = `marketing`
 - empty or anything else → filter = empty (full Today view)
 
-## Step 3 — Ensure the local server is running
+## Step 2 — Git pull + ensure server + open browser (parallel)
 
-Check if the Flask server is listening on port 5000:
+Run all three of these in **parallel** (simultaneous Bash tool calls):
 
+**Call 1 — Git pull** (background, non-blocking):
 ```bash
-curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/areas
+git -C "$(git rev-parse --show-toplevel)" pull --ff-only 2>/dev/null || true
 ```
 
-- If the response is `200`, the server is already running — skip to Step 3.
-- If the connection fails or returns anything else, start the server in the background (silenced so it doesn't clutter the chat):
-
+**Call 2 — Ensure server is running and open browser:**
 ```bash
-python scripts/server.py > /dev/null 2>&1 &
-sleep 2
+# Check server, start if needed (poll instead of sleep), then open browser
+if ! curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/areas 2>/dev/null | grep -q 200; then
+  python scripts/server.py > /dev/null 2>&1 &
+  for i in 1 2 3 4 5; do
+    sleep 0.3
+    curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/areas 2>/dev/null | grep -q 200 && break
+  done
+fi
+start "" "http://localhost:5000/#today{filter_suffix}"
 ```
 
-Then verify again with the same curl command before continuing.
+Where `{filter_suffix}` is `/{area}` if a filter was applied, otherwise empty.
 
-## Step 4 — Open the browser
+The `start` command opens the URL in the user's default browser instantly on Windows — no Python overhead needed.
 
-Use the browser's `--new-window` flag directly for a true new window. Try Chrome then Edge, fall back to `webbrowser.open_new` if neither is found.
+## Step 3 — Print a terse chat summary (while browser opens)
 
-**No filter:**
-```bash
-python -c "
-import subprocess, webbrowser
-url = 'http://localhost:5000/#today'
-candidates = ['chrome', 'msedge', r'C:\Program Files\Google\Chrome\Application\chrome.exe', r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe']
-for exe in candidates:
-    try: subprocess.Popen([exe, '--new-window', url]); break
-    except (FileNotFoundError, OSError): pass
-else: webbrowser.open_new(url)
-"
-```
-
-**With filter** (substitute the area value):
-```bash
-python -c "
-import subprocess, webbrowser
-url = 'http://localhost:5000/#today/sunbelt'
-candidates = ['chrome', 'msedge', r'C:\Program Files\Google\Chrome\Application\chrome.exe', r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe']
-for exe in candidates:
-    try: subprocess.Popen([exe, '--new-window', url]); break
-    except (FileNotFoundError, OSError): pass
-else: webbrowser.open_new(url)
-"
-```
-
-## Step 5 — Print a terse chat summary
-
-Read the relevant task files so you can summarize:
+Read the relevant task files in **parallel with Step 2** so you can summarize:
 
 - **No filter:** read `tasks/sunbelt.md`, `tasks/planyfi-app.md`, and `tasks/planyfi-marketing.md` in parallel
 - **With filter:** read only the matching file
