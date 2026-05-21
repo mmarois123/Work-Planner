@@ -34,7 +34,7 @@
 - [ ] Build Plant Scorecard PDFs per plant: current data, historical trends, and qualitative info (project types, etc.) — per Bob's concept
 
 ## Analysis
-- [ ] Analyze pricing changes/impact at Evergreen: compare orders quoted in Praxis YTD April vs orders quoted in 2H 2025
+- [ ] 🟠 Analyze pricing changes/impact at Evergreen: compare orders quoted in Praxis YTD April vs orders quoted in 2H 2025
 - [ ] Project Trailblazer: vendor SKU matching and pricing analysis across Sunbelt, SSI/Promod, and Titan
   - [ ] Match up vendors from Sunbelt, SSI/Promod, and Titan (from Ranny email)
   - [ ] Send SKU comparison back to Jay — confirm non-comparable SKUs (mark as gray)
