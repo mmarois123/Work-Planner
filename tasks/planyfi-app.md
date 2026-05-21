@@ -39,7 +39,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Integrate US census data more deeply into app
 - [ ] Add view mode for filtering/browsing different demographics
 - [ ] Interactive demo — hosted read-only instance with sample data
-- [ ] Send beta version to Zach, Julie, AJ, James, and others (blocked on: session-only free tier + backups + error monitoring)
+- [ ] 🟠 Send beta version to Zach, Julie, AJ, James, and others (blocked on: session-only free tier + backups + error monitoring)
 
 - [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 
