@@ -353,6 +353,22 @@
       align-items: center;
       padding-top: 3px;
     }
+    .btn-task-action {
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      cursor: pointer;
+      line-height: 0;
+      color: var(--text-muted-dim);
+      padding: 2px 4px;
+      transition: color 0.12s, background 0.12s;
+      display: flex;
+      align-items: center;
+      opacity: 0;
+    }
+    .task:hover .btn-task-action { opacity: 1; }
+    .btn-task-action:hover { color: var(--text-muted); }
+    .btn-task-action.btn-delete:hover { color: #c0392b; }
     .btn-due {
       background: none;
       border: 1px solid transparent;
@@ -380,6 +396,20 @@
     }
     .btn-hl:hover { color: var(--hl-btn-on); }
     .btn-hl.on { color: var(--hl-btn-on); background: var(--hl-btn-on-bg); border-color: var(--hl-btn-on); }
+
+    /* Inline edit input */
+    .task-edit-input {
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--search-border-focus);
+      border-radius: 3px;
+      padding: 2px 4px;
+      width: 100%;
+      outline: none;
+      line-height: 1.5;
+    }
 
     /* Date picker popup */
     .date-picker-popup {
@@ -1087,9 +1117,24 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
 
   wrap.appendChild(body);
 
-  // Right: due-date button + highlight button
+  // Right: edit + delete + due-date + highlight buttons
   const right = document.createElement('div');
   right.className = 'task-right';
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn-task-action btn-edit';
+  editBtn.title = 'Edit task';
+  editBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/><line x1="9" y1="4" x2="12" y2="7"/></svg>';
+  editBtn.onclick = (e) => { e.stopPropagation(); startInlineEdit(area, lineIdx, p, wrap); };
+  right.appendChild(editBtn);
+
+  const delBtn = document.createElement('button');
+  delBtn.className = 'btn-task-action btn-delete';
+  delBtn.title = 'Delete task';
+  delBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="2" y1="4" x2="14" y2="4"/><path d="M5.5 4V2.5h5V4"/><path d="M3.5 4l1 10h7l1-10"/></svg>';
+  delBtn.onclick = (e) => { e.stopPropagation(); deleteTask(area, lineIdx); };
+  right.appendChild(delBtn);
+
   const dueBtn = document.createElement('button');
   dueBtn.className = 'btn-due' + (p.due ? ' on' : '');
   dueBtn.title = p.due ? 'Edit due date' : 'Add due date';
@@ -1130,6 +1175,68 @@ function toggleHighlight(area, lineIdx) {
     const without = line.match(/^(\s*- \[[ x]\] )(.*)$/);
     if (without) rawLines[lineIdx] = without[1] + '\u{1F7E0} ' + without[2];
   }
+  save(area);
+}
+
+// ── Delete task ──────────────────────────────────────────────────────────────
+
+function deleteTask(area, lineIdx) {
+  const rawLines = areaStates[area].rawLines;
+  const line = rawLines[lineIdx];
+  const indent = line.match(/^(\s*)/)[1].length;
+
+  // Count how many subsequent lines are subtasks/notes of this task (deeper indent)
+  let end = lineIdx + 1;
+  while (end < rawLines.length) {
+    const nextLine = rawLines[end];
+    if (nextLine.trim() === '') { end++; continue; }
+    const nextIndent = nextLine.match(/^(\s*)/)[1].length;
+    if (nextIndent > indent) { end++; } else { break; }
+  }
+
+  rawLines.splice(lineIdx, end - lineIdx);
+  save(area);
+}
+
+// ── Inline edit ──────────────────────────────────────────────────────────────
+
+function startInlineEdit(area, lineIdx, parsed, wrapEl) {
+  const textEl = wrapEl.querySelector('.task-text');
+  if (!textEl || textEl.querySelector('.task-edit-input')) return;
+
+  const currentText = parsed.text;
+  textEl.innerHTML = '';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'task-edit-input';
+  input.value = currentText;
+  textEl.appendChild(input);
+
+  input.focus();
+  input.select();
+
+  function commit() {
+    const newText = input.value.trim();
+    if (newText && newText !== currentText) {
+      applyInlineEdit(area, lineIdx, currentText, newText);
+    } else {
+      rerenderCurrent();
+    }
+  }
+
+  input.onkeydown = (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+    if (e.key === 'Escape') { e.preventDefault(); rerenderCurrent(); }
+  };
+  input.onblur = () => commit();
+}
+
+function applyInlineEdit(area, lineIdx, oldText, newText) {
+  const rawLines = areaStates[area].rawLines;
+  const line = rawLines[lineIdx];
+  // Replace just the text portion in the raw line, preserving metadata
+  rawLines[lineIdx] = line.replace(oldText, newText);
   save(area);
 }
 
