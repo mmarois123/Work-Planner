@@ -64,7 +64,7 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] 🟠 Add recurring tasks for sunbelt to work-planner
-- [ ] Meeting with Devin: discuss inventory tech — cameras tracking completeness
+- [x] Meeting with Devin: discuss inventory tech — cameras tracking completeness
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [x] 🟠 Send specific questions to Jay ahead of Tuesday meeting
