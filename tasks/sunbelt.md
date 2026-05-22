@@ -73,6 +73,9 @@
 - [ ] Grab better data from Jeff
 
 ## Bob Review
+- [ ] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
+  - [ ] Start with Project Ramp Up at Whitley South
+  - [ ] Evaluate bringing over UA factors for all remaining backlog projects
 - [ ] Review with Bob: factor impact from baseline
 - [x] Propose labor utilization % targets to Bob based on budget
 - [ ] Ask Bob about labor and OH % for WIP entry
