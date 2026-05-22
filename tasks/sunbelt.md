@@ -1,6 +1,7 @@
 # Sunbelt FP&A
 
 ## BoD
+- [ ] BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
 
 ## Forecasting
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -68,6 +69,8 @@
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [x] 🟠 Send specific questions to Jay ahead of Tuesday meeting
+- [ ] Ask Jay: are Chassis and Frame parts unique to Chassis or shared across other sub-categories?
+- [ ] Grab better data from Jeff
 
 ## Bob Review
 - [ ] Review with Bob: factor impact from baseline
