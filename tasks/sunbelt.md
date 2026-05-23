@@ -36,7 +36,7 @@
 
 ## Analysis
 - [ ] 🟠 Analyze pricing changes/impact at Evergreen: compare orders quoted in Praxis YTD April vs orders quoted in 2H 2025 (due: 2026-05-22)
-- [ ] 🟠 Project Trailblazer: vendor SKU matching and pricing analysis across Sunbelt, SSI/Promod, and Titan (due: 2026-05-22)
+- [x] 🟠 Project Trailblazer: vendor SKU matching and pricing analysis across Sunbelt, SSI/Promod, and Titan (due: 2026-05-22)
   - [ ] Match up vendors from Sunbelt, SSI/Promod, and Titan (from Ranny email)
   - [ ] Send SKU comparison back to Jay — confirm non-comparable SKUs (mark as gray)
 
