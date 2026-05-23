@@ -24,6 +24,7 @@
 - [ ] Shortcut management UI — view, edit, reorder, and delete shortcuts from the frontend (currently API-only CRUD)
 - [ ] History tab: monthly view — the History tab supports 7d/14d/30d/90d timeframes but no calendar-month view
 - [ ] Streak tracking — surface current and best streaks for habits (logged food, workout, protein target hit, etc.)
+- [ ] Add max streak tracking to Notch
 - [ ] Export — CSV or JSON export of meal logs, body metrics, and workouts for a date range
 - [ ] Multi-day Fitbit backfill UI — button in frontend to trigger a Fitbit sync for a specific date range (currently auto-polls recent days only)
 

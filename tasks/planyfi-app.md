@@ -109,6 +109,9 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [x] "Collectables" typo in account type selection during onboarding — should be "Collectibles"
 - [x] Mobile nav tabs are icon-only with no visible labels — despite tooltip work (QA-047), new mobile users still can't identify tabs; need visible text labels or a labeled bottom nav bar
 - [x] Fix Daily SQLite Backup GitHub Actions workflow failure
+- [ ] Fix mobile layout — constrain to screen width, eliminate horizontal scroll/movement
+- [ ] Bug: hitting Upgrade within profile view on mobile doesn't show checkout screen — blocked by profile modal
+- [ ] Convert all drawers to full pages on mobile to eliminate bugginess
 
 ## Parking Lot
 - [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]
