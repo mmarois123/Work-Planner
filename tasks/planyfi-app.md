@@ -6,7 +6,7 @@
 Business model: Free tier is session-only (full feature access, no persistence). Premium ($5/mo or $50/yr) unlocks save, scenario comparison, unlimited saved scenarios, CSV export, priority support.
 ### Infrastructure / ops (before inviting friends)
 - [~] ~~Stripe account setup~~ — REPLACED with Clerk Billing (migrated May 2026)
-- [ ] Sentry setup — create Sentry project, set `NEXT_PUBLIC_SENTRY_DSN` on Railway (`app/error.tsx` already has `Sentry.captureException`; optional: `SENTRY_AUTH_TOKEN`/`SENTRY_ORG`/`SENTRY_PROJECT` for source maps)
+- [x] Sentry setup — create Sentry project, set `NEXT_PUBLIC_SENTRY_DSN` on Railway (`app/error.tsx` already has `Sentry.captureException`; optional: `SENTRY_AUTH_TOKEN`/`SENTRY_ORG`/`SENTRY_PROJECT` for source maps)
 ### Deferred / reconsidered
 - [~] ~~Provisioning layer — automate per-user Railway instance creation via API~~ — DROPPED. Shared multi-tenant SQLite + Clerk userId scoping already covers isolation. Per-instance economics kill $5/mo margin. Revisit only as Enterprise tier.
 - [~] ~~Custom domain routing — map user.planyfi.app to each user's Railway instance~~ — DROPPED with the above.
@@ -68,6 +68,15 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [x] Rename onboarding path "Start from Scratch" — consider "Quick Start" or similar
 - [x] Add ability to change household member colors during onboarding
 - [x] Make first entered checking and savings accounts the primary cash flow accounts by default
+- [ ] Add button that generates a generic LLM prompt — instructs any AI tool to review attached transactions and categorize them against the user's current plan (specific categories + sub-categories) in a format uploadable to Planyfi for plan comparison or updates
+- [ ] Add upgrade prompt/link on onboarding screen where previous session cleared message appears
+- [ ] Remove balance and account name prompts during onboarding if user can edit both on the following screen
+- [ ] Add owner tag to accounts, consistent with Current Plan
+- [ ] Auto-link investment and savings accounts by default
+- [ ] Student loan and auto loan payments should auto-populate in plan when entered as accounts
+- [ ] Show net worth total at bottom of accounts screen on mobile, consistent with how Current Plan shows net remaining
+- [ ] Equivalent rent icon should open popup showing actual numbers and logic used to calculate equivalent rent
+- [ ] Review Fund Strategy and Roth Conversion Ladder — verify accuracy, defaults, and quality of explanations
 
 ### Design Review (Apr 2026)
 Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.
@@ -109,9 +118,23 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [x] "Collectables" typo in account type selection during onboarding — should be "Collectibles"
 - [x] Mobile nav tabs are icon-only with no visible labels — despite tooltip work (QA-047), new mobile users still can't identify tabs; need visible text labels or a labeled bottom nav bar
 - [x] Fix Daily SQLite Backup GitHub Actions workflow failure
-- [ ] Fix mobile layout — constrain to screen width, eliminate horizontal scroll/movement
-- [ ] Bug: hitting Upgrade within profile view on mobile doesn't show checkout screen — blocked by profile modal
-- [ ] Convert all drawers to full pages on mobile to eliminate bugginess
+- [x] Fix mobile layout — constrain to screen width, eliminate horizontal scroll/movement
+- [x] Bug: hitting Upgrade within profile view on mobile doesn't show checkout screen — blocked by profile modal
+- [x] Convert all drawers to full pages on mobile to eliminate bugginess
+- [x] Quick Start onboarding resets on last step when logged in as guest — verify all onboarding paths work correctly for guest, free, and premium users
+- [x] Current Plan still has slight horizontal scroll on mobile
+- [ ] "Customize your accounts" screen broken on mobile — account names not visible, balances difficult to see
+- [ ] Duplicate blue confirmation messages appearing when adding accounts in onboarding
+- [ ] Ticker search on accounts/holdings page broken on mobile — dropdown not showing names from tickers
+- [ ] Hide link icon in onboarding if there's no budget item to link to — current behavior is confusing
+- [ ] Credit card UI broken/poor on mobile; replace with "Add credit card" flow similar to adding holdings, then prompt for details
+- [ ] Subtotals (investments and others) not updating when adding new account amounts — only shows first entered balance
+- [ ] "Create plan" starts at bottom of screen — should start at top
+- [ ] Fundrise appearing in onboarding without being explicitly entered — investigate and remove
+- [ ] Next button no longer shows as green after clicking first tutorial popup on mobile
+- [ ] Account balances not saving from onboarding — critical fix needed [P1]
+- [ ] Employer Match popup styling inconsistent with other popups on Current Plan page
+- [ ] No option to clear "What's Next" to-do list on mobile; items don't auto-dismiss after completion
 
 ## Parking Lot
 - [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]
