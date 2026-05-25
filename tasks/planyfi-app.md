@@ -24,6 +24,9 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
 - [ ] Add button that generates a generic LLM prompt — instructs any AI tool to review attached transactions and categorize them against the user's current plan (specific categories + sub-categories) in a format uploadable to Planyfi for plan comparison or updates
 - [ ] Review Fund Strategy and Roth Conversion Ladder — verify accuracy, defaults, and quality of explanations
+- [ ] Merge Quick Start and US Benchmarks onboarding paths — use optional fields so user can click through quickly or fill in their own info
+- [ ] Research available US datasets for household income, saving/investing, and spending
+- [ ] Add help/info icons to each drawer/page with in-depth explanations; explore on-screen tutorial as well
 
 ### Design Review (Apr 2026)
 Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.
