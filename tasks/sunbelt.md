@@ -9,14 +9,7 @@
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Fix Payroll/Bonus section
 - [ ] Create Daily cash balances (book cash) plotted in a graph
-- [x] 🟠 Update Financial FC file using data table approach
-- [x] 🟠 Send updated Financial FC to LJ by 5/15 — for going to market on debt (due: 2026-05-15)
-- [x] 🟠 Formalize Material % and Labor % FC file and report for Bob / LJ
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
-- [x] 🟠 Build FC app: P&L line by company — revenue by company, material cost, etc.
-- [x] 🟠 Bring factor and fleet/custom into FC app
-- [x] 🟠 Consider displaying P&L FC output in Excel version that feeds balance sheet and cash flow — keep it simple vs. building custom app
-- [x] 🟠 FC App: create detailed revenue view — include plant target, FC committed, scheduled production, etc.
 - [ ] 🟠 FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
 
 
@@ -65,10 +58,8 @@
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] 🟠 Add recurring tasks for sunbelt to work-planner
-- [x] Meeting with Devin: discuss inventory tech — cameras tracking completeness
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
-- [x] 🟠 Send specific questions to Jay ahead of Tuesday meeting
 - [ ] Ask Jay: are Chassis and Frame parts unique to Chassis or shared across other sub-categories?
 - [ ] Grab better data from Jeff
 
@@ -77,7 +68,6 @@
   - [ ] Start with Project Ramp Up at Whitley South
   - [ ] Evaluate bringing over UA factors for all remaining backlog projects
 - [ ] Review with Bob: factor impact from baseline
-- [x] Propose labor utilization % targets to Bob based on budget
 - [ ] Ask Bob about labor and OH % for WIP entry
 
 
@@ -85,5 +75,4 @@
 - [ ] Integrate new AR Logic into Fabric @delegated(Irina)
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
-- [x] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
 - [ ] Build project roadmaps and structure for Irina on larger workstreams so she has something concrete to drive against

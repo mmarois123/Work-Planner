@@ -20,3 +20,20 @@
 
 ## Irina (Direct Report)
 - [x] Sunbelt Modular Model — review tables not yet moved to SMDL @delegated(Irina)
+- [x] Irina: document Fabric Lakehouse issue — table not ready after loading @delegated(Irina)
+
+## Forecasting
+- [x] 🟠 Update Financial FC file using data table approach
+- [x] 🟠 Send updated Financial FC to LJ by 5/15 — for going to market on debt (due: 2026-05-15)
+- [x] 🟠 Formalize Material % and Labor % FC file and report for Bob / LJ
+- [x] 🟠 Build FC app: P&L line by company — revenue by company, material cost, etc.
+- [x] 🟠 Bring factor and fleet/custom into FC app
+- [x] 🟠 Consider displaying P&L FC output in Excel version that feeds balance sheet and cash flow — keep it simple vs. building custom app
+- [x] 🟠 FC App: create detailed revenue view — include plant target, FC committed, scheduled production, etc.
+
+## General
+- [x] Meeting with Devin: discuss inventory tech — cameras tracking completeness
+- [x] 🟠 Send specific questions to Jay ahead of Tuesday meeting
+
+## Bob Review
+- [x] Propose labor utilization % targets to Bob based on budget

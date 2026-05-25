@@ -42,3 +42,68 @@
 - [x] Account balances not saving from detailed onboarding process
 - [x] Date input on mobile still broken — can't type "/" so manual entry fails; date picker/navigator also poor experience; needs full fix across app
 - [x] Mortgage rates in home purchase event may not be updating — verify live rate pull; should refresh when user creates event and display current avg rate as a note when event is opened
+- [x] Sentry setup — create Sentry project, set `NEXT_PUBLIC_SENTRY_DSN` on Railway (`app/error.tsx` already has `Sentry.captureException`; optional: `SENTRY_AUTH_TOKEN`/`SENTRY_ORG`/`SENTRY_PROJECT` for source maps)
+- [x] Home Purchase event should populate full mortgage details on auto-created accounts — set `originalAmount`, `loanTermMonths`, `loanStartDate`, `pairedAccountId`, and escrow fields from wizard inputs so AccountEditModal and MortgageBreakdownSummary work immediately
+- [x] Auto-pair Mortgage and Real Estate accounts when created together — set `pairedAccountId` on both when created via Account Setup wizard or Home Purchase event
+- [x] Event type buttons truncated in Add Event drawer — text cut to "Custo...", "Job Ch..." at drawer width; consider icons-only with tooltips or scrollable single-row layout
+- [x] Home Purchase form UX for second/vacation home — "Rent to Remove" is confusing for existing homeowners buying another property; add "second home" toggle or auto-detect from existing Real Estate accounts; also fix truncated labels in Ongoing Costs section ("Property Tax Rate", "Home Appreciation" cut off)
+- [x] Insurance unit mismatch between HomePurchaseForm (monthly) and AccountEditModal (annual) — standardize or auto-convert when transferring event data to accounts
+- [x] Onboarding: capture partner/spouse info in Quick Start
+- [x] Onboarding: add age/DOB field
+- [x] Onboarding: improve Expenses & Savings step clarity
+- [x] Onboarding: minor UX polish
+- [x] Post-onboarding guided experience
+- [x] Improve "FI Date: Not reached" first impression
+- [x] Expand event templates — add composite events for common life changes
+- [x] Chart default views — Outlays chart should default to stacked/breakout view
+- [x] Add "Real" vs "Nominal" tooltip
+- [x] Research (via Claude) what mortgage info a homeowner typically has access to
+- [x] Mobile-responsive layout — full mobile compatibility pass across all pages and components
+- [x] Interactive demo — hosted read-only instance with sample data
+- [x] Onboarding plan: show owner names on income/investment line items
+- [x] Onboarding: partner salary placeholder
+- [x] Onboarding: add childcare/daycare as default expense category when user has dependents
+- [x] Onboarding plan: progressive disclosure
+- [x] Onboarding: filter account types shown for dependents
+- [x] Onboarding accounts review: show net worth total at bottom of account list
+- [x] Mobile: surface "What's Next" checklist on mobile
+- [x] Dashboard: rename "Outlays" chart tab to "Expenses" or "Spending"
+- [x] Guided tour: expand from 3 to 5+ steps
+- [x] Standardize drawer width on mobile
+- [x] Standardize overlay theme
+- [x] Standardize form controls across overlays
+- [x] Add category list (fixed, discretionary, custom) when adding new expense
+- [x] Add upgrade prompt/link on onboarding screen where previous session cleared message appears
+- [x] Remove balance and account name prompts during onboarding if user can edit both on the following screen
+- [x] Add owner tag to accounts, consistent with Current Plan
+- [x] Auto-link investment and savings accounts by default
+- [x] Student loan and auto loan payments should auto-populate in plan when entered as accounts
+- [x] Show net worth total at bottom of accounts screen on mobile
+- [x] Equivalent rent icon should open popup showing actual numbers and logic used to calculate equivalent rent
+- [x] Auto-link 401k to savings plan line after onboarding
+- [x] Add tooltips to icon-only buttons across app
+- [x] Disable beforeunload dialog for guest/session-only users
+- [x] Home Purchase event fails to save for guest/session users
+- [x] Income Type dropdown on mobile clips last items
+- [x] Property Tax % in Account Edit Modal calculated against loan amount instead of home value
+- [x] Frequency toggle (Wk/Mo/Yr) converts existing values instead of changing entry mode
+- [x] Milestones badge shows "4" but 6 milestones are listed — badge count is wrong
+- [x] "Collectables" typo in account type selection during onboarding — should be "Collectibles"
+- [x] Mobile nav tabs are icon-only with no visible labels
+- [x] Fix Daily SQLite Backup GitHub Actions workflow failure
+- [x] Fix mobile layout — constrain to screen width, eliminate horizontal scroll/movement
+- [x] Bug: hitting Upgrade within profile view on mobile doesn't show checkout screen — blocked by profile modal
+- [x] Convert all drawers to full pages on mobile to eliminate bugginess
+- [x] Quick Start onboarding resets on last step when logged in as guest
+- [x] Current Plan still has slight horizontal scroll on mobile
+- [x] "Customize your accounts" screen broken on mobile — account names not visible, balances difficult to see
+- [x] Duplicate blue confirmation messages appearing when adding accounts in onboarding
+- [x] Ticker search on accounts/holdings page broken on mobile
+- [x] Hide link icon in onboarding if there's no budget item to link to
+- [x] Subtotals (investments and others) not updating when adding new account amounts
+- [x] "Create plan" starts at bottom of screen — should start at top
+- [x] Fundrise appearing in onboarding without being explicitly entered — investigate and remove
+- [x] Next button no longer shows as green after clicking first tutorial popup on mobile
+- [x] Account balances not saving from onboarding — critical fix needed [P1]
+- [x] Employer Match popup styling inconsistent with other popups on Current Plan page
+- [x] No option to clear "What's Next" to-do list on mobile; items don't auto-dismiss after completion
