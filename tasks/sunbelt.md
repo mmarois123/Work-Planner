@@ -32,6 +32,7 @@
 - [x] 🟠 Project Trailblazer: vendor SKU matching and pricing analysis across Sunbelt, SSI/Promod, and Titan (due: 2026-05-22)
   - [ ] Match up vendors from Sunbelt, SSI/Promod, and Titan (from Ranny email)
   - [ ] Send SKU comparison back to Jay — confirm non-comparable SKUs (mark as gray)
+- [ ] Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
@@ -62,6 +63,7 @@
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] Ask Jay: are Chassis and Frame parts unique to Chassis or shared across other sub-categories?
 - [ ] Grab better data from Jeff
+- [ ] FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
 
 ## Bob Review
 - [ ] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
