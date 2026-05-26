@@ -20,4 +20,4 @@
 - [ ] Build Claude chat interface (similar to work planner) for capturing complex nutrition entries to paste into Notch; explore alternative approaches to same problem
 
 ## Bugs / Issues
-- [ ] Streak logic: don't count current day unless already completed; streak breaks if previous day was missed
+- [x] Streak logic: don't count current day unless already completed; streak breaks if previous day was missed

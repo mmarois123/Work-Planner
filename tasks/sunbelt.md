@@ -76,3 +76,4 @@
 - [ ] AR Payment Report @delegated(Irina)
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] Build project roadmaps and structure for Irina on larger workstreams so she has something concrete to drive against
+- [ ] Include sales eliminations process into GL Transactions automatically @delegated(Irina)

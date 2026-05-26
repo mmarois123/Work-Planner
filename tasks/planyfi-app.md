@@ -24,7 +24,7 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
 - [ ] Add button that generates a generic LLM prompt — instructs any AI tool to review attached transactions and categorize them against the user's current plan (specific categories + sub-categories) in a format uploadable to Planyfi for plan comparison or updates
 - [ ] Review Fund Strategy and Roth Conversion Ladder — verify accuracy, defaults, and quality of explanations
-- [ ] Merge Quick Start and US Benchmarks onboarding paths — use optional fields so user can click through quickly or fill in their own info
+- [>] Merge Quick Start and US Benchmarks onboarding paths — use optional fields so user can click through quickly or fill in their own info
 - [ ] Research available US datasets for household income, saving/investing, and spending
 - [ ] Add help/info icons to each drawer/page with in-depth explanations; explore on-screen tutorial as well
 
@@ -53,3 +53,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Confidence band — fan chart with p10/p50/p90; Phase 1: deterministic ±1.5σ; Phase 2: Monte Carlo [M effort, High leverage]
 - [ ] Data export (JSON) for Premium — per-user server-side export endpoint — DEFERRED, not needed for beta
 - [ ] Add CSV import error handling in TransactionsDrawer — catch malformed files and show user feedback — DEFERRED, low priority
+- [ ] Zillow ZORI/ZHVI by ZIP code — download monthly CSV (~50MB), serve via API route for ZIP-level rent/home value benchmarks in onboarding and rent-vs-buy calculator [M effort, High leverage] — POST-BETA
+- [ ] FRED API integration — pull live savings rate (PSAVERT), 30-yr mortgage rate, PCE inflation at runtime; cache daily with hardcoded fallbacks [M effort, Med leverage] — POST-BETA
+- [ ] Census ACS API — ZIP-level income percentile comparisons ("you earn more than X% of households in your ZIP"); free REST API with caching [M effort, Med leverage] — POST-BETA
+- [ ] SSA benefit formula — implement PIA calculation (90%/32%/15% of AIME at bend points) for Social Security income in retirement projections; bend points update annually [M effort, High leverage] — POST-BETA
