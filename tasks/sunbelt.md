@@ -63,7 +63,7 @@
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] Ask Jay: are Chassis and Frame parts unique to Chassis or shared across other sub-categories?
 - [ ] Grab better data from Jeff
-- [ ] FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
+- [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
 
 ## Bob Review
 - [ ] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
