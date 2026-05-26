@@ -32,7 +32,7 @@
 - [x] 🟠 Project Trailblazer: vendor SKU matching and pricing analysis across Sunbelt, SSI/Promod, and Titan (due: 2026-05-22)
   - [ ] Match up vendors from Sunbelt, SSI/Promod, and Titan (from Ranny email)
   - [ ] Send SKU comparison back to Jay — confirm non-comparable SKUs (mark as gray)
-- [ ] Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
+- [ ] 🟠 Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
