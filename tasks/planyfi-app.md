@@ -27,6 +27,11 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [>] Merge Quick Start and US Benchmarks onboarding paths — use optional fields so user can click through quickly or fill in their own info
 - [ ] Research available US datasets for household income, saving/investing, and spending
 - [ ] Add help/info icons to each drawer/page with in-depth explanations; explore on-screen tutorial as well
+- [ ] Remove High Yield Savings account type — redundant alongside Savings
+- [ ] Fixed and discretionary expense totals should default to match itemized values
+- [ ] Add "Homeowner?" checkbox to Quick Start onboarding
+- [ ] Add insights to Current Plan page: hover/tap to see typical US household spend by category with user comparison; show impact of reducing expenses or increasing contributions on net worth
+- [ ] Reframe Current Plan as standalone input feature; Financial Planner shows the output/results — make the distinction clearer in UX
 
 ### Design Review (Apr 2026)
 Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.
@@ -46,6 +51,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 
 ## Bugs / Issues
 - [ ] Credit card UI broken/poor on mobile; replace with "Add credit card" flow similar to adding holdings, then prompt for details
+- [ ] Changing state in Quick Start onboarding doesn't update income or other benchmark values as expected
 
 ## Parking Lot
 - [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]
