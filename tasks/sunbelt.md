@@ -33,6 +33,9 @@
   - [ ] Match up vendors from Sunbelt, SSI/Promod, and Titan (from Ranny email)
   - [ ] Send SKU comparison back to Jay — confirm non-comparable SKUs (mark as gray)
 - [ ] 🟠 Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
+- [ ] Trailblazer: analyze vendor overlap between matched vs unmatched SKUs
+- [ ] Trailblazer: explore value engineering — can we quantify savings?
+- [ ] Trailblazer: add % of matched spend saved for Trailblazer vs Sunbelt; show Sunbelt's better pricing on just the Trailblazer matched spend
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
