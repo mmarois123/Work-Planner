@@ -13,6 +13,7 @@
 - [ ] 🟠 FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
   - [x] Custom % (Act + FC) row added to P&L, COGS-Mat, COGS-Lab drill-ins (invoice mix actualized / scheduled-production mix forward; uses model Custom % measures) — refreshed + deployed to OneDrive
   - [x] Created model measures: Weighted Factor Difficulty (base) + Backlog / Scheduled Production / Ordered / Invoiced variants ($-weighted, blanks ignored like Weighted Factor) — in _Measures, localhost
+  - [x] Added Factor Difficulty (Act + FC) row beneath Custom % on P&L, COGS-Mat, COGS-Lab; added both Custom % + Factor Difficulty to Revenue drill-in. Real 0 renders 0%/0.00, no data renders — . Refreshed + deployed.
 
 
 ## Reporting
