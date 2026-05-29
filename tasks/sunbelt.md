@@ -11,6 +11,7 @@
 - [ ] Create Daily cash balances (book cash) plotted in a graph
 - [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [ ] 🟠 FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
+  - [x] Fleet % (Act + FC) row added to P&L, COGS-Mat, COGS-Lab drill-ins (invoice mix actualized / scheduled-production mix forward; uses model Custom/Fleet measures) — code + docs done, pending `/fc-app-refresh` to repopulate cache + deploy
 
 
 ## Reporting
