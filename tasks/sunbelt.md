@@ -66,7 +66,7 @@
 - [x] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
   - [ ] Start with Project Ramp Up at Whitley South
   - [ ] Evaluate bringing over UA factors for all remaining backlog projects
-- [ ] Review with Bob: factor impact from baseline
+- [x] Review with Bob: factor impact from baseline
 - [ ] Ask Bob about labor and OH % for WIP entry
 
 
