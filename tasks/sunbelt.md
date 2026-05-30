@@ -9,7 +9,7 @@
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Fix Payroll/Bonus section
 - [ ] Create Daily cash balances (book cash) plotted in a graph
-- [ ] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
+- [x] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
 - [x] 🟠 FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
   - [x] Custom % (Act + FC) row added to P&L, COGS-Mat, COGS-Lab drill-ins (invoice mix actualized / scheduled-production mix forward; uses model Custom % measures) — refreshed + deployed to OneDrive
   - [x] Created model measures: Weighted Factor Difficulty (base) + Backlog / Scheduled Production / Ordered / Invoiced variants ($-weighted, blanks ignored like Weighted Factor) — in _Measures, localhost
