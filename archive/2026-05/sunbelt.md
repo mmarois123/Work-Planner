@@ -37,3 +37,15 @@
 
 ## Bob Review
 - [x] Propose labor utilization % targets to Bob based on budget
+
+## Analysis
+- [x] 🟠 Analyze pricing changes/impact at Evergreen: compare orders quoted in Praxis YTD April vs orders quoted in 2H 2025 (due: 2026-05-22)
+- [x] 🟠 Project Trailblazer: vendor SKU matching and pricing analysis across Sunbelt, SSI/Promod, and Titan (due: 2026-05-22)
+  - [ ] Match up vendors from Sunbelt, SSI/Promod, and Titan (from Ranny email)
+  - [ ] Send SKU comparison back to Jay — confirm non-comparable SKUs (mark as gray)
+- [x] Trailblazer: analyze vendor overlap between matched vs unmatched SKUs
+- [x] Trailblazer: explore value engineering — can we quantify savings?
+- [x] Trailblazer: add % of matched spend saved for Trailblazer vs Sunbelt; show Sunbelt's better pricing on just the Trailblazer matched spend
+
+## General
+- [x] Grab better data from Jeff

@@ -24,12 +24,8 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
 - [ ] Add button that generates a generic LLM prompt — instructs any AI tool to review attached transactions and categorize them against the user's current plan (specific categories + sub-categories) in a format uploadable to Planyfi for plan comparison or updates
 - [ ] Review Fund Strategy and Roth Conversion Ladder — verify accuracy, defaults, and quality of explanations
-- [x] Merge Quick Start and US Benchmarks onboarding paths — use optional fields so user can click through quickly or fill in their own info
 - [ ] Research available US datasets for household income, saving/investing, and spending
 - [ ] Add help/info icons to each drawer/page with in-depth explanations; explore on-screen tutorial as well
-- [x] Remove High Yield Savings account type — redundant alongside Savings
-- [x] Fixed and discretionary expense totals should default to match itemized values
-- [x] Add "Homeowner?" checkbox to Quick Start onboarding
 - [ ] Add insights to Current Plan page: hover/tap to see typical US household spend by category with user comparison; show impact of reducing expenses or increasing contributions on net worth
 - [ ] Reframe Current Plan as standalone input feature; Financial Planner shows the output/results — make the distinction clearer in UX
 
@@ -51,7 +47,6 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 
 ## Bugs / Issues
 - [ ] Credit card UI broken/poor on mobile; replace with "Add credit card" flow similar to adding holdings, then prompt for details
-- [x] Changing state in Quick Start onboarding doesn't update income or other benchmark values as expected
 
 ## Parking Lot
 - [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]

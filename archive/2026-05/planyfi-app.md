@@ -107,3 +107,12 @@
 - [x] Account balances not saving from onboarding — critical fix needed [P1]
 - [x] Employer Match popup styling inconsistent with other popups on Current Plan page
 - [x] No option to clear "What's Next" to-do list on mobile; items don't auto-dismiss after completion
+
+## Product
+- [x] Merge Quick Start and US Benchmarks onboarding paths — use optional fields so user can click through quickly or fill in their own info
+- [x] Remove High Yield Savings account type — redundant alongside Savings
+- [x] Fixed and discretionary expense totals should default to match itemized values
+- [x] Add "Homeowner?" checkbox to Quick Start onboarding
+
+## Bugs / Issues
+- [x] Changing state in Quick Start onboarding doesn't update income or other benchmark values as expected

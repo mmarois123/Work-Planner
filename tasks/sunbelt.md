@@ -31,14 +31,7 @@
 - [ ] Build Plant Scorecard PDFs per plant: current data, historical trends, and qualitative info (project types, etc.) — per Bob's concept
 
 ## Analysis
-- [x] 🟠 Analyze pricing changes/impact at Evergreen: compare orders quoted in Praxis YTD April vs orders quoted in 2H 2025 (due: 2026-05-22)
-- [x] 🟠 Project Trailblazer: vendor SKU matching and pricing analysis across Sunbelt, SSI/Promod, and Titan (due: 2026-05-22)
-  - [ ] Match up vendors from Sunbelt, SSI/Promod, and Titan (from Ranny email)
-  - [ ] Send SKU comparison back to Jay — confirm non-comparable SKUs (mark as gray)
 - [ ] 🟠 Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
-- [x] Trailblazer: analyze vendor overlap between matched vs unmatched SKUs
-- [x] Trailblazer: explore value engineering — can we quantify savings?
-- [x] Trailblazer: add % of matched spend saved for Trailblazer vs Sunbelt; show Sunbelt's better pricing on just the Trailblazer matched spend
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
@@ -68,7 +61,6 @@
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] Ask Jay: are Chassis and Frame parts unique to Chassis or shared across other sub-categories?
-- [x] Grab better data from Jeff
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
 
 ## Bob Review
