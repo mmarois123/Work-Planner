@@ -1,7 +1,7 @@
 # Sunbelt FP&A
 
 ## BoD
-- [ ] BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
+- [ ] 🟠 BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
 
 ## Forecasting
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
