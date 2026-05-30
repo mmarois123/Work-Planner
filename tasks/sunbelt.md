@@ -63,7 +63,7 @@
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
 
 ## Bob Review
-- [ ] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
+- [x] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
   - [ ] Start with Project Ramp Up at Whitley South
   - [ ] Evaluate bringing over UA factors for all remaining backlog projects
 - [ ] Review with Bob: factor impact from baseline
