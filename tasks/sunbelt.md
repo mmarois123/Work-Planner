@@ -60,7 +60,6 @@
 - [ ] 🟠 Add recurring tasks for sunbelt to work-planner
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
-- [ ] Ask Jay: are Chassis and Frame parts unique to Chassis or shared across other sub-categories?
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
 
 ## Bob Review
