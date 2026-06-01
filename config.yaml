@@ -3,7 +3,7 @@
 areas:
   sunbelt:
     file: sunbelt.md
-    sections: [Recurring (FP&A SOP), BoD, 13 Week Cash Flow, Reporting, Analysis, General, Bob Review, Irina (Direct Report)]
+    sections: [BoD, 13 Week Cash Flow, Reporting, Analysis, General, Bob Review, Irina (Direct Report), Recurring (FP&A SOP)]
   app:
     file: planyfi-app.md
     sections: [Engineering, Product, Bugs / Issues]

@@ -1,42 +1,5 @@
 # Sunbelt FP&A
 
-## Recurring (FP&A SOP)
-- Next BoD meeting: (set date — drives @bod-2 tasks)
-
-### Weekly
-- [ ] Praxis Refresh (recur: weekly@Mon) (due: 2026-06-01)
-- [ ] Labor Hours (recur: weekly@Mon) (due: 2026-06-01)
-- [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
-  - depends on Praxis Refresh
-  - dist: Ron
-- [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
-  - dist: Bob, LJ
-
-### Monthly
-- [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
-- [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
-- [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
-  - dist: Demi, Wendy
-- [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
-  - dist: Bob, Wendy, Robert
-- [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
-  - dist: Sales VPs, Ron, Bob, VPs, Mfg Directors, Robert
-- [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
-- [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
-  - dist: Ron, Bob
-- [ ] Monthly BoD Presentation (recur: monthly@bod-2)
-  - dist: Bob, BoD
-  - due not set — set the "Next BoD meeting" anchor above
-- [ ] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
-  - dist: Bob
-
-### Quarterly (Mar / Jun / Sep / Dec)
-- [ ] Quarterly Bank Financials (recur: quarterly@day21) (due: 2026-06-21)
-  - dist: Bob
-- [ ] Quarterly BoD Presentation (recur: quarterly@bod-2)
-  - dist: Bob, BoD
-  - due not set — set the "Next BoD meeting" anchor above
-
 ## BoD
 - [ ] 🟠 BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
 
@@ -113,3 +76,38 @@
 - [ ] Fabric Analytics Engineer certification @delegated(Irina)
 - [ ] Build project roadmaps and structure for Irina on larger workstreams so she has something concrete to drive against
 - [ ] Include sales eliminations process into GL Transactions automatically @delegated(Irina)
+
+## Recurring (FP&A SOP)
+- Next BoD meeting: (set date — drives @bod-2 tasks)
+
+### Weekly
+- [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
+  - depends on Praxis Refresh
+  - dist: Ron
+- [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
+  - dist: Bob, LJ
+
+### Monthly
+- [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
+- [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
+- [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
+  - dist: Demi, Wendy
+- [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
+  - dist: Bob, Wendy, Robert
+- [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
+  - dist: Sales VPs, Ron, Bob, VPs, Mfg Directors, Robert
+- [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
+- [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
+  - dist: Ron, Bob
+- [ ] Monthly BoD Presentation (recur: monthly@bod-2)
+  - dist: Bob, BoD
+  - due not set — set the "Next BoD meeting" anchor above
+- [ ] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
+  - dist: Bob
+
+### Quarterly (Mar / Jun / Sep / Dec)
+- [ ] Quarterly Bank Financials (recur: quarterly@day21) (due: 2026-06-21)
+  - dist: Bob
+- [ ] Quarterly BoD Presentation (recur: quarterly@bod-2)
+  - dist: Bob, BoD
+  - due not set — set the "Next BoD meeting" anchor above
