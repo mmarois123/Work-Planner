@@ -414,7 +414,7 @@
 
     /* Date picker popup */
     .date-picker-popup {
-      position: absolute;
+      position: fixed;
       z-index: 100;
       background: var(--bg);
       border: 1px solid var(--task-border);
@@ -1304,8 +1304,8 @@ function showDatePicker(area, lineIdx, currentDue, anchorEl) {
   popup.style.top = top + 'px';
   popup.style.left = left + 'px';
 
-  // Auto-focus the input
-  setTimeout(() => input.focus(), 0);
+  // Auto-focus the input (preventScroll so the page doesn't jump)
+  setTimeout(() => input.focus({ preventScroll: true }), 0);
 
   // Close on outside click
   setTimeout(() => {
