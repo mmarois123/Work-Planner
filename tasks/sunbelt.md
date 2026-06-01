@@ -97,6 +97,6 @@
 - [ ] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
 
 ### Quarterly (Mar / Jun / Sep / Dec)
-- [ ] Quarterly Bank Financials (recur: quarterly@day21) (due: 2026-06-21)
+- [ ] Quarterly Bank Financials (recur: quarterly@day21) (due: 2026-07-21)
 - [ ] Quarterly BoD Presentation (recur: quarterly@bod-2)
   - due not set — set the "Next BoD meeting" anchor above
