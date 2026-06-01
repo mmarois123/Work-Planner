@@ -1,5 +1,42 @@
 # Sunbelt FP&A
 
+## Recurring (FP&A SOP)
+- Next BoD meeting: (set date — drives @bod-2 tasks)
+
+### Weekly
+- [ ] Praxis Refresh (recur: weekly@Mon) (due: 2026-06-01)
+- [ ] Labor Hours (recur: weekly@Mon) (due: 2026-06-01)
+- [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
+  - depends on Praxis Refresh
+  - dist: Ron
+- [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
+  - dist: Bob, LJ
+
+### Monthly
+- [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
+- [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
+- [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
+  - dist: Demi, Wendy
+- [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
+  - dist: Bob, Wendy, Robert
+- [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
+  - dist: Sales VPs, Ron, Bob, VPs, Mfg Directors, Robert
+- [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
+- [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
+  - dist: Ron, Bob
+- [ ] Monthly BoD Presentation (recur: monthly@bod-2)
+  - dist: Bob, BoD
+  - due not set — set the "Next BoD meeting" anchor above
+- [ ] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
+  - dist: Bob
+
+### Quarterly (Mar / Jun / Sep / Dec)
+- [ ] Quarterly Bank Financials (recur: quarterly@day21) (due: 2026-06-21)
+  - dist: Bob
+- [ ] Quarterly BoD Presentation (recur: quarterly@bod-2)
+  - dist: Bob, BoD
+  - due not set — set the "Next BoD meeting" anchor above
+
 ## BoD
 - [ ] 🟠 BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
 
@@ -57,7 +94,7 @@
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
-- [ ] 🟠 Add recurring tasks for sunbelt to work-planner
+- [x] 🟠 Add recurring tasks for sunbelt to work-planner
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.

@@ -15,6 +15,16 @@ git -C "$(git rev-parse --show-toplevel)" pull --ff-only 2>/dev/null || true
 
 This ensures task files are up to date if another machine pushed changes. Silently skip if offline or if there are conflicts.
 
+## Roll recurring tasks forward (run first)
+
+Before summarizing, run the recurring-task roll-forward described in `.claude/skills/recur/SKILL.md`
+against `tasks/sunbelt.md`: for any completed `[x]` recurring task (carrying a `(recur:)` token) with no
+open instance, seed the next occurrence with a computed due date; cascade the close milestone; and refresh
+`@bod-2` dates from the "Next BoD meeting" anchor. If the BoD anchor is blank/stale or a close-dependent
+task has no due date, surface it as a flag in the briefing below. This keeps recurring due dates current
+before the daily view. (When run as part of `/morning-summary`, do the roll-forward inline rather than
+shelling out to a separate skill.)
+
 ## Area routing based on argument
 
 Read only the relevant task files based on the ARGUMENTS passed:

@@ -315,6 +315,7 @@
     .badge-p2 { background: var(--badge-p2-bg); color: var(--badge-p2-text); border-color: var(--badge-p2-border); }
     .badge-p3 { background: var(--badge-p3-bg); color: var(--badge-p3-text); border-color: var(--badge-p3-border); }
     .badge-delegated { background: var(--badge-del-bg); color: var(--badge-del-text); border-color: var(--badge-del-border); font-size: 9px; padding: 1px 5px; border-radius: 2px; font-weight: 600; }
+    .badge-recur { background: #e8f3ec; color: #2f5d3e; border-color: #b0d4bc; text-transform: capitalize; }
     .due {
       font-size: 9px;
       font-weight: 700;
@@ -775,7 +776,12 @@ function parseLine(line) {
     const delegated = delMatch ? delMatch[1] : null;
     if (delMatch) rest = rest.replace(/\s*@delegated\([^)]+\)\s*/, ' ').trim();
 
-    return { type: 'task', indent, checked, highlighted, priority, due, delegated, text: rest.trim() };
+    // (recur: <cadence>@<anchor>) — show only the cadence word as a badge
+    const recurMatch = rest.match(/\(recur:\s*([^)]+)\)/);
+    const recur = recurMatch ? recurMatch[1].trim().split('@')[0] : null;
+    if (recurMatch) rest = rest.replace(/\s*\(recur:\s*[^)]+\)\s*/, ' ').trim();
+
+    return { type: 'task', indent, checked, highlighted, priority, due, delegated, recur, text: rest.trim() };
   }
 
   const headMatch = line.match(/^(#{1,3}) (.+)$/);
@@ -1088,9 +1094,15 @@ function buildTaskEl(p, lineIdx, area, showAreaTag) {
   textLine.appendChild(textSpan);
   body.appendChild(textLine);
 
-  if (p.priority || p.due || p.delegated) {
+  if (p.priority || p.due || p.delegated || p.recur) {
     const meta = document.createElement('div');
     meta.className = 'task-meta';
+    if (p.recur) {
+      const r = document.createElement('span');
+      r.className = 'badge badge-recur';
+      r.textContent = '↻ ' + p.recur;
+      meta.appendChild(r);
+    }
     if (p.priority) {
       const b = document.createElement('span');
       b.className = `badge badge-${p.priority.toLowerCase()}`;

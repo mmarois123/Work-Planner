@@ -44,6 +44,15 @@ Where `{filter_suffix}` is `/{area}` if a filter was applied, otherwise empty.
 
 Uses `--new-window` to force a fresh browser window. Falls back to `start` if neither Chrome nor Edge is found at the standard paths.
 
+## Step 2.5 — Roll recurring tasks forward
+
+After reading the Sunbelt task file, run the recurring-task roll-forward from
+`.claude/skills/recur/SKILL.md` against `tasks/sunbelt.md`: seed the next occurrence of any completed
+recurring task (no open instance), cascade the close milestone, and refresh `@bod-2` due dates from the
+"Next BoD meeting" anchor. Do this inline before rendering the summary so the browser view shows current
+due dates. If the BoD anchor is blank/stale or a close-dependent task lacks a due date, note it in the
+chat summary. Commit/push only if the roll-forward actually changed the file.
+
 ## Step 3 — Print a terse chat summary (while browser opens)
 
 Read the relevant task files in **parallel with Step 2** so you can summarize:
