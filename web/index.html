@@ -1272,11 +1272,16 @@ function showDatePicker(area, lineIdx, currentDue, anchorEl) {
   const input = document.createElement('input');
   input.type = 'date';
   if (currentDue) input.value = currentDue;
-  input.onchange = () => {
-    if (input.value) {
-      setDueDate(area, lineIdx, input.value);
-      closeDatePicker();
-    }
+
+  // Commit only on a deliberate action (Enter / click away), never on the
+  // intermediate "change" events a native date input fires while typing the year.
+  const commit = () => {
+    if (input.value) setDueDate(area, lineIdx, input.value);
+    closeDatePicker();
+  };
+  input.onkeydown = (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+    else if (e.key === 'Escape') { e.preventDefault(); closeDatePicker(); }
   };
   popup.appendChild(input);
 
@@ -1307,11 +1312,11 @@ function showDatePicker(area, lineIdx, currentDue, anchorEl) {
   // Auto-focus the input (preventScroll so the page doesn't jump)
   setTimeout(() => input.focus({ preventScroll: true }), 0);
 
-  // Close on outside click
+  // Commit + close on outside click
   setTimeout(() => {
     document.addEventListener('mousedown', function handler(e) {
       if (!popup.contains(e.target)) {
-        closeDatePicker();
+        commit();
         document.removeEventListener('mousedown', handler);
       }
     });
