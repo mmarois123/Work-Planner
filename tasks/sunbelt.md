@@ -32,6 +32,7 @@
 
 ## Analysis
 - [x] 🟠 Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
+- [ ] Identify which Whitley invoice rows are actual modules vs other invoice types; remove non-module rows from analysis
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
@@ -82,11 +83,15 @@
 
 ### Weekly
 - [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
+- [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-08)
 - [x] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
+- [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-09)
 
 ### Monthly
 - [x] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
+- [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-07-02)
 - [x] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
+- [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
