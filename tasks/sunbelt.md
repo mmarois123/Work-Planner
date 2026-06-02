@@ -82,11 +82,10 @@
 
 ### Weekly
 - [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
-- [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-08)
 - [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
 
 ### Monthly
-- [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
+- [x] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
