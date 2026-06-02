@@ -81,7 +81,7 @@
 - Next BoD meeting: (set date — drives @bod-2 tasks)
 
 ### Weekly
-- [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
+- [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
 - [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
 
 ### Monthly
