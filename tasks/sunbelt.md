@@ -82,7 +82,7 @@
 
 ### Weekly
 - [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
-- [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
+- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
 
 ### Monthly
 - [x] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
