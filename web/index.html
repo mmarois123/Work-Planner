@@ -475,6 +475,7 @@
     .today-block { margin-bottom: 24px; }
     .today-block-overdue .section-heading { color: var(--accent-today); border-bottom-color: var(--badge-p1-border); }
     .today-block-priorities .section-heading { color: var(--text-sub); border-bottom-color: var(--badge-p2-border); }
+    .today-block-duesoon .section-heading { color: var(--accent-today); border-bottom-color: var(--badge-p2-border); }
     .today-block-completed .section-heading { color: var(--tag-app-text); border-bottom-color: var(--tag-app-bg); }
     .today-block-delegated .section-heading { color: var(--badge-del-text); border-bottom-color: var(--badge-del-border); }
     .area-header {
@@ -965,6 +966,14 @@ function renderToday() {
   const overdue = allTasks.filter(t => !t.checked && isOverdue(t.due));
   const overdueBlock = buildBlock(`\u26A0 Overdue \u00B7 ${overdue.length}`, overdue, 'today-block-overdue', true);
   if (overdueBlock) content.appendChild(overdueBlock);
+
+  // Due soon \u2014 due today or tomorrow (not already overdue)
+  const todayStr = today.toISOString().slice(0, 10);
+  const tmrwStr = new Date(today.getTime() + 86400000).toISOString().slice(0, 10);
+  const dueSoon = allTasks.filter(t => !t.checked && t.due && t.due >= todayStr && t.due <= tmrwStr);
+  dueSoon.sort((a, b) => a.due.localeCompare(b.due));
+  const dueSoonBlock = buildBlock(`\u23F0 Due soon \u00B7 ${dueSoon.length}`, dueSoon, 'today-block-duesoon', true);
+  if (dueSoonBlock) content.appendChild(dueSoonBlock);
 
   // Priorities
   const priorities = allTasks.filter(t =>
