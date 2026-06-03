@@ -32,7 +32,7 @@
 
 ## Analysis
 - [x] 🟠 Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
-- [ ] Identify which Whitley invoice rows are actual modules vs other invoice types; remove non-module rows from analysis
+- [x] Identify which Whitley invoice rows are actual modules vs other invoice types; remove non-module rows from analysis
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
