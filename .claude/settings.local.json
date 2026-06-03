@@ -10,7 +10,8 @@
       "WebSearch",
       "WebFetch",
       "Agent",
-      "Skill"
+      "Skill",
+      "mcp__claude_ai_Gmail__search_threads"
     ]
   }
 }

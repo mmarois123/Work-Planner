@@ -17,16 +17,16 @@ Business model: Free tier is session-only (full feature access, no persistence).
 - [ ] Home Purchase — zip code lookup for median home price, county-level property tax, flood/wind insurance zones
 - [ ] Rent vs. Buy — pull property data by address (Zillow/Redfin API or manual entry)
 - [ ] Rent vs. Buy — surface as linked tool inside Scenario Planner HOME_PURCHASE event and Plan
-- [ ] Integrate US census data more deeply into app
-- [ ] Add view mode for filtering/browsing different demographics
+- [>] Integrate US census data more deeply into app
+- [>] Add view mode for filtering/browsing different demographics
 - [ ] 🟠 Send beta version to Zach, Julie, AJ, James, and others (blocked on: session-only free tier + backups + error monitoring)
 - [ ] Add recurring transactions to accounts/holdings — auto-approximate periodic additions (weekly/monthly) without manual entry; show Estimated Balance vs Latest Balance (consistent with checking/savings approach)
 - [ ] Scenario Comparison feature: ability to hide/adjust Current Plan, Events, Milestones, Market Assumptions; full plan summary/net worth for a given year; line chart plotting net worth, income, expenses for up to 3 scenarios
 - [ ] Add button that generates a generic LLM prompt — instructs any AI tool to review attached transactions and categorize them against the user's current plan (specific categories + sub-categories) in a format uploadable to Planyfi for plan comparison or updates
 - [ ] Review Fund Strategy and Roth Conversion Ladder — verify accuracy, defaults, and quality of explanations
-- [ ] Research available US datasets for household income, saving/investing, and spending
+- [x] Research available US datasets for household income, saving/investing, and spending — delivered themed HTML report at design-mockups/us-data-report.html
 - [ ] Add help/info icons to each drawer/page with in-depth explanations; explore on-screen tutorial as well
-- [ ] Add insights to Current Plan page: hover/tap to see typical US household spend by category with user comparison; show impact of reducing expenses or increasing contributions on net worth
+- [>] Add insights to Current Plan page: hover/tap to see typical US household spend by category with user comparison; show impact of reducing expenses or increasing contributions on net worth
 - [ ] Reframe Current Plan as standalone input feature; Financial Planner shows the output/results — make the distinction clearer in UX
 - [ ] Add multiple lines to net worth chart based on different market performance assumptions (e.g. 6% vs 7%)
 
@@ -47,7 +47,8 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 ## Engineering (New User Experience)
 
 ## Bugs / Issues
-- [ ] Credit card UI broken/poor on mobile; replace with "Add credit card" flow similar to adding holdings, then prompt for details
+- [>] Credit card UI broken/poor on mobile; replace with "Add credit card" flow similar to adding holdings, then prompt for details
+- [x] Home Purchase event summary renders `"$NaN home, undefined% down, undefined% rate, 3% appreciation"` in the Future Events drawer card. Seen on a fresh Quick Setup demo plan (seeded HOME_PURCHASE event) — home price / down payment / rate fields come through undefined when the event is auto-seeded rather than user-entered. Likely the seeded composite payload is missing fields the card summary reads, or the summary doesn't guard against undefined.
 
 ## Parking Lot
 - [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]
