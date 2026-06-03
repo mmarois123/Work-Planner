@@ -14,7 +14,6 @@
   - [x] Custom % (Act + FC) row added to P&L, COGS-Mat, COGS-Lab drill-ins (invoice mix actualized / scheduled-production mix forward; uses model Custom % measures) — refreshed + deployed to OneDrive
   - [x] Created model measures: Weighted Factor Difficulty (base) + Backlog / Scheduled Production / Ordered / Invoiced variants ($-weighted, blanks ignored like Weighted Factor) — in _Measures, localhost
   - [x] Added Factor Difficulty (Act + FC) row beneath Custom % on P&L, COGS-Mat, COGS-Lab; added both Custom % + Factor Difficulty to Revenue drill-in. Real 0 renders 0%/0.00, no data renders — . Refreshed + deployed.
-- [ ] Add $218K long-term debt payment to next week's 13WCF (week ending 7/3)
 
 
 ## Reporting
@@ -63,8 +62,6 @@
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
-- [ ] Follow up on RAD Technology collections ($1.2m, 61+ days aged)
-- [ ] Update safety data collection template to monthly cadence
 
 ## Bob Review
 - [x] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
@@ -96,7 +93,7 @@
 - [x] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
-- [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
+- [x] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
 - [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
 - [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
