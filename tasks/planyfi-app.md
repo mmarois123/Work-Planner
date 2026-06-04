@@ -48,6 +48,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 
 ## Bugs / Issues
 - [>] Credit card UI broken/poor on mobile; replace with "Add credit card" flow similar to adding holdings, then prompt for details
+- [ ] Fix input boxes for fixed and discretionary expenses on mobile
 - [x] Home Purchase event summary renders `"$NaN home, undefined% down, undefined% rate, 3% appreciation"` in the Future Events drawer card. Seen on a fresh Quick Setup demo plan (seeded HOME_PURCHASE event) — home price / down payment / rate fields come through undefined when the event is auto-seeded rather than user-entered. Likely the seeded composite payload is missing fields the card summary reads, or the summary doesn't guard against undefined.
 
 ## Parking Lot
