@@ -83,7 +83,7 @@
 - [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-07-02)
-- [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
+- [x] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
 - [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
 - [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
 - [ ] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
