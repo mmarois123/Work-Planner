@@ -9,11 +9,6 @@
   - [ ] Add insurance annual outflow schedule (Jun/Jul) to 13WCF
 - [ ] Fix Payroll/Bonus section
 - [ ] Create Daily cash balances (book cash) plotted in a graph
-- [x] Analyze overhead components vs revenue — identify fixed vs variable; build forecast based on revenue or other drivers; assess relationship to factor
-- [x] 🟠 FC App: create detailed COGS/materials view — include factor effect, buffer effect, fleet %, etc.
-  - [x] Custom % (Act + FC) row added to P&L, COGS-Mat, COGS-Lab drill-ins (invoice mix actualized / scheduled-production mix forward; uses model Custom % measures) — refreshed + deployed to OneDrive
-  - [x] Created model measures: Weighted Factor Difficulty (base) + Backlog / Scheduled Production / Ordered / Invoiced variants ($-weighted, blanks ignored like Weighted Factor) — in _Measures, localhost
-  - [x] Added Factor Difficulty (Act + FC) row beneath Custom % on P&L, COGS-Mat, COGS-Lab; added both Custom % + Factor Difficulty to Revenue drill-in. Real 0 renders 0%/0.00, no data renders — . Refreshed + deployed.
 
 
 ## Reporting
@@ -31,8 +26,6 @@
 - [ ] Build Plant Scorecard PDFs per plant: current data, historical trends, and qualitative info (project types, etc.) — per Bob's concept
 
 ## Analysis
-- [x] 🟠 Analyze Whitley (Evergreen + rest) orders and invoices over time — track price, price/mod, and factors; determine if pricing shifted from 2024–1H 2025 into 2H 2025 prior to Praxis implementation
-- [x] Identify which Whitley invoice rows are actual modules vs other invoice types; remove non-module rows from analysis
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
@@ -58,7 +51,6 @@
 - [ ] Add Britco, C&B, NWBS detailed account information
 - [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
-- [x] 🟠 Add recurring tasks for sunbelt to work-planner
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
@@ -67,10 +59,8 @@
 - [ ] Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
 
 ## Bob Review
-- [x] Pull UA estimated factors into PRAXIS (w/ Jay) — post Board Call
-  - [ ] Start with Project Ramp Up at Whitley South
-  - [ ] Evaluate bringing over UA factors for all remaining backlog projects
-- [x] Review with Bob: factor impact from baseline
+- [ ] Start with Project Ramp Up at Whitley South
+- [ ] Evaluate bringing over UA factors for all remaining backlog projects
 - [ ] Ask Bob about labor and OH % for WIP entry
 
 
@@ -85,18 +75,14 @@
 - Next BoD meeting: (set date — drives @bod-2 tasks)
 
 ### Weekly
-- [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-01)
 - [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-08)
-- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-02)
 - [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-09)
 
 ### Monthly
-- [x] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-07-02)
-- [x] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
-- [x] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
+- [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
 - [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
 - [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
