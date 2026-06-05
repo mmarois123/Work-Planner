@@ -59,7 +59,7 @@
 - [ ] Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
 
 ## Bob Review
-- [ ] Start with Project Ramp Up at Whitley South
+- [x] Start with Project Ramp Up at Whitley South
 - [ ] Evaluate bringing over UA factors for all remaining backlog projects
 - [ ] Ask Bob about labor and OH % for WIP entry
 
