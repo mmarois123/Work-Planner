@@ -60,7 +60,7 @@
 
 ## Bob Review
 - [x] Start with Project Ramp Up at Whitley South
-- [ ] Evaluate bringing over UA factors for all remaining backlog projects
+- [x] Evaluate bringing over UA factors for all remaining backlog projects
 - [ ] Ask Bob about labor and OH % for WIP entry
 
 
