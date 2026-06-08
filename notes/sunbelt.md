@@ -88,6 +88,18 @@ Granularity options to explore: Per plant / Per customer / Per end user (market)
 - Scheduling
 - Safety
 
+### Labor / Headcount Reporting Requirements
+
+**Devin's needs:** headcount, labor hours, labor cost.
+
+**GM needs:** daily hours output.
+
+**Devin + team needs:** weekly hours output.
+
+**Data gap:** contract/temp hours will not be in Paylocity — need to integrate individually:
+- Britco: TCP
+- Others: through temp agencies
+
 ## Analysis
 
 ### SKU Pricing Hypothesis — Estimating vs. Actual Purchasing
