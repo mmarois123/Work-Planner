@@ -85,7 +85,7 @@
 - [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-07-02)
 - [x] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
 - [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-07-03)
-- [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
+- [x] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
 - [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
 - [ ] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
   - due not set — set the "Next BoD meeting" anchor above
