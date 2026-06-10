@@ -82,7 +82,6 @@
 ### Monthly
 - [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-07-02)
-- [ ] Monthly WIP (recur: monthly@day2) (due: 2026-06-02)
 - [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-07-02)
 - [x] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
 - [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-07-03)
