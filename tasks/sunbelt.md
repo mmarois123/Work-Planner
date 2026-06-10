@@ -77,7 +77,7 @@
 ### Weekly
 - [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-08)
 - [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-15)
-- [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-09)
+- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-09)
 
 ### Monthly
 - [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-07-02)
@@ -89,7 +89,7 @@
 - [ ] Forward Monthly Operations Report to LJ (Arthur and Ranny) (recur: monthly@day4) (due: 2026-07-04)
 - [x] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
 - [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-07-10)
-- [ ] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
+- [x] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
 - [ ] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
   - due not set — set the "Next BoD meeting" anchor above
 - [ ] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
