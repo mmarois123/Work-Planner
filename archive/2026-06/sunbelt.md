@@ -15,3 +15,8 @@
 - [x] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-06-02)
 - [x] Update Sales Eliminations (recur: monthly@day2) (due: 2026-06-02)
 - [x] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-06-02)
+- [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-08)
+- [x] Monthly Operations Report (recur: monthly@day3) (due: 2026-06-03)
+- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-09)
+- [x] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
+- [x] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
