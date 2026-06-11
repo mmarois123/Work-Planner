@@ -49,7 +49,7 @@
   - Bring in updated CRM data \> create mock-up
 - [x] 🟠 Integrate Sep–Dec invoice data from Whitley - confirm if done
 - [ ] Add Britco, C&B, NWBS detailed account information
-- [ ] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
+- [x] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
