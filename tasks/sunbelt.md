@@ -33,7 +33,7 @@
   - Material, Labor, OH % — should these change frequently? Quarterly? Revisit in April
   - Do we need to adjust Labor/OH %'s for WIP? (per Demi question)
   - [ ] WIP Collection: Integrate with Demi and create monthly approval/review process (Praxis?)
-- [ ] Ron - Sales & Executive Dashboard
+- [ ] 🟠 Ron - Sales & Executive Dashboard
   - Quote Turnaround Days metric (by Plant, Salesperson, Difficulty)
   - Quote \$, Factor, Order \$, Factor
   - Open Quotes breakdown: Plant, Difficulty, Fleet/Custom
