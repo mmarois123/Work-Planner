@@ -56,7 +56,7 @@
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
 - [ ] 🟠 Build process for GMs to review N3M FC Revenue $ and submit adjustment inputs — explore SharePoint, Fabric Apps, Forms, HTML, Power BI, etc.
 - [ ] 🟠 Email GMs: no longer need to send backlog reports at month end
-- [ ] Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
+- [ ] 🟠 Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
 
 ## Bob Review
 - [x] Start with Project Ramp Up at Whitley South
