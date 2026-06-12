@@ -26,6 +26,7 @@
 - [ ] Build Plant Scorecard PDFs per plant: current data, historical trends, and qualitative info (project types, etc.) — per Bob's concept
 
 ## Analysis
+- [ ] Analyze PPI and commodity indices to quantify future risk to COGS — Materials
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
@@ -57,6 +58,8 @@
 - [ ] 🟠 Build process for GMs to review N3M FC Revenue $ and submit adjustment inputs — explore SharePoint, Fabric Apps, Forms, HTML, Power BI, etc.
 - [ ] 🟠 Email GMs: no longer need to send backlog reports at month end
 - [ ] 🟠 Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
+- [ ] Send Frank detailed Trailblazer purchases and call out SKUs where they have better pricing
+- [ ] Convert Labor % to new methodology in FC
 
 ## Bob Review
 - [x] Start with Project Ramp Up at Whitley South
