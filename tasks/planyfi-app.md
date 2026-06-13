@@ -44,6 +44,14 @@ Mobile responsive pass (code audit only — viewport emulation wasn't controllab
 - [x] Onboarding benchmark table (DemographicsStep) forces horizontal scroll on phones — added a mobile-only (`sm:hidden`) stacked layout: one selectable card per percentile with a 2-col label/value breakdown (radiogroup + keyboard support). Desktop table now gated `hidden sm:block`, no more horizontal scroll on phones
 - [x] Credit-card editor Field uses fixed w-40 (160px) input on mobile — made fluid: input wrapper now `flex-1 min-w-0 max-w-[160px]` on mobile (fills the row up to 160px, shrinks on 320px screens), reverts to column width at `sm:`
 
+### Scheduled QA (Jun 2026) — Kenji, 42, recently divorced dad rebuilding from near-zero
+Source: automated code-level QA sweep. Persona: Kenji, 42, recently divorced single dad with one 401(k), a checking account, and child support as a fixed expense — rebuilding savings from near-zero. Audited onboarding → plan setup → accounts → events → net worth projection flows. Prod health check: all endpoints (including `/api/health`) returned HTTP 403, likely Railway WAF blocking the CI environment — not an app bug.
+- [ ] Native `confirm()` used for destructive actions in 8 places — renders as an unstyled browser dialog that clashes with the dark theme. Files: `ProfileDrawer.tsx:129,139`, `CurrentPlanDrawer.tsx:186`, `TransactionsDrawer.tsx:191,239`, `GuestSessionBanner.tsx:30`, `BalanceHistoryTab.tsx:140,448`. Fix: create a shared `ConfirmDialog` component matching the design system and replace all `confirm()` calls (/qa scheduled 2026-06-13)
+- [ ] Fire-and-forget `void saveAllocationSettings()` in `financial-planner/page.tsx:537,545` — if allocation settings fail to save, user gets no error toast. Similarly `.catch(() => {})` on cash-flow override cleanup (lines 419, 855) silently swallows all errors. Fix: add success/error toast notifications (/qa scheduled 2026-06-13)
+- [ ] UpgradePromptModal calls `onClose()` before the async checkout begins (`app/components/UpgradePromptModal.tsx:32`), so if `clerk.billing.getPlans()` throws or the premium plan slug isn't found (line 54 `if (!premium) return`), the user sees no feedback — modal is already gone, error only logged to console. Fix: keep modal open during checkout attempt and show an inline error state on failure (/qa scheduled 2026-06-13)
+- [ ] `recurring-transactions` POST (`app/api/recurring-transactions/route.ts:41-52`) inserts records without validating required fields (name, amount, type, frequency, startDate) — a malformed client request can create unusable records with null columns. Fix: validate required fields and return 400 (/qa scheduled 2026-06-13)
+- [ ] Onboarding expense step (`app/onboarding/components/ExpensesSavingsStep.tsx`) offers only hardcoded categories — users with non-standard fixed expenses (child support, alimony, court-ordered payments) have no way to add a custom category during onboarding. The PlanSetupWizard has an "Add custom" flow but onboarding doesn't. Fix: add "Other / Custom" category option in ExpensesSavingsStep matching PlanSetupWizard's pattern (/qa scheduled 2026-06-13)
+
 ### Design Review (Apr 2026)
 Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.
 
@@ -57,6 +65,7 @@ Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milesto
 - [ ] Narrative annotations — auto-detect peak, FI crossover, drawdown start; place type-on-chart labels with sentences; max 4 visible, toggleable [S effort, Med leverage]
 
 ## Security
+- [ ] IDOR: GET-by-accountId routes for holdings (`app/api/holdings/route.ts:15-17`), credit-cards (`app/api/credit-cards/route.ts:15-19`), and balances (`app/api/net-worth/balances/route.ts:120-133`) return data without verifying the account belongs to the authenticated user — any logged-in user can read another user's financial data by guessing account IDs. Same pattern in scenario-events (`app/api/scenario-events/route.ts:185`) for scenarioId. Fix: add `JOIN accounts/scenarios … WHERE userId = ?` ownership checks in each accountId/scenarioId branch (/qa scheduled 2026-06-13)
 
 ## Engineering (New User Experience)
 
