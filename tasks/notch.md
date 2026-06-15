@@ -21,3 +21,10 @@
 
 ## Bugs / Issues
 - [x] Streak logic: don't count current day unless already completed; streak breaks if previous day was missed
+
+## General
+- [ ] Add ability to remove sets in Notch
+- [ ] Rename workouts: MAPS 15 Advanced 3.1, 3.2, etc.
+- [ ] Add ability to replace exercises
+- [ ] Full edit capability during active workout
+- [ ] Auto-highlight numbers when tapping input boxes during workout
