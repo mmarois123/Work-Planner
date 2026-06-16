@@ -82,6 +82,7 @@
 
 ### Weekly
 - [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-15)
+- [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-22)
 - [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-16)
 
 ### Monthly
