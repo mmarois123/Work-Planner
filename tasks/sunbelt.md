@@ -22,7 +22,7 @@
   - [x] Create override functionality for detail table if date is selected aside from timeframe
   - [ ] Add Factors in charts / option to add factors
 - [ ] Add quarter/year view to balance sheet
-- [ ] 🟠 Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
+- [ ] Restructure AR Summary into three tabs: Invoices, Payments (historical payment patterns), and AR Aging Balance
 - [ ] 🟠 Add Custom | Fleet field to Production report (consider Operations and Backlog as well)
 - [ ] Fix Timeframe and date selection in Finance and Operations reports; explore bookmark approach for switching between timeframe and date selection modes
 - [ ] Build Plant Scorecard PDFs per plant: current data, historical trends, and qualitative info (project types, etc.) — per Bob's concept
