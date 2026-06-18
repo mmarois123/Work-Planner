@@ -94,7 +94,7 @@
 - [ ] Forward Monthly Operations Report to LJ (Arthur and Ranny) (recur: monthly@day4) (due: 2026-07-04)
 - [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-07-10)
 - [ ] P&L by Company (recur: monthly@close+1) (due: 2026-07-11)
-- [ ] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
+- [x] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
   - due not set — set the "Next BoD meeting" anchor above
 - [ ] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
 
