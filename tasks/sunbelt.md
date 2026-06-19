@@ -2,7 +2,7 @@
 
 ## BoD
 - [x] 🟠 BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
-- [ ] Create safety report and/or BoD slide using data from Marci
+- [ ] 🟠 Create safety report and/or BoD slide using data from Marci
 - [ ] Create slide explaining YTD vs YTG factor and buffer effect; include high-level logic on when projects are quoted vs expected to invoice
 
 ## Forecasting
