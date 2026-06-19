@@ -58,7 +58,7 @@
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
-- [ ] 🟠 Build process for GMs to review N3M FC Revenue $ and submit adjustment inputs — explore SharePoint, Fabric Apps, Forms, HTML, Power BI, etc.
+- [x] 🟠 Build process for GMs to review N3M FC Revenue $ and submit adjustment inputs — explore SharePoint, Fabric Apps, Forms, HTML, Power BI, etc.
 - [ ] 🟠 Email GMs: no longer need to send backlog reports at month end
 - [ ] 🟠 Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
 - [ ] Send Frank detailed Trailblazer purchases and call out SKUs where they have better pricing
@@ -85,7 +85,6 @@
 - [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-15)
 - [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-22)
 - [x] 13WCF (recur: weekly@Tue) (due: 2026-06-16)
-- [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-23)
 
 ### Monthly
 - [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-07-02)
@@ -96,7 +95,6 @@
 - [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-07-10)
 - [ ] P&L by Company (recur: monthly@close+1) (due: 2026-07-11)
 - [x] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
-- [ ] Monthly BoD Presentation (recur: monthly@bod-2)
   - due not set — set the "Next BoD meeting" anchor above
 - [ ] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
 
