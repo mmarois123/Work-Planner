@@ -25,6 +25,33 @@ Source: /code-review high on the unmerged `scenario-comparison` branch (worktree
 - [x] AccountSetupWizard hardcodes its own account-type taxonomy — now derives GROUPS from ACCOUNT_TYPES/TYPE_DEFAULTS via a UI_GROUPS map (4 UI buckets, the two debt account-groups collapse into one "Debt"; 'Custom' excluded as it needs the full form), so any new account type auto-surfaces. Replaced the inline Unicode-minus `money()` formatter with shared `fmt` from lib/utils/format.ts. Verified tsc + production build
 - [ ] Build "Luis" Claude skill/agent as in-app design consultant for Planyfi — interviews Mitch on design preferences and Planyfi design system; outputs 3 HTML options per request to a designated folder
 
+### Scheduled QA (Jun 2026) — Tanya, divorced single mom rebuilding finances
+Persona: Tanya, 42, recently divorced single mom with two kids, rebuilding finances — has a 401(k), credit card debt, trying to figure out if she can keep the family home. Code-level audit through her lens.
+
+**Bugs**
+- [ ] 🔴 ImpactCard.tsx: Rules of Hooks violation — `useMemo` called inside `switch/case` branches of `ImpactFieldRenderer` (lines 623, 934, 953, 1048, 1082, 1160); changing the impact action dropdown causes a different branch with a different hook count, crashing with "Rendered more hooks than during the previous render." Fix: move all useMemo calls above the switch, compute line-item lists unconditionally (/qa scheduled 2026-06-21)
+- [ ] ProjectedPlanDrawer "Edit Base Plan" button links to `/plan/edit?id=…` (line 62) — this route was removed per CLAUDE.md; click produces a 404. Replace with drawer-open or valid route (/qa scheduled 2026-06-21)
+- [ ] page.tsx confirmation dialog (lines 2455–2466) uses invalid Tailwind classes `border-strong`, `shadow-pop`, `text-secondary` — these generate no CSS output; dialog renders with no border, no shadow, broken text color. Should be `border-theme-strong`, `shadow-popover`, `text-theme-secondary` (/qa scheduled 2026-06-21)
+- [ ] TransactionEditModal.tsx: handleAddSubmit and handlePlanSave use try/finally with no catch — errors from scenarioEventsRepo.add() or budgetsRepo.update() become unhandled rejections; user sees no feedback, modal closes, data silently lost (/qa scheduled 2026-06-21)
+
+**Accessibility**
+- [ ] Drawer.tsx lacks role="dialog", aria-modal="true", and focus trap — drawers open as visual overlays but screen readers don't announce them as dialogs and Tab escapes behind the overlay (/qa scheduled 2026-06-21)
+- [ ] 13 residual icon-only buttons missing aria-labels (missed in prior a11y sweep) — TransactionEditModal close, TimelineDrawer back, PlanSetupWizard close, ColorDotPicker swatches, AccountEditModal close, VarianceTracker prev/next month, Toast dismiss, AllocationStrategyDrawer Roth toggle + year-override remove, ProjectionVerificationTable expand/collapse ×2, HomePurchaseForm breakdown close (/qa scheduled 2026-06-21)
+- [ ] Event form labels not associated with inputs — widespread pattern of `<label className="block">` siblings with no htmlFor/id linkage across ChildBirthForm, CarPurchaseForm, RetirementForm, StateMoveForm, ProfileDrawer, MilestoneEditForm, ImpactCard, and others (~40 unlabeled inputs). Systemic fix: add aria-label prop to ControlledNumberInput/DateFieldInput/CategorySearch/SecuritySearch (4 reusable components cover dozens of call sites) (/qa scheduled 2026-06-21)
+- [ ] Two non-semantic interactive elements missing keyboard support — AccountsStep account cards (line 137: has role="button" but no tabIndex/onKeyDown) and DemographicsStep desktop cells (line 208: onClick with no role/tabIndex/onKeyDown). Keyboard users can't activate either (/qa scheduled 2026-06-21)
+
+**Theme / dark-light contrast**
+- [ ] Three toggle knobs use hardcoded `bg-white` — invisible in light mode (AllocationStrategyDrawer line 375, FinancialIndependenceDrawer line 323, ChartControlsBar line 215). Use `bg-[var(--color-bg-primary)]` (/qa scheduled 2026-06-21)
+- [ ] Hardcoded `border-white/[0.06]` dividers invisible in light mode — page.tsx line 2167 + BillCalendarTable lines 297, 300, 331. Replace with `border-theme` (/qa scheduled 2026-06-21)
+- [ ] Hardcoded emerald Tailwind classes instead of CSS variables — TimelineDrawer (lines 924, 1115, 1116, 1121) and ChartAxisStrips applied badge (line 581) use `emerald-400`/`emerald-500/10` instead of `var(--color-accent)` tokens; poor contrast in light mode (/qa scheduled 2026-06-21)
+
+**Persona gaps (Tanya)**
+- [ ] No divorce/separation composite event type — Tanya's defining financial event (asset split, alimony, child support, filing status change to HoH, possible mortgage refinance) requires 4–5 manual custom events. Add a DIVORCE composite that generates the appropriate atomics (/qa scheduled 2026-06-21)
+- [ ] Onboarding "Family (3+)" household option forces a partner on single parents — there is no "single parent with kids" composition. Tanya must choose "Just Me" (loses dependent-adjusted expenses) or "Family" (gets an unwanted partner column). Add a single-parent option (/qa scheduled 2026-06-21)
+- [ ] No Head of Household filing status auto-suggestion — single parents with dependents should be prompted for HoH (higher standard deduction, wider brackets) instead of defaulting to Single (/qa scheduled 2026-06-21)
+
+**Production health check**: Sandbox blocked egress to app.planyfi.app (403 host_not_allowed); code review and GitHub Actions history confirm app is healthy — no action needed.
+
 ## Product
 - [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
@@ -92,6 +119,9 @@ Source: /qa full visual sweep as a new Quick Setup user + Compare-mode product r
 - [ ] Compare: rework placement as an overlay toggle on the existing chart views instead of a 5th tab (removes the duplicate metric sub-tabs); add per-chip event diff line + divergence indicators for carried events via originEventId lineage (/qa Jun 2026)
 
 ## Security
+- [ ] 🔴 IDOR on child-entity API routes — credit-cards, holdings, scenario-events, and net-worth/balances all query by accountId or scenarioId without joining through accounts/scenarios to verify userId ownership; any authenticated user can read, modify, or delete another user's financial data by supplying a guessed or enumerated ID. Affects GET/POST/PUT/DELETE across all four routes (/qa scheduled 2026-06-21)
+- [ ] 🔴 Scenarios DELETE cascades child records before verifying ownership — event_scenario_membership and scenario_events rows are deleted (lines 169–174 of app/api/scenarios/route.ts) before the userId-scoped `DELETE FROM scenarios` at line 175; if the scenario belongs to another user, their child data is destroyed even though the parent delete is a no-op (/qa scheduled 2026-06-21)
+- [ ] 🔴 PRAGMA foreign_keys never enabled in sqlite.ts — SQLite disables FK enforcement by default; all ON DELETE CASCADE clauses (balanceHistory, asset_holdings, credit_cards, scenario_events, event_scenario_membership) are inert. The user-data DELETE route relies on these cascades and leaves orphaned rows across 8+ tables — GDPR/data-deletion concern. Fix: add `db.pragma('foreign_keys = ON')` after WAL mode + audit manual cleanups (/qa scheduled 2026-06-21)
 
 ## Engineering (New User Experience)
 Source: account-onboarding UX review (design-mockups/account-onboarding-ux-review/). Outstanding observations split out from the now-closed "Consult Claude on account-adding UX" item.
