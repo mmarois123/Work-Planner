@@ -64,6 +64,7 @@
 - [ ] Send Frank detailed Trailblazer purchases and call out SKUs where they have better pricing
 - [ ] Convert Labor % to new methodology in FC
 - [x] Follow up with Kim or Jay on SKU 10-00-0001 Truss: built in-house or sourced from MR Steel? Do we estimate with it but sub other SKUs at order? (due: 2026-06-18)
+- [ ] Ask Bob/Lisa if there are plans for a careers page on the Sunbelt website
 
 ## Bob Review
 - [x] Start with Project Ramp Up at Whitley South

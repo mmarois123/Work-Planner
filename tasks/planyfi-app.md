@@ -55,6 +55,13 @@ Source: /code-review high on the unmerged `scenario-comparison` branch (worktree
 - [ ] On accounts page (post-account-add in detailed onboarding): add explanation that user can add underlying holdings; alternatively consider skipping this page given new onboarding account-add flow
 - [ ] Add default sub-categories when users expand a category — e.g. expanding Transportation shows Car Payment, Auto Insurance, Gas instead of just repeating the parent category
 - [x] Require account creation to use the app — DONE 2026-06-15 (see the implemented entry under Engineering → "Free tier / monetization"): account now required, free tier persists to the DB, guest flow retired/dormant. Follow-ups (free retention limit, guest dead-code cleanup) tracked there.
+- [ ] Remove Split option for investment and savings — use separate contribution entries per account instead; same name allowed (e.g. Roth IRA) with owner tag to differentiate
+- [ ] If auto-showing Credit Card in debt section, add info icon or asterisk clarifying it only applies if carrying a balance beyond the statement balance (i.e. not already covered in normal expenses)
+- [ ] Add similar info icon/asterisk to Auto Loan in debt section — note it's typically already captured under Transportation as a car payment
+- [ ] Revisit Balance History tab — clarify purpose, explore improvements, consider relocating
+- [ ] Allow users to rename accounts before finalizing the add
+- [ ] Add persistent banner or indicator showing user is on free account with upgrade CTA — visible outside of profile section
+- [ ] Revisit and update UI for FI section
 
 ### QA Sweep (Jun 2026) — component consistency + light contrast
 Source: /qa sweep focused on component consistency (text, icons, dropdowns, popups) and light-theme contrast. Fixed in-sweep: muted/tertiary text + chart-axis contrast (now WCAG AA), Fund Strategy tabs converted to underline style, Timeline legend "Milestone"→"Milestones". Remaining (deferred):
@@ -133,6 +140,9 @@ Source: account-onboarding UX review (design-mockups/account-onboarding-ux-revie
 - [x] Planner first-run tour — (1) overlap: above-placement used a hardcoded 140px height estimate; popover now anchors its bottom edge via translateY(-100%) on a wrapper (animation moved to inner div since fade-in-up also animates transform) so the real rendered height drives placement; (2) outside click no longer ends the tour (backdrop inert; Skip / Got it / Escape are the only exits — Escape handler added) (/qa Jun 2026)
 - [x] Investment and savings contributions still not auto-linking in detailed onboarding — ROOT CAUSE: the PlanEditor wizard-prefill effect (app/plan/edit/page.tsx) read + `removeItem`'d sessionStorage `planWizardData` on its first run while `accounts` was still loading async (empty `[]`), so the account-derived investment/debt line items (which carry `linkedAccountId` + per-owner assignment) were skipped and the payload was consumed before it could ever apply — leaving the unlinked, individual1-only defaults. Added an `accountsLoaded` flag (set in the accounts fetch's `.finally`) and gated the prefill effect on it so the payload is consumed only after accounts resolve. Verified tsc + production build (31 onboarding-builder tests pass; in-app click-through recommended)
 - [x] When multiple household members have the same account type, only one person's accounts are carried into the plan — SAME root cause as the auto-link fix above: the prefill race left the individual1-only defaults, so a partner's same-type account produced no contribution at all. With the `accountsLoaded` gate the prefill now maps every account to its own line item (correct owner + link), so e.g. both partners' 401(k)/Roth IRA accounts each get their own contribution row (rendered as a per-owner split). Verified tsc + production build
+- [ ] Credit Card and Auto Loan accounts show "N/A" for tax status — replace with blank or a simple label like "Debt"
+- [ ] No input box shown when fixed/discretionary expenses are collapsed
+- [ ] Financial Planner options overflowing on mobile with Compare button present
 
 ## Parking Lot
 - [ ] Scratch-pad what-if scrubbers — live sliders (retirement age, savings rate, return, home price) overlay a ghost projection on the chart; delta readout vs. saved plan; "Save as event" to persist [M effort, High leverage]

@@ -158,3 +158,10 @@ Idea: add a checkbox to Praxis schedule indicating whether a given week is sched
 **DART Rate** (Days Away, Restricted, or Transferred)
 (Number of DART incidents × 200,000) / Total hours worked
 → OSHA-approved rate for injuries/illnesses resulting in missed work, restricted duties, or job transfer. Same 200,000 multiplier.
+
+### Irina — Performance Documentation
+
+**2026-06-22:**
+- Sales elimination task took over a week to complete
+- AR analysis did not incorporate direct feedback provided
+- Multiple missed status updates
