@@ -25,6 +25,12 @@ Source: /code-review high on the unmerged `scenario-comparison` branch (worktree
 - [x] AccountSetupWizard hardcodes its own account-type taxonomy — now derives GROUPS from ACCOUNT_TYPES/TYPE_DEFAULTS via a UI_GROUPS map (4 UI buckets, the two debt account-groups collapse into one "Debt"; 'Custom' excluded as it needs the full form), so any new account type auto-surfaces. Replaced the inline Unicode-minus `money()` formatter with shared `fmt` from lib/utils/format.ts. Verified tsc + production build
 - [ ] Build "Luis" Claude skill/agent as in-app design consultant for Planyfi — interviews Mitch on design preferences and Planyfi design system; outputs 3 HTML options per request to a designated folder
 
+### Scheduled QA (Jun 2026) — Tomás, recently divorced single dad rebuilding finances
+- [ ] ErrorBoundary default fallback uses hardcoded dark-mode colors (`text-gray-100`, `bg-gray-800/50`, `text-gray-400`, `bg-emerald-600`) instead of theme tokens — on light mode the error heading and description are nearly invisible against the light background. Replace with `text-theme-primary`, `bg-theme-surface`, `text-theme-secondary`, `bg-[var(--color-accent)]` (`app/components/ErrorBoundary.tsx` lines 41–48) (/qa scheduled 2026-06-22)
+- [ ] Unguarded async account-mutation callbacks in financial-planner — `handleBalanceUpdate`, `handleAccountUpdate`, `handleCreateAccount`, `handleDeleteAccount` are all async with no try/catch; a failed API call (network error, 403 retention freeze) propagates as an unhandled rejection with no toast or UI feedback. Wrap each in try/catch with `toast.error()` matching the pattern already used by `saveAllocationSettings` (`app/financial-planner/page.tsx` lines 1754–1793) (/qa scheduled 2026-06-22)
+- [ ] Onboarding skip and plan-wrapper save have no error handling — `handleSkip()` and `OnboardingPlanWrapper.handleSave()` both await `updateProfile()` + `router.push()` with no try/catch; if the profile update fails the user sees no feedback and may be stuck on the onboarding screen. Add try/catch with an error message (`app/onboarding/page.tsx` lines 389–398; `app/onboarding/components/OnboardingPlanWrapper.tsx` lines 16–29) (/qa scheduled 2026-06-22)
+- [ ] Native `confirm()` dialogs still used in 4 components — `ProfileDrawer` (member delete, line 152), `CurrentPlanDrawer` (plan delete, line 194), `TransactionsDrawer` (CSV import + transaction delete, lines 191/239), `BalanceHistoryTab` (entry delete, lines 140/448). These block the main thread and are inconsistent with the app's non-blocking modal patterns elsewhere. Replace with inline confirmation or a shared ConfirmModal component (/qa scheduled 2026-06-22)
+
 ## Product
 - [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
@@ -92,6 +98,9 @@ Source: /qa full visual sweep as a new Quick Setup user + Compare-mode product r
 - [ ] Compare: rework placement as an overlay toggle on the existing chart views instead of a 5th tab (removes the duplicate metric sub-tabs); add per-chip event diff line + divergence indicators for carried events via originEventId lineage (/qa Jun 2026)
 
 ## Security
+### Scheduled QA (Jun 2026) — Tomás, recently divorced single dad rebuilding finances
+- [ ] 🔴 `/api/credit-cards` missing userId scoping when `accountId` query param is used — GET returns cards, POST bulk-replaces cards, PUT updates a card, DELETE removes cards, all without verifying the account belongs to the authenticated user. Any authed user who knows/guesses an account UUID can read or mutate another user's credit card data. Fix: join on or subquery `accounts WHERE id = ? AND userId = ?` before every accountId-based operation (`app/api/credit-cards/route.ts` lines 16–19, 72–73, 120, 162–165) (/qa scheduled 2026-06-22)
+- [ ] 🔴 `/api/holdings` missing userId scoping when `accountId` query param is used — GET returns holdings and POST bulk-replaces holdings without verifying account ownership, same pattern as credit-cards. Fix: verify `accounts.userId = ?` before querying/mutating (`app/api/holdings/route.ts` lines 16–18, 62–63) (/qa scheduled 2026-06-22)
 
 ## Engineering (New User Experience)
 Source: account-onboarding UX review (design-mockups/account-onboarding-ux-review/). Outstanding observations split out from the now-closed "Consult Claude on account-adding UX" item.
