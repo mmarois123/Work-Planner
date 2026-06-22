@@ -77,7 +77,7 @@ Move `[x]` lines to `archive/YYYY-MM/{area}.md` (on demand or via end-of-day)
 |---|---|
 | `/today` | Open work planner in browser with morning summary |
 | `/morning-summary` | Daily briefing of open tasks across all areas |
-| `/add-task` | Natural language task creation with smart routing |
+| `/new` | Natural language task or note creation with smart routing |
 | `/process-inbox` | Gmail first, then Incoming/ folder. Use `/process-inbox files` to skip Gmail. |
 | `/archive` | Move completed tasks to archive. Optional area arg: `sunbelt`, `planyfi-app`, `planyfi-marketing` |
 | `/recur` | Roll Sunbelt recurring FP&A SOP tasks forward — seed next occurrence of completed recurring tasks. Auto-runs in `/morning-summary` and `/today`. |
