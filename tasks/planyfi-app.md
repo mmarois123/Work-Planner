@@ -76,6 +76,28 @@ Mobile responsive pass (code audit only — viewport emulation wasn't controllab
 - [x] Onboarding benchmark table (DemographicsStep) forces horizontal scroll on phones — added a mobile-only (`sm:hidden`) stacked layout: one selectable card per percentile with a 2-col label/value breakdown (radiogroup + keyboard support). Desktop table now gated `hidden sm:block`, no more horizontal scroll on phones
 - [x] Credit-card editor Field uses fixed w-40 (160px) input on mobile — made fluid: input wrapper now `flex-1 min-w-0 max-w-[160px]` on mobile (fills the row up to 160px, shrinks on 320px screens), reverts to column width at `sm:`
 
+### Scheduled QA (Jun 2026) — Tomás, recently divorced single dad rebuilding finances
+Source: Automated code-level audit through the eyes of Tomás (42, recently divorced, two kids, splitting retirement accounts, tracking child support, planning future home purchase). Prod health check: all endpoints returned HTTP 403 — Railway WAF blocking automated fetches, not an app error; manual browser verification recommended.
+
+**Calculation bugs**
+- [ ] Tax calculator treats weekly-frequency items as annual — `getAnnualDollarAmount` (`tax-calculator.ts:154`) and additional-income classification (`tax-calculator.ts:339`) only branch on `monthly` vs. fallback; weekly income/deduction items are off by ×52. Compare to `annualize()` in `useMultiYearProjection.ts:32` which handles weekly correctly. Fix: add `item.frequency === 'weekly' ? dollarAmount * 52 :` branch in both locations (/qa scheduled 2026-06-15)
+- [ ] One-time budget items with no `startDate` repeat in every projection year — `annualizeForYear` (`useMultiYearProjection.ts:48-54`) returns the full amount for every year when `categoryFrequency === 'one-time'` and `startDate` is absent, because the year-gating `if (item.startDate)` is skipped. Fix: return 0 when `startDate` is missing for one-time items (/qa scheduled 2026-06-15)
+- [ ] Missing household birth dates default to age 30, silently applying 10% early-withdrawal penalty on all pre-retirement withdrawals — `primaryAge` fallback at `useProjectedNetWorth.ts:1386` uses `?? 30`, which is below the 59.5 penalty-free threshold. Fix: default to 60 (no-penalty) or surface a warning when no birth dates are configured (/qa scheduled 2026-06-15)
+- [ ] Inconsistent event `endDate` boundary between income and contribution proration — `computeProratedAnnual` (`projectPlan.ts:772`) subtracts 1 from endDate month (exclusive), while `prorateInYearContributions` (`projectPlan.ts:925`) does not (inclusive). An event ending June 30 is active through May for income but through June for contributions. Fix: align both functions on the same convention (/qa scheduled 2026-06-15)
+
+**UI / error handling**
+- [ ] Five mutation handlers in `financial-planner/page.tsx` lack try/catch — `handleDeleteEvent` (:1645), `handleAccountUpdate` (:1675), `handleCreateAccount` (:1682), `handleDeleteAccount` (:1688), `handleBalanceUpdate` (:1654) all await API calls with no error handling; network failures produce silent data loss with no toast (/qa scheduled 2026-06-15)
+- [ ] TimelineDrawer custom-form save: `setSaving(false)` fires before async completes — `customFormRef.current.save()` is not awaited (`TimelineDrawer.tsx:749`), so the `finally` block resets the loading state immediately, enabling double-submit. Fix: have the custom form return a promise and await it (/qa scheduled 2026-06-15)
+- [ ] Plan History popover row actions (duplicate/delete) unreachable on touch devices — `CurrentPlanDrawer.tsx:399` uses `opacity-0 group-hover:opacity-100` with no tap/long-press fallback. Fix: always show actions on mobile (`sm:opacity-0 sm:group-hover:opacity-100`) or add a row-level context menu (/qa scheduled 2026-06-15)
+- [ ] Error toast in TimelineDrawer hardcoded to "Failed to save retirement settings" for all event types — catch block at `TimelineDrawer.tsx:754` shows this message for Home Purchase, Car, State Move, etc. Fix: use generic "Failed to save event" (/qa scheduled 2026-06-15)
+
+**Accessibility**
+- [ ] Drawer component (`app/components/Drawer.tsx:119`) missing `role="dialog"`, `aria-modal="true"`, and focus trap — Tab key freely escapes into background content when any drawer is open. Affects all drawers app-wide (Current Plan, Events, Accounts, Profile, etc.) (/qa scheduled 2026-06-15)
+- [ ] Onboarding: unchecking "I have a partner" silently resets filing status to "Single", overwriting a user's manual "Head of Household" selection — `HouseholdIncomeStep.tsx:142` and `page.tsx:619` both force `filingStatus: 'Single'` without checking current value. Fix: only reset if current status is MFJ/MFS (/qa scheduled 2026-06-15)
+
+**Product gap**
+- [ ] No "Child Support" or "Alimony" expense category in onboarding or plan editor — divorced/separated users must miscategorize court-mandated fixed payments as discretionary "Other Expense" (`ExpensesSavingsStep.tsx:31-43`). Child support is the #1 expense for many single parents and should be a fixed-expense category with appropriate tax treatment (not deductible post-2019 TCJA). Consider adding to both onboarding defaults and the plan editor category list (/qa scheduled 2026-06-15)
+
 ### Design Review (Apr 2026)
 Source: Claude Design review of Planner, Accounts, Current Plan, Events, Milestones, and Net Worth surfaces. Quick wins first: #03, #06, #05, #09 (all S effort). Net Worth order: A → E → B → D → C.
 
