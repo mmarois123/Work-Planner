@@ -30,6 +30,7 @@
 ## Analysis
 - [ ] Analyze PPI and commodity indices to quantify future risk to COGS — Materials
 - [ ] Analyze schedule optimism vs actual execution for FC purposes (use Phoenix as example)
+- [ ] Project added contract-item volume from new South & Rochester space — speak with Frank, then project the incremental spend (req. 6/19, "Summary of Savings") @delegated(Frank)
 
 ## General
 - [ ] Document and standardize monthly WIP reconciliation process
