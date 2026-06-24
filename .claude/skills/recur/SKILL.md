@@ -19,6 +19,7 @@ as occurrences are completed.
 | `monthly` | `@close` | business day 7 (BD7) of the next month — the CLOSE MILESTONE (see below) |
 | `monthly` | `@close+1` | the close date + 1 business day |
 | `monthly` | `@bod-2` | 2 business days before the "Next BoD meeting" anchor |
+| `monthly` | `@eom-Nbd` | N business days before the next month's last calendar day. Take that month's last day; if it is a weekend, start from the prior weekday (day 0); step back N weekdays (e.g. `@eom-7bd`). The deadline given to recipients is month-end; the due date is the prep/send date. |
 | `quarterly` | `@day21`, `@bod-2` | same rules, but only in quarter-end months (Mar/Jun/Sep/Dec) |
 
 **Business-day math:** count weekdays only (Mon–Fri), skipping Sat/Sun. Holidays are NOT modeled — if a

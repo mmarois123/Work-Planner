@@ -103,6 +103,8 @@
   - due not set — set the "Next BoD meeting" anchor above
 - [x] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
 - [ ] Bank Financials (recur: monthly@day21) (due: 2026-07-21)
+- [ ] GM Revenue FC Feedback: update app for new cycle + email GMs reminder (recur: monthly@eom-7bd) (due: 2026-07-22)
+  - re-bake the next-3-months Revenue snapshot via /gm-fc-feedback refresh, then email all GMs (cc Devin/Bob/Robert) the app link; GM input deadline = month-end
 
 ### Quarterly (Mar / Jun / Sep / Dec)
 - [ ] Quarterly Bank Financials (recur: quarterly@day21) (due: 2026-07-21)
