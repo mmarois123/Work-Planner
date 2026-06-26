@@ -188,6 +188,16 @@ Source: /qa desktop visual sweep + code-audit mobile pass (renderer froze on res
 - [>] Clarify the Current Plan drawer section "% of Net" badges — the Investments / Debt / Fixed / Discretionary percentages sum to well over 100% with an unclear denominator; label the basis (e.g. "% of take-home") or rethink the metric.
 - [ ] Mobile overflow risks (code audit) — the Current Plan plan-history popover (CurrentPlanDrawer.tsx:327) is fixed w-[340px] left-0 with no max-w guard, so it can overhang the right edge at ≤320px inside the full-width mobile drawer; the rent-vs-buy result cards (rent-vs-buy/page.tsx:241) use grid-cols-2 with no responsive prefix → cramped 2-up at 375px.
 
+### Scheduled QA (Jun 2026) — Kenji, recently divorced engineer rebuilding finances
+Source: automated nightly code-level QA sweep (no browser automation). Persona: Kenji, 42, recently divorced software engineer — splitting assets, tracking alimony, re-planning retirement with a reduced portfolio. Audited: financial-planner surfaces, onboarding, event system, household/account deletion flows, a11y.
+
+**Prod health**: `https://app.planyfi.app/api/health` returned HTTP 403 via the CI proxy — could not confirm deployment status (proxy restriction, not necessarily an app issue; the endpoint is configured as public in middleware.ts).
+
+- [ ] a11y: icon-only buttons missing aria-labels (batch 2) — the first sweep (done) covered Drawer.tsx close buttons + AccountSetupWizard; these were missed: Toast close button (Toast.tsx:28), VarianceTracker prev/next month chevrons (VarianceTracker.tsx:285,287), PlanSetupWizard close X (PlanSetupWizard.tsx:197), HomePurchaseForm rent-breakdown close X (HomePurchaseForm.tsx:556), TimelineDrawer back-to-list chevron (TimelineDrawer.tsx:940). Add `aria-label` to each (/qa scheduled 2026-06-26)
+- [ ] BillCalendarTable renders empty `<tbody>` with no empty state — when `sorted` is empty the table shows headers over blank space with no "No transactions for this period" message or CTA; other list surfaces (AllocationChart, TimelineDrawer, EventMatrixModal) all have proper empty states. Add a `sorted.length === 0` fallback row (BillCalendarTable.tsx:314) (/qa scheduled 2026-06-26)
+- [ ] Household member deletion orphans budget data + account ownership — `ProfileDrawer.tsx:155` deletes the member record but does NOT cascade: Individual2 budget line items, the `individual2` income object, and account `owner` references all survive, leaving stale data the projection engine silently consumes. The native `confirm()` dialog (line 152) gives no warning about downstream impact. Add cascading cleanup (clear individual2 income, reassign/remove individual2 line items, reassign account ownership to Primary) and surface the impact in the confirmation dialog (/qa scheduled 2026-06-26)
+- [ ] Account deletion orphans `linkedAccountId` in budget line items — `AccountsContent.tsx:606` deletes the account and its balance history but does not clear `linkedAccountId` references in budget line items; surplus routing may silently drop contributions meant for the deleted account. Clear or unset `linkedAccountId` on affected line items when an account is deleted (/qa scheduled 2026-06-26)
+
 ## Security
 
 ## Engineering (New User Experience)
