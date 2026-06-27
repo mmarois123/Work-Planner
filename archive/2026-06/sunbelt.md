@@ -20,3 +20,19 @@
 - [x] 13WCF (recur: weekly@Tue) (due: 2026-06-09)
 - [x] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-06-09)
 - [x] P&L by Company (recur: monthly@close+1) (due: 2026-06-10)
+- [x] 🟠 BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
+- [x] Create slide explaining YTD vs YTG factor and buffer effect; include high-level logic on when projects are quoted vs expected to invoice
+- [x] 🟠 Integrate Sep–Dec invoice data from Whitley - confirm if done
+- [x] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
+- [x] 🟠 Build process for GMs to review N3M FC Revenue $ and submit adjustment inputs — explore SharePoint, Fabric Apps, Forms, HTML, Power BI, etc.
+- [x] 🟠 Email GMs: no longer need to send backlog reports at month end
+- [x] Follow up with Kim or Jay on SKU 10-00-0001 Truss: built in-house or sourced from MR Steel? Do we estimate with it but sub other SKUs at order? (due: 2026-06-18)
+- [x] Start with Project Ramp Up at Whitley South
+- [x] Evaluate bringing over UA factors for all remaining backlog projects
+- [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-15)
+- [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-22)
+- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-16)
+- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-23)
+- [x] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
+  - due not set — set the "Next BoD meeting" anchor above
+- [x] Bank Financials (recur: monthly@day21) (due: 2026-06-21)

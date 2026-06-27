@@ -1,9 +1,7 @@
 # Sunbelt FP&A
 
 ## BoD
-- [x] 🟠 BoD deck charts: remove "Quoted"; break out Ordered Trend by Custom vs Fleet; same breakout for Invoiced and Backlog
 - [ ] 🟠 Create safety report and/or BoD slide using data from Marci
-- [x] Create slide explaining YTD vs YTG factor and buffer effect; include high-level logic on when projects are quoted vs expected to invoice
 
 ## Forecasting
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -52,26 +50,19 @@
   - Marketing KPI: website analytics, NPM, Google, LinkedIn; Pre-CRM leads \> monthly
   - Activity-based KPIs
   - Bring in updated CRM data \> create mock-up
-- [x] 🟠 Integrate Sep–Dec invoice data from Whitley - confirm if done
 - [ ] Add Britco, C&B, NWBS detailed account information
-- [x] Check if overstating COGS for WMC due to Intercompany elimination (Rev/COGS, 5023-001)
 - [ ] Create survey for Power BI users to solicit feedback, get ideas for future features
 - [ ] Meeting with Devin: production reporting check-in — getting what you need? What's missing? Still using personal Excel sheet?
 - [ ] Meeting with Devin: worth setting up meeting with Joe + GM to see if they're getting what they need?
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
-- [x] 🟠 Build process for GMs to review N3M FC Revenue $ and submit adjustment inputs — explore SharePoint, Fabric Apps, Forms, HTML, Power BI, etc.
-- [x] 🟠 Email GMs: no longer need to send backlog reports at month end
 - [ ] 🟠 Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
 - [ ] Send Frank detailed Trailblazer purchases and call out SKUs where they have better pricing
 - [ ] Convert Labor % to new methodology in FC
-- [x] Follow up with Kim or Jay on SKU 10-00-0001 Truss: built in-house or sourced from MR Steel? Do we estimate with it but sub other SKUs at order? (due: 2026-06-18)
 - [ ] Ask Bob/Lisa if there are plans for a careers page on the Sunbelt website
 - [ ] Review current product categorization process and method — identify improvements
 - [ ] Update historical Whitley projects with product categorization
 
 ## Bob Review
-- [x] Start with Project Ramp Up at Whitley South
-- [x] Evaluate bringing over UA factors for all remaining backlog projects
 - [ ] Ask Bob about labor and OH % for WIP entry
 
 
@@ -86,11 +77,7 @@
 - Next BoD meeting: (set date — drives @bod-2 tasks)
 
 ### Weekly
-- [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-15)
-- [x] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-22)
 - [ ] Weekly Operations Report (recur: weekly@Mon) (due: 2026-06-29)
-- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-16)
-- [x] 13WCF (recur: weekly@Tue) (due: 2026-06-23)
 - [ ] 13WCF (recur: weekly@Tue) (due: 2026-06-30)
 
 ### Monthly
@@ -101,11 +88,8 @@
 - [ ] Forward Monthly Operations Report to LJ (Arthur and Ranny) (recur: monthly@day4) (due: 2026-07-04)
 - [ ] Update Latest Closed Month (through GP) — CLOSE MILESTONE (recur: monthly@close) (due: 2026-07-10)
 - [ ] P&L by Company (recur: monthly@close+1) (due: 2026-07-11)
-- [x] Monthly BoD Presentation (recur: monthly@bod-2) (due: 2026-06-19)
-  - due not set — set the "Next BoD meeting" anchor above
 - [ ] Monthly BoD Presentation (recur: monthly@bod-2)
   - due not set — set the "Next BoD meeting" anchor above
-- [x] Bank Financials (recur: monthly@day21) (due: 2026-06-21)
 - [ ] Bank Financials (recur: monthly@day21) (due: 2026-07-21)
 - [ ] GM Revenue FC Feedback: update app for new cycle + email GMs reminder (recur: monthly@eom-7bd) (due: 2026-07-22)
   - re-bake the next-3-months Revenue snapshot via /gm-fc-feedback refresh, then email all GMs (cc Devin/Bob/Robert) the app link; GM input deadline = month-end
