@@ -126,6 +126,13 @@ Source: /qa code-driven responsive audit (mobile not live-verifiable on this dev
 - [ ] HomePurchaseForm Horizon / Rent-increase / Alt-return inputs use grid-cols-3 with no responsive base — crowds the labeled number inputs at ~375px (HomePurchaseForm.tsx:536) (/qa 2026-06-28)
 - [ ] Split-owner name uses absolute right-full + unbounded truncate (truncate can't clamp an unsized absolute element, so a long member name can run off the left edge on a narrow viewport) — plan/edit/page.tsx:3483 and :3785 (/qa 2026-06-28)
 
+### Scheduled QA (June 2026) — Tomás, 41, recently divorced restructuring finances
+Source: Scheduled nightly code-level QA audit through the lens of a recently-divorced user splitting joint accounts, adjusting to single income, and modeling child support on a tighter budget. No browser automation; code audit only. Production health check blocked by network policy (proxy denies outbound to app.planyfi.app). 4 new findings:
+- [ ] No warning or cleanup when deleting a household Partner who has active budget data — deleteMember (HouseholdContext.tsx:82, triggered via ProfileDrawer.tsx:156) removes the member but budget `individual2` income/tax data silently persists in the saved plan. The plan editor correctly clears individual2 on save (plan/edit/page.tsx:1964), but projections (projectPlan.ts:87-88, useScenarioNetWorth.ts:69) keep computing on the stale data until the user manually re-saves. Should show a toast or banner after partner removal warning the plan still includes partner income (/qa scheduled 2026-06-29)
+- [ ] AllocationChart bar-segment percentage labels use hardcoded `fill="#fff"` — white text invisible in light mode (AllocationChart.tsx:86). Fix: use a theme-aware color via `var(--color-text-primary)` or compute contrast against the bar's fill color (/qa scheduled 2026-06-29)
+- [ ] ProjectionVerificationTable expand/collapse chevron buttons missing aria-label — buttons at ProjectionVerificationTable.tsx:170 and :192 have `aria-expanded` state but no accessible name; screen readers announce them as unlabeled buttons. Fix: add `aria-label={isExpanded ? 'Collapse row' : 'Expand row'}` (/qa scheduled 2026-06-29)
+- [ ] AccountEditModal "Create [paired] account" button has no loading/disabled state — async onCreateAccount call (AccountEditModal.tsx:438-459) has no disabled attribute, no spinner, no error feedback. Double-click creates duplicate paired accounts. Fix: add isSaving state + disabled + error toast, following the pattern at AccountEditModal.tsx:707 (/qa scheduled 2026-06-29)
+
 ## Security
 
 ## Engineering (New User Experience)
