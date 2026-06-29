@@ -2,6 +2,7 @@
 
 ## BoD
 - [ ] 🟠 Create safety report and/or BoD slide using data from Marci
+- [ ] Build daily/weekly bank cash balance chart from Sunbelt account for BoD Working Capital slide — show trend/seasonality over time; annotate notable Whitley account transfers
 
 ## Forecasting
 - [ ] Regroup with Wendy on Leases, Insurance, Property Tax, Management Fees
@@ -57,7 +58,8 @@
 - [ ] 🟠 FC App: add projects (name + project ID) from WIP to Revenue section or dropdown — show which projects are expected to invoice in current month, next month, etc.
 - [ ] 🟠 Finalize GM Dashboard view; request GMs review monthly and flag major discrepancies
 - [ ] Send Frank detailed Trailblazer purchases and call out SKUs where they have better pricing
-- [ ] Convert Labor % to new methodology in FC
+- [x] Convert Labor % to new methodology in FC
+- [x] Follow up with Kim or Jay on SKU 10-00-0001 Truss: built in-house or sourced from MR Steel? Do we estimate with it but sub other SKUs at order? (due: 2026-06-18)
 - [ ] Ask Bob/Lisa if there are plans for a careers page on the Sunbelt website
 - [ ] 🟠 Review current product categorization process and method — identify improvements
 - [ ] 🟠 Update historical Whitley projects with product categorization
