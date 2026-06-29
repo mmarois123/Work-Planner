@@ -22,6 +22,17 @@ Source: /qa full sweep (desktop visual + 3-dimension code audit). Mobile was cod
 ### QA sweep (Jun 2026) — drawers, modals & event-forms
 Source: /qa full sweep — desktop objective audit (JS-based: horizontal-overflow / clipped-text / accessible-name / font-size, since screenshots froze the renderer AND `resize_window` doesn't change the CSS viewport in this dev env — both browser checks non-functional) + 3-dimension code audit + console read. /financial-planner + /rent-vs-buy are structurally clean (no overflow/clip, every control labeled, no missing alt, no JS errors/hydration warnings); /plan/edit is an intentional redirect stub to /financial-planner. Mobile not visually verifiable (viewport pinned ~1528px) — known mobile-overflow items already tracked under "visual + mobile polish" above. Gaps cluster in drawers/modals/event-forms.
 
+### QA sweep (2026-06-28) — error surfacing, modal a11y & consistency
+Source: /qa full sweep on the compare-scenario-cards branch — 4-dimension code audit (missing states, consistency, a11y, responsive); tsc clean. Live browser sweep declined (renderer-freeze quirk), so visual/responsive was code-driven. App is broadly solid (shared Drawer w/ Esc+backdrop, no native `<select>`, strong loading/empty coverage, save toasts/spinners) — gaps below. The one High layout break (EditScenariosModal collapsing on mobile) was fixed in-sweep (see Bugs / Issues).
+- [ ] Surface swallowed fetch errors as a toast instead of console-only — HIGH: ProfileContext initial profile load (ProfileContext.tsx:213) renders the app empty with no error/retry; also HouseholdContext members (HouseholdContext.tsx:40), PlanEditor accounts (plan/edit/page.tsx:578) + milestones (:590), NotificationContext refresh/mount (NotificationContext.tsx:30/:64), admin feedback status-update (admin/feedback/page.tsx:66), SecuritySearch ticker (SecuritySearch.tsx:105) (/qa 2026-06-28)
+- [ ] Add focus management to the shared Drawer.tsx (focus-in, focus trap, focus restore on close, role="dialog"+aria-modal) — fixes the a11y gap across ~15 drawers at once; extend to standalone modals that also lack trap/restore (FeedbackModal, AccountEditModal, TransactionEditModal, UpgradePromptModal, PremiumWelcomeModal) (/qa 2026-06-28)
+- [ ] Replace remaining native confirm() calls with the in-app confirm-dialog pattern (cf. TimelineDrawer deleteConfirmId / AccountsContent deleteConfirm) — ProfileDrawer member-delete + guest-reset (ProfileDrawer.tsx:153/:163), TransactionsDrawer import-anyway + delete (:196/:246), CurrentPlanDrawer plan-delete (:196), BalanceHistoryTab bulk + single delete (:140/:448) (/qa 2026-06-28)
+- [ ] Standardize modal dismiss affordances (X button + backdrop-click dismiss + Escape) on hand-rolled modals — PlanSetupWizard (no Esc/backdrop, :190), AddAccountModal (no X/backdrop, AccountsContent.tsx:112), LinkAssetsModal (no X/backdrop, :75/:160), ImportMappingModal (no X/backdrop, :105), AccountSetupWizard (no Esc, :649) (/qa 2026-06-28)
+- [ ] Composite scenario-event forms — add inline field validation: CustomEventForm lets a no-op/empty event save (isValid only checks impacts.length>0 && date, CustomEventForm.tsx:162); HomePurchase/Retirement/CarPurchase/StateMove/ChildBirth/MortgageRefinance show only a generic toast w/ no inline field errors (HomePurchaseForm.tsx:391 et al.). Also no inline "required" message on MemberForm (ProfileDrawer.tsx:690), onboarding ExpensesSavingsStep (:324), and AddAccount name (AccountsContent.tsx:101) (/qa 2026-06-28)
+- [ ] Add aria-label to icon-only buttons — toast dismiss X (ToastContext.tsx:91), VarianceTracker month prev/next chevrons (:285/:287) (/qa 2026-06-28)
+- [ ] Associate text inputs with their labels (placeholder-only, or sibling `<label>` missing htmlFor) — FeedbackModal textarea (:104), CategorySearch (:166, reused across plan forms), PlanRow income-name (:67), TransactionsDrawer:541 + ChildBirthForm:78 + AccountEditModal:262 + CategorySettingsPopover date inputs (add htmlFor/id), BalanceHistoryTab filter (:516), TimelineTypePicker search (:111) (/qa 2026-06-28)
+- [ ] Add async loading / double-submit guards to buttons that await without disabling — LinkAssetsModal "Confirm Links" (:160), AccountEditModal "Update Balance" (:693), AddAccountModal submit (AccountsContent.tsx:101) (/qa 2026-06-28)
+
 ## Product
 - [x] Add help/info icons to each drawer/page with in-depth explanations; explore on-screen tutorial as well
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
@@ -31,6 +42,8 @@ Source: /qa full sweep — desktop objective audit (JS-based: horizontal-overflo
 - [ ] Add button that generates a generic LLM prompt — instructs any AI tool to review attached transactions and categorize them against the user's current plan (specific categories + sub-categories) in a format uploadable to Planyfi for plan comparison or updates
 - [~] ~~Fund Strategy — auto-mirror Deficit Strategy default from Surplus Routing order (drain in reverse of fill order)~~ — DROPPED 2026-06-23. The "advanced-gating" half already shipped (the Deficit tab opens on the simple plain-English order; "Customize order" is the opt-in advanced path). The remaining "reverse-of-fill" default is financially unsound — it would drain tax-advantaged/retirement accounts before the cash buffer (early-withdrawal penalties, lost growth, Roth raided), regressing the current sensible tax-aware default (reduce contributions → Cash → Taxable → Tax-Deferred, Roth preserved).
 - [ ] Revisit Balance History tab — clarify purpose, explore improvements, consider relocating
+- [ ] Show confirmation popup when navigating away or refreshing Current Plan with unsaved edits
+- [ ] In Current Plan, expanding fixed/discretionary expenses should show default categories (or previously set up ones) — structure should feel like a hierarchy: expense type → category → subcategory
 - [~] ~~Revisit and update UI for FI section~~ — SUPERSEDED 2026-06-24 by the "### Financial Independence section redesign (Luis)" subsection below (design approved; spec + mockup ready).
 
 ### QA Sweep (Jun 2026) — component consistency + light contrast
@@ -95,18 +108,23 @@ Design approved. Spec + visual contract: `design-mockups/luis/compare-chart-lens
 
 ### Compare — Edit scenarios studio + chart-integrated events (Luis, 2026-06-27)
 Design approved. Spec + visual contract: `design-mockups/luis/compare-edit-scenarios/` (`SPEC.md` = engineering spec; `option-C-studio-modal.html` = the approved interactive build; `index.html`/`README.md` = the 3 directions + writeup). **Supersedes / absorbs** the "interactive scenario cards" ticket above — consolidates ALL Compare scenario management into one **"Edit scenarios" studio modal** (replaces the "Manage events across scenarios" button + `EventMatrixModal`, the Add/Saved tile, and the per-card popovers), and pulls the N swim-lanes into **one chart-integrated event strip** (markers anchored to the plot x-grid + category-colour guide lines into the curves + scenario colour-pips). Modal: left roster (inline rename, recolor, **"On chart" checkbox with the 3-cap**, variance, single **⋮ kebab** = Add event/Assumptions/Duplicate/Delete) + right **chronological** membership matrix (year chip per row, **no** shared/differs grouping). Assumptions = **popover** (`MarketAssumptionsPopover`), not a panel. **Event create/edit routes to the Plan Timeline drawer** (`TimelineDrawer` `eventsStore`/`initialEditEvent`/add-mode) — never an in-modal editor. Right `ComparisonTable` untouched. **Presentational/IA only — no projection or data-layer edits.** **Contracts:** engine untouched (`scenarioProjectionCore`/`useComparisonProjections`/`comparisonMetrics`); matrix cell = same membership write as today's `EventMatrixModal.onToggle`; `MAX_COMPARISON_SCENARIOS = 3` is the single charted-set enforcement point; Premium gating on saved scenarios preserved. **Regression gate:** tsc clean + `useScenarioNetWorth`/`useComparisonProjections`/`comparisonMetrics`/`projectPlan` suites green & unchanged; for the same scenarios + membership, comparison series/card NW/variance/`ComparisonTable` identical before↔after; click-through (rename/recolor/toggle-charted-at-cap/⋮-Assumptions-popover/⋮-Add-event→Plan Timeline/matrix toggle == chart+table; dark+light). Build in stages (see SPEC.md):
-- [ ] Chart-integrated single event strip (anchored markers + guide lines + scenario pips; refactor `SwimLaneTimeline`, reuse `EventMarkerCard`) (/luis 2026-06-27)
-- [ ] "Edit scenarios" modal shell + roster (rename/recolor/duplicate/delete/Add scenario/Saved + On-chart checkbox & 3-cap; retire `ScenarioManagerBar` remnants) (/luis 2026-06-27)
-- [ ] Chronological membership matrix in the modal (reuse `buildEventMatrix`; sort by date, drop shared/differs, add year chip) — regression gate vs old `EventMatrixModal` (/luis 2026-06-27)
-- [ ] Assumptions popover per roster row (`MarketAssumptionsPopover`) (/luis 2026-06-27)
-- [ ] Route event create/edit to `TimelineDrawer` (⋮ Add event = add-mode for scenario; row pencil = `initialEditEvent`); remove in-modal event editing (/luis 2026-06-27)
-- [ ] Cleanup: delete `EventMatrixModal` + the standalone "Manage events across scenarios" button (+ `SwimLaneTimeline` if superseded) (/luis 2026-06-27)
+- [>] Chart-integrated single event strip (anchored markers + guide lines + scenario pips; refactor `SwimLaneTimeline`, reuse `EventMarkerCard`) (/luis 2026-06-27)
+- [>] "Edit scenarios" modal shell + roster (rename/recolor/duplicate/delete/Add scenario/Saved + On-chart checkbox & 3-cap; retire `ScenarioManagerBar` remnants) (/luis 2026-06-27)
+- [>] Chronological membership matrix in the modal (reuse `buildEventMatrix`; sort by date, drop shared/differs, add year chip) — regression gate vs old `EventMatrixModal` (/luis 2026-06-27)
+- [>] Assumptions popover per roster row (`MarketAssumptionsPopover`) (/luis 2026-06-27)
+- [>] Route event create/edit to `TimelineDrawer` (⋮ Add event = add-mode for scenario; row pencil = `initialEditEvent`); remove in-modal event editing (/luis 2026-06-27)
+- [>] Cleanup: delete `EventMatrixModal` + the standalone "Manage events across scenarios" button (+ `SwimLaneTimeline` if superseded) (/luis 2026-06-27)
 
 ### QA sweep (Jun 2026) — Plan Timeline + projection horizons
 Source: /qa walkthrough — onboarding → Plan Timeline → create future event → confirm projections at 5Y / 35Y. The create-event → projection-update → delete flow works (verified live: a Set-Salary $250K event moved terminal NW $11.6M→$14.1M and pulled FI 2038→2036; delete reverted everything cleanly). Projections read sensibly across the horizon (5Y ≈ $1.7M; 35Y/2061 ≈ $16M on the clean plan; Full/2086 ≈ $85.9M). Onboarding itself redirects to /financial-planner for an already-onboarded account (expected) — the fresh wizard wasn't exercised. Functional/age bugs filed under Bugs / Issues; visual-label nits below.
 
 ### QA sweep (Jun 2026) — visual + mobile polish
 Source: /qa desktop visual sweep + code-audit mobile pass (renderer froze on resize — mobile verified in code only).
+
+### QA sweep (2026-06-28) — responsive nits
+Source: /qa code-driven responsive audit (mobile not live-verifiable on this dev env). App is consistently responsive (Drawer forces full-width on mobile, tables in overflow-x-auto, flex-col lg:flex-row layouts); two low-severity nits:
+- [ ] HomePurchaseForm Horizon / Rent-increase / Alt-return inputs use grid-cols-3 with no responsive base — crowds the labeled number inputs at ~375px (HomePurchaseForm.tsx:536) (/qa 2026-06-28)
+- [ ] Split-owner name uses absolute right-full + unbounded truncate (truncate can't clamp an unsized absolute element, so a long member name can run off the left edge on a narrow viewport) — plan/edit/page.tsx:3483 and :3785 (/qa 2026-06-28)
 
 ## Security
 
@@ -116,6 +134,16 @@ Source: account-onboarding UX review (design-mockups/account-onboarding-ux-revie
 - [~] ~~Strengthen holdings reconciliation signal — delta is colored in the editor footer but easy to miss; consider an account-row-level badge when holdings ≠ balance (Obs #11)~~ — DROPPED 2026-06-21. Redundant by design: saving a holdings account always rewrites its recorded balance to the holdings sum (`useAccountHoldings.ts:337` → `balanceHistoryApi.add({ amount: sum })`), so holdings can never *persistently* disagree with the recorded balance. The only remaining diffs are unsaved edits (already flagged by the dirty dot) or live stock/crypto market movement (already shown in the row's change column) — a badge would add noise, not clarity. The one genuinely non-noisy reconciliation gap (allocation-mode account whose target %s ≠ 100%) is already surfaced in the expanded editor's "Allocated X% (Y% left)" line.
 
 ## Bugs / Issues
+- [ ] Initial app tour stops at step 2 and disappears in production
+- [ ] Renamed brokerage account (e.g. Fundrise) still shows as "Brokerage" in Current Plan contributions; two brokerage accounts grouped together instead of showing separately with correct names
+- [ ] Glitchy/flickering screens when saving Current Plan — saves correctly but poor UX
+- [ ] Excluding account from net worth updates in Accounts drawer but doesn't reflect in Financial Planner until page refresh
+- [ ] If only fixed/discretionary totals entered (no itemized), home purchase event's "Rent to Remove" doesn't offer option to reduce fixed expense by $ amount — needs to be available in this case
+- [ ] Onboarding dropdowns still using old design — update to match new consistent design
+- [ ] Random refreshes on Current Plan in production causing lost edits — cache edits locally and/or show popup warning if user refreshes or navigates away with unsaved changes
+- [ ] Replicate unsaved-changes warning from Accounts drawer to Current Plan page
+- [ ] Current Plan drawer cut off at bottom by number panel on mobile — discretionary breakout not visible
+- [x] EditScenariosModal (Compare → Edit scenarios) two-pane view collapsed on mobile — the fixed-width roster sidebar (w-[356px]) squeezed the events membership matrix to ~0px at ~375px, making the modal's core function unreachable. FIXED in /qa sweep 2026-06-28: panes now stack vertically below md (flex-col md:flex-row; roster full-width capped at 45vh w/ scroll; events min-w-0). compare-scenario-cards branch, working tree (uncommitted). (/qa 2026-06-28)
 
 ## Parking Lot
 - [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact — MOVED to Parking Lot 2026-06-27 via /next (defer to post-beta).
