@@ -59,7 +59,7 @@
 - [ ] Send Frank detailed Trailblazer purchases and call out SKUs where they have better pricing
 - [ ] Convert Labor % to new methodology in FC
 - [ ] Ask Bob/Lisa if there are plans for a careers page on the Sunbelt website
-- [ ] Review current product categorization process and method — identify improvements
+- [ ] 🟠 Review current product categorization process and method — identify improvements
 - [ ] Update historical Whitley projects with product categorization
 
 ## Bob Review
