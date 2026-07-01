@@ -158,13 +158,17 @@ Source: account-onboarding UX review (design-mockups/account-onboarding-ux-revie
 - [>] Excluding account from net worth updates in Accounts drawer but doesn't reflect in Financial Planner until page refresh
 - [>] If only fixed/discretionary totals entered (no itemized), home purchase event's "Rent to Remove" doesn't offer option to reduce fixed expense by $ amount — needs to be available in this case
 - [>] Onboarding dropdowns still using old design — update to match new consistent design
-- [>] Random refreshes on Current Plan in production causing lost edits — cache edits locally and/or show popup warning if user refreshes or navigates away with unsaved changes
+- [>] [P1] Random refreshes/buffering on Current Plan in production causing lost edits — recurring, still unresolved. Audit for same issue elsewhere in app.
 - [>] Replicate unsaved-changes warning from Accounts drawer to Current Plan page
 - [>] Current Plan drawer cut off at bottom by number panel on mobile — discretionary breakout not visible
 - [x] EditScenariosModal (Compare → Edit scenarios) two-pane view collapsed on mobile — the fixed-width roster sidebar (w-[356px]) squeezed the events membership matrix to ~0px at ~375px, making the modal's core function unreachable. FIXED in /qa sweep 2026-06-28: panes now stack vertically below md (flex-col md:flex-row; roster full-width capped at 45vh w/ scroll; events min-w-0). compare-scenario-cards branch, working tree (uncommitted). (/qa 2026-06-28)
 - [>] ImpactCard.tsx ImpactFieldRenderer: `useMemo` called inside `switch/case` branches (lines 623, 934, 953, 1048, 1082, 1160) violates React Rules of Hooks — income cases call zero hooks while contribution/expense/debt cases call one, so switching impact type changes hook call order → runtime crash. Verified real. Fix: hoist all `useMemo` calls to the top of the component unconditionally, or extract each case into its own sub-component (/qa scheduled 2026-06-28)
 - [x] chartGeometry.ts:80: `delta: d ? d : null` uses a falsy check — when year-over-year delta is exactly `0`, it's coerced to `null` and the tooltip shows "---" instead of "+$0". Verified real (cosmetic edge case). Fix: `delta: d != null ? d : null` (/qa scheduled 2026-06-28) — FIXED 2026-06-29: `d != null ? d : null`; tooltip sign also made `>= 0 ? '+'` so exact-0 renders "+$0"; chartGeometry test updated (zero→0, absent→null), 7/7 green
 - [x] AllocationFilterBar.tsx:123: `{acct.name}` reads the optional legacy `name?` field instead of the required `accountName` — dropdown labels render blank for accounts lacking the legacy field. Verified real (file is behind the off-by-default `NEXT_PUBLIC_FEATURE_ALLOCATION` flag, so low beta impact). Fix: `{acct.accountName}` (/qa scheduled 2026-06-28) — FIXED 2026-06-29: now `{acct.accountName}`
+- [ ] Double tooltips showing up on linked account icon
+- [ ] Scenario Planner shows locked icon on Save, but hitting Done saves scenarios anyway — need clearer premium-feature gating/messaging
+- [ ] Market Assumptions popup appears behind Scenario Manager when clicked
+- [ ] Upgrade to Premium popup shows behind Scenario Manager — should always render on top and be closable
 
 ## Parking Lot
 - [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact — MOVED to Parking Lot 2026-06-27 via /next (defer to post-beta).
