@@ -88,7 +88,7 @@
 
 ### Monthly
 - [ ] Update ParameterCurrentMonth (recur: monthly@day2) (due: 2026-07-02)
-- [ ] Update Sales Eliminations (recur: monthly@day2) (due: 2026-07-02)
+- [x] Update Sales Eliminations (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Material Cost - Factor Analysis (recur: monthly@day2) (due: 2026-07-02)
 - [ ] Monthly Operations Report (recur: monthly@day3) (due: 2026-07-03)
 - [ ] Forward Monthly Operations Report to LJ (Arthur and Ranny) (recur: monthly@day4) (due: 2026-07-04)
