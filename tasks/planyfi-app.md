@@ -146,6 +146,24 @@ Source: /qa code-driven responsive audit (mobile not live-verifiable on this dev
 
 ## Security
 
+### Pre-beta security audit (2026-07-01)
+Source: 3-agent security sweep (API auth/tenant isolation, injection/XSS/SSRF, secrets/infra/backups) of the compare-scenario-cards branch. Foundation was solid (every route calls Clerk `auth()`; secrets hygiene, backup pipeline, Docker non-root, and premium/plan enforcement all clean). Critical + quick-win items were fixed in-sweep (the "do-now batch"); the deferred items below need product decisions or a browser-verified test pass.
+
+**Fixed in-sweep (not yet shipped — local on compare-scenario-cards):**
+- [x] Cross-tenant IDOR — 5 routes trusted a client-supplied `accountId`/`scenarioId`/row-`id` and queried without an ownership check, letting any logged-in user read/wipe another tenant's data. Added `lib/api/ownership.ts` (`ownsAccount`/`ownsScenario`/`ownsCreditCard`/`ownsBalanceEntry`/`ownsScenarioEvent`) + `apiForbidden` (403) and guarded: `credit-cards` (GET/POST/PUT/DELETE), `holdings` (GET/POST), `net-worth/balances` (GET-by-accountId, PUT-by-id, all DELETE branches), `scenario-events` (GET/POST/PUT/DELETE), `scenarios` DELETE (ownership check before cascading child deletes), and `household-members` PUT (added `AND userId=?` to the oldName lookup, closing a name leak). (security audit 2026-07-01)
+- [x] CSV formula injection — `escapeCsv` (`lib/utils/projectionExport.ts`) now prefixes any cell starting with `= + - @` / tab / CR with `'` so user-named accounts/categories can't execute as spreadsheet formulas. (security audit 2026-07-01)
+- [x] Interim body-size caps — added `checkBodySize` to the JSON-blob write routes (budgets 2MB, scenarios 2MB, scenario-events 1MB, transactions 4MB) so a single write can't balloon the shared SQLite file. Full validation layer still deferred (below). (security audit 2026-07-01)
+- [x] `npm audit fix` — Next 16.2.4→16.2.10 (closes the middleware-bypass + SSRF advisories, which matter because auth is middleware-enforced) + Sentry/transitive bumps. 24 vulns (6 high) → 2 moderate (residual postcss-under-next; only "fixable" by a breaking Next 9.x downgrade, so left). tsc clean. (security audit 2026-07-01)
+- [x] `finance/mortgage-rates` no longer returns raw `err.message` to anonymous callers (static message + server-side log). (security audit 2026-07-01)
+
+**Deferred (backlog):**
+- [ ] 🟠 Input-validation layer across all write routes — no schema validation (no zod) anywhere; write routes trust request bodies as-is. Add a consistent validation layer (zod or hand-rolled) to the ~30 CRUD routes, esp. the JSON-blob ones (budgets `lineItems`, scenarios, scenario-events). The interim `checkBodySize` caps (above) are a stopgap, not field validation. (security audit 2026-07-01)
+- [ ] Enforce CSP — `next.config.ts` currently sends `Content-Security-Policy-Report-Only` (reports, blocks nothing). Switch to enforcing `Content-Security-Policy` and tighten `script-src` (drop `unsafe-inline`/`unsafe-eval` via nonces). NEEDS a browser-verified test pass — will break Clerk/Next inline scripts if done blind. (security audit 2026-07-01)
+- [ ] Distributed rate limiting on CRUD routes — the in-memory sliding-window limiter (`lib/utils/rate-limit.ts`) only covers finance/feedback/admin and is per-process (won't hold across Railway instances/restarts). Fine for a friends beta; before public launch, add Redis/KV-backed limiting to the CRUD routes. (security audit 2026-07-01)
+- [ ] Ticker/query allowlisting — `finance/quote` & `finance/search` forward unvalidated symbol/query strings to `yahoo-finance2` (not arbitrary-URL SSRF — library pins the host — but harden anyway: allowlist `[A-Za-z0-9.\-^=]`, cap array length). (security audit 2026-07-01)
+- [ ] Constant-time compare for `ADMIN_SECRET` — `admin/backup` & `admin/set-plan` use plain `===` on the bearer token (theoretical timing side-channel). Use `crypto.timingSafeEqual`; confirm `ADMIN_SECRET` is a long random value in Railway/GitHub secrets. (security audit 2026-07-01)
+- [ ] Confirm `assertNotFrozen` intent — `profiles` (POST/PUT) and `projected-balances` (POST) mutate persisted user state without the freeze guard. Verify that's intended for the retention-freeze design (settings/profile writes + projection recompute during a freeze). (security audit 2026-07-01)
+
 ## Engineering (New User Experience)
 Source: account-onboarding UX review (design-mockups/account-onboarding-ux-review/). Outstanding observations split out from the now-closed "Consult Claude on account-adding UX" item.
 - [~] ~~Progressive disclosure for rarer account types in onboarding (Obs #8)~~ — DROPPED 2026-06-16. (Was: all types are always-visible rows, only "I own my home" gated; add a "+ more account types" collapse.)
