@@ -34,6 +34,12 @@ Source: /qa full sweep on the compare-scenario-cards branch — 4-dimension code
 - [x] Associate text inputs with their labels (placeholder-only, or sibling `<label>` missing htmlFor) — FeedbackModal textarea (:104), CategorySearch (:166, reused across plan forms), PlanRow income-name (:67), TransactionsDrawer:541 + ChildBirthForm:78 + AccountEditModal:262 + CategorySettingsPopover date inputs (add htmlFor/id), BalanceHistoryTab filter (:516), TimelineTypePicker search (:111) (/qa 2026-06-28) — DONE 2026-06-29: all 9 inputs associated (htmlFor/id where a visible label exists, aria-label for placeholder-only). Shipped 25ce4b1.
 - [x] Add async loading / double-submit guards to buttons that await without disabling — LinkAssetsModal "Confirm Links" (:160), AccountEditModal "Update Balance" (:693), AddAccountModal submit (AccountsContent.tsx:101) (/qa 2026-06-28) — DONE 2026-06-29: all 3 now await + disable + show a spinner (LinkAssets isConfirming, AccountEdit updatingBalance, AddAccount isSubmitting; onConfirm/onAdd types widened to allow Promise). Shipped 25ce4b1.
 
+### QA sweep (2026-07-01) — full visual + code sweep
+Source: /qa full sweep on compare-scenario-cards — desktop visual + TRUE ~375px mobile visual (first sweep with real mobile screenshots: `window.open` 375px popup driven same-origin from the opener + OS-level captures, since `resize_window` still no-ops) + 3-dimension code audit. Clean categories re-verified: no native `<select>`, img alts, page loading skeletons, compare empty states, modal dismiss patterns, icon-button aria-labels. Skipped as covered/by-design: events-lane icon pile-up (Net Worth chart redesign's cluster fan-out covers it), "Outflows" tab clip at 375px (tab row scrolls by design), 3 console-only background loads (best-effort paths, intentional).
+- [ ] UpgradePromptModal subscribe flow fails silently — keep modal open w/ pending state, toast on error (/qa 2026-07-01)
+- [ ] EditScenariosModal: add useFocusTrap; base-removal confirm (page.tsx:2688): add Escape + focus trap; Compare Save button: add saving/disabled state (/qa 2026-07-01)
+- [ ] Onboarding a11y: DemographicsStep percentile cells + AccountsStep row keyboard operability (/qa 2026-07-01)
+
 ## Product
 - [x] Add help/info icons to each drawer/page with in-depth explanations; explore on-screen tutorial as well
 - [ ] Rent vs. Buy — compare two homes by address, or rent vs. buy a single property
@@ -144,6 +150,12 @@ Source: /qa code-driven responsive audit (mobile not live-verifiable on this dev
 - [x] HomePurchaseForm Horizon / Rent-increase / Alt-return inputs use grid-cols-3 with no responsive base — crowds the labeled number inputs at ~375px (HomePurchaseForm.tsx:536) (/qa 2026-06-28) — DONE 2026-06-30 (dd02e7a): `grid-cols-3` → `grid-cols-1 min-[380px]:grid-cols-3` so the three inputs stack on the narrowest phones (~375px) and stay 3-up otherwise. tsc clean
 - [x] Split-owner name uses absolute right-full + unbounded truncate (truncate can't clamp an unsized absolute element, so a long member name can run off the left edge on a narrow viewport) — plan/edit/page.tsx:3483 and :3785 (/qa 2026-06-28) — DONE 2026-06-30 (dd02e7a): added `max-w-[40vw]` to both `absolute right-full … truncate` spans so the ellipsis engages instead of the element growing leftward off-screen. tsc clean
 
+### QA sweep (2026-07-01) — mobile compare + polish
+Source: same /qa 2026-07-01 sweep as the Engineering subsection above (first true-375px visual pass).
+- [ ] Mobile comparison table: add scroll affordance (fade edge/visible scrollbar); widen/wrap "Contributions reduced"/"Funded by withdrawals" labels (/qa 2026-07-01)
+- [ ] Compare: ellipsize + tooltip long scenario names in rail legend & Edit-scenarios column headers (/qa 2026-07-01)
+- [ ] rent-vs-buy: align Break-even marker with actual curve crossover (/qa 2026-07-01)
+
 ## Security
 
 ### Pre-beta security audit (2026-07-01)
@@ -187,6 +199,9 @@ Source: account-onboarding UX review (design-mockups/account-onboarding-ux-revie
 - [x] Scenario Planner shows locked icon on Save, but hitting Done saves scenarios anyway — need clearer premium-feature gating/messaging — FIXED 2026-07-01: verified the current refactored Compare flow — "Done" only calls `onClose` (session-only, no DB write); the sole persist path is the Premium-gated `handleRequestSaveScenarios` (`page.tsx:1422` returns to upgrade prompt when `!isPremium`). The confusion was compounded by the upgrade modal opening BEHIND the z-[70] Edit-scenarios modal (see z-index fix below) so clicking locked Save appeared to do nothing. Now the prompt renders on top, and the Save button reads "Save 🔒 PREMIUM" (accent badge, not a bare lock) so the gating is explicit vs the plain "Done". tsc clean
 - [x] Market Assumptions popup appears behind Scenario Manager when clicked — FIXED 2026-07-01: `MarketAssumptionsPopover` portals to body at `zIndex:50` but is used inside the `EditScenariosModal` roster (`z-[70]`), so the popover rendered behind the modal. Bumped its portal (desktop popover + mobile sheet + mobile backdrop) to `zIndex:75`, above the workspace modal. tsc clean. Visual confirm pending (dev-env renderer quirk)
 - [x] Upgrade to Premium popup shows behind Scenario Manager — should always render on top and be closable — FIXED 2026-07-01: `UpgradePromptModal` was `z-[60]` but is triggered from within the `z-[70]` Edit-scenarios modal (Save when `!isPremium`), so it rendered behind and was unreachable. Bumped both variants (guest + free-auth) to `z-[90]` — above every modal/confirm layer (max was z-[80] base-removal confirm) so it always renders on top and its Esc/backdrop/X close paths are usable. tsc clean. Visual confirm pending (dev-env renderer quirk)
+- [ ] Plan drawer take-home math inconsistent — rail Take-home ($16,567) ≠ Income−Taxes−Pre-tax ($14,412), and section "% of take-home" captions imply a third denominator (~$12.2K) (/qa 2026-07-01)
+- [ ] REGRESSION-CHECK: x-axis Year·Age labels still collide at 380px (and desktop Monthly/5Y) despite the 2026-06-29 computeTickInterval fix — its pending visual confirm FAILS (/qa 2026-07-01)
+- [ ] /rent-vs-buy fixed header transparent on scroll — page content bleeds through logo/icons (/qa 2026-07-01)
 
 ## Parking Lot
 - [ ] Add calculator section: rent vs buy, buy a home, estimated taxes — pull from current plan inputs with ability to adjust and see quick impact — MOVED to Parking Lot 2026-06-27 via /next (defer to post-beta).
